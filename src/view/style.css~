@@ -1,0 +1,94 @@
+#mainMenu{
+    -fx-background-image: url("/resources/bg2.jpg");
+    -fx-background-repeat: stretch;   
+    -fx-background-size: 1200 622;
+    -fx-background-position: center;
+    -fx-background-color: black;
+    
+}
+
+#menuVBox {
+	-fx-background-position: center;
+	-fx-pref-width: 498;
+	-fx-pref-height: 566;
+	
+}
+
+#joinServer{
+	
+	-fx-background-image: url('/resources/join.png');
+	-fx-min-height: 71;
+ 	-fx-min-width: 188;
+  	-fx-background-repeat: stretch;
+  	-fx-background-position: center;
+	-fx-background-color:transparent;
+    
+}
+
+#joinServer:hover {
+	-fx-background-image: url('/resources/join_hover.png');
+	-fx-background-color:transparent;
+	}
+
+#createGame{
+	
+	-fx-background-image: url('/resources/create.png');
+	-fx-min-height: 71;
+ 	-fx-min-width: 188;
+  	-fx-background-repeat: stretch;
+  	-fx-background-position: center;
+	-fx-background-color:transparent;
+    
+}
+#createGame:hover {
+	-fx-background-image: url('/resources/create_hover.png');
+	-fx-background-color:transparent;
+	}
+
+
+#nameTextField {
+	-fx-min-width: 200;
+	-fx-pref-height:80;
+	-fx-max-width: 200;
+	-fx-alignment:center;
+	-fx-font-size: 21pt;
+    -fx-font-family: "LifeCraft";
+    -fx-text-fill:rgb(207,154,50);
+}
+
+
+#ipLabel {
+	-fx-min-width: 40;
+	-fx-pref-height: 60;
+	-fx-max-width: 40;
+	-fx-font-size: 21pt;
+    -fx-font-family: "LifeCraft";
+    -fx-text-fill:rgb(90,1,0);
+    	
+}
+
+#portLabel {
+	-fx-min-width: 80;
+	-fx-pref-height: 60;
+	-fx-max-width: 80;
+	-fx-font-size: 21pt;
+    -fx-font-family: "LifeCraft";
+    -fx-text-fill:rgb(90,1,0);
+    	
+}
+
+#ipPortBox {
+	-fx-alignment:center;
+	-fx-min-width: 1200;
+}
+
+#lobby {
+    -fx-background-image: url("/resources/main_background.jpg");
+    -fx-background-repeat: stretch;   
+    -fx-background-size: 1200 622;
+    -fx-background-position: center;
+    -fx-background-color: black;
+    
+}
+
+
