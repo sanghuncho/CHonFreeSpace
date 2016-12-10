@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.math.Vector;
+import util.math.Vector2D;
 
 public class NodeMap {
 	
@@ -23,7 +24,7 @@ public class NodeMap {
 
 			for (int y = 0; y < size.getY(); y++) {
 
-				Node node = new Node(new Vector(x, y));
+				Node node = new Node(new Vector2D(x, y));
 
 				structure.get(x).add(node);
 			}

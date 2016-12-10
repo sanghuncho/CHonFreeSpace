@@ -2,6 +2,7 @@ package model;
 
 import model.node.NodeMap;
 import util.math.Vector;
+import util.math.Vector2D;
 
 public class CHmodel {
 	
@@ -18,16 +19,26 @@ public class CHmodel {
 	
 	public static int obstacle;
 	
-	public static Vector sizeVector;
+	public static Vector2D sizeVector;
 	
 	public static NodeMap nodeMap;
 	
+	public static Vector getStartVector2D(){
+		
+		return new Vector2D(startX,startY);
+	}
 	
-	public static Vector getSizeVector() {
+	public static Vector getGoalVector2D(){
+		
+		return new Vector2D(goalX,goalY);
+	}
+	
+	
+	public static Vector getSizeVector2D() {
 		return sizeVector;
 	}
 
-	public static void setSizeVector(Vector sizeVector) {
+	public static void setSizeVector2D(Vector2D sizeVector) {
 		CHmodel.sizeVector = sizeVector;
 	}
 

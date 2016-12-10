@@ -50,14 +50,14 @@ public class MainView extends Pane{
 		
 		/*textfield initialization map */
 		
-		mapXField = new TextField();
+		mapXField = new TextField("600");
 		mapXField.setMinHeight(70);
 		mapXField.setId("mapXTextField");
 		mapXField.setFocusTraversable(false);
 		//mapXField.setPromptText("X");
 		mapXField.setPromptText("600");
 		
-		mapYField = new TextField();
+		mapYField = new TextField("600");
 		mapYField.setMinHeight(70);
 		mapYField.setId("mapYTextField");
 		mapYField.setFocusTraversable(false);
@@ -71,13 +71,13 @@ public class MainView extends Pane{
 		
 		/*textfield initialization starting point */
 		
-		startPointX = new TextField();
+		startPointX = new TextField("55");
 		startPointX.setMinHeight(70);
 		startPointX.setId("startXTextField");
 		startPointX.setFocusTraversable(false);
 		startPointX.setPromptText("X");
 		
-		startPointY = new TextField();
+		startPointY = new TextField("55");
 		startPointY.setMinHeight(70);
 		startPointY.setId("startYTextField");
 		startPointY.setFocusTraversable(false);
@@ -91,13 +91,13 @@ public class MainView extends Pane{
 		
 		/*textfield initialization end point */
 		
-		endPointX = new TextField();
+		endPointX = new TextField("555");
 		endPointX.setMinHeight(70);
 		endPointX.setId("endXTextField");
 		endPointX.setFocusTraversable(false);
 		endPointX.setPromptText("X");
 		
-		endPointY = new TextField();
+		endPointY = new TextField("555");
 		endPointY.setMinHeight(70);
 		endPointY.setId("endYTextField");
 		endPointY.setFocusTraversable(false);
@@ -110,7 +110,7 @@ public class MainView extends Pane{
 		
 		/*textfield initialization obstacle */
 		
-		numberOfObstacle = new TextField();
+		numberOfObstacle = new TextField("5");
 		numberOfObstacle.setMinHeight(70);
 		numberOfObstacle.setId("numeberTextField");
 		numberOfObstacle.setFocusTraversable(false);

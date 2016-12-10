@@ -9,10 +9,23 @@ public class NodeMapHandler {
 	NodeMap nodeMap;
 	Vector size;
 	
-	public NodeMapHandler(NodeMap nodeMap){
+	/*public NodeMapHandler(NodeMap nodeMap){
 		
 		this.nodeMap = nodeMap;
 		
+		defineNeighboringNodes();
+		
+		 apply obstacle values to the node map 
+		nodeMap = new ObstacleGenerator(nodeMap)
+
+	}*/
+	
+	public NodeMapHandler(Vector size){
+		
+		
+		this.size  = size;
+		nodeMap = new NodeMap(size);
+		CHmodel.setNodeMap(nodeMap);
 		defineNeighboringNodes();
 		
 		/* apply obstacle values to the node map */
@@ -22,7 +35,7 @@ public class NodeMapHandler {
 	
 	private void defineNeighboringNodes(){
 		
-		size = CHmodel.getSizeVector();
+		size = CHmodel.getSizeVector2D();
 		
 		for (Node node : nodeMap.getNodes()) {
 			

@@ -4,19 +4,22 @@ import java.io.IOException;
 import javafx.scene.Scene;
 import main.Play;
 import model.CHmodel;
+import model.dijkstra.CostMap;
 import model.node.NodeMap;
 import model.node.NodeMapHandler;
 import options.AvailableScenes;
 import util.math.Vector;
+import util.math.Vector2D;
 import view.MainView;
 
 public class MainPresenter {
 	
 	private Scene scene;
 	private MainView mainView;
-	private Vector size;	
+	private Vector2D size;	
 	private NodeMap nodeMap;
 	
+	private static NodeMapHandler nodeMapHandler;
 	
 	public MainPresenter(MainView mainView) throws IOException, InterruptedException {
 		this.scene = mainView.getScene();
@@ -60,15 +63,18 @@ public class MainPresenter {
 		
 		CHmodel.setObstacle(Integer.parseInt(mainView.getNumberObstacle().getText()));
 		
-		CHmodel.setSizeVector(size = new Vector( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
+		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		
 		System.out.println("X " + size.getX() + "\n");
 		System.out.println("Y " + size.getY() + "\n");
 		
-		CHmodel.setNodeMap(nodeMap = new NodeMap(size));
+		/*CHmodel.setNodeMap(nodeMap = new NodeMap(size));
 		
-		new NodeMapHandler(nodeMap);
+		new NodeMapHandler(nodeMap);*/
 		
+		nodeMapHandler = new NodeMapHandler(size);
+		
+		CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),CHmodel.getGoalVector2D(), nodeMapHandler.getNodeMap());
 		
 			
 	}
