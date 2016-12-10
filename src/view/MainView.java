@@ -138,7 +138,7 @@ public class MainView extends Pane{
 		
 		scene = new Scene(this);
 		 
-		/*TODO : add cdd file in package*/
+		/*TODO : add css file in package*/
 		//this.scene.getStylesheets().add("/view/style.css");
 		
 		stage.setScene(scene);

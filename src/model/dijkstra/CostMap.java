@@ -44,36 +44,22 @@ public class CostMap {
 		
 		map[startPoint.getX()][startPoint.getY()] = 0;
 		visitedPoints.add(startPoint);
+		//printMapToConsole();
+		
+		floodMap();
 		printMapToConsole();
-		
-		/*floodMap();
-		printMapToConsole();*/
 	}
 	
-	public void setCost(Vector position, int value) throws ArithmeticException {
-		
-		map[position.getX()][position.getY()] = value;
-
-		if (value < -1) {
-			throw new ArithmeticException("set cost < -1 : " + value);
-		}
-	}
-	
-	public int getCost(Vector point) {
-
-		if (map[point.getX()][point.getY()] < -1) {
-			throw new ArithmeticException(
-					"set cost < -1 : " + map[point.getX()][point.getY()]);
-		}
-		return map[point.getX()][point.getY()];
-	}
-
 	private void floodMap() {
 		
 		createSurroundingCosts(startPoint);
 		
 		while (!goalReached()) {
+			
+			System.out.println("flooding /n");
+			
 			copyPoints();
+			
 			for (Vector newPoint : getPointParking()) {
 				createSurroundingCosts(newPoint);
 			}
@@ -84,50 +70,9 @@ public class CostMap {
 		}
 	}
 	
-	private void copyPoints() {
-		
-		lowestCost = Integer.MAX_VALUE;
-		
-		getPointParking().clear();
-
-		for (Vector transferPoint : onHoldList) {
-			getPointParkingHelper().add(transferPoint);
-		}
-		onHoldList.clear();
-		/* At first, check all stored points for the lowest cost. */
-		for (Vector costPoint : getPointParkingHelper()) {
-			checkLowestCost(costPoint);
-		}
-		for (Vector copyPoint : getPointParkingHelper()) {
-			if (getCost(copyPoint) <= lowestCost) {
-				getPointParking().add(copyPoint);
-			} else {
-				onHoldList.add(copyPoint);
-			}
-		}
-		getPointParkingHelper().clear();
-		sortTheList(getPointParking());
-	}
-	
-	private ArrayList<Vector> sortTheList(ArrayList<Vector> sortedList) {
-		Collections.sort(sortedList);
-		return sortedList;
-	}
-	
-	private ArrayList<Vector> getPointParkingHelper() {
-		return pointParkingHelper;
-	}
-	
-	private void checkLowestCost(Vector point) {
-		if (getCost(point) != 0) {
-			if (getCost(point) < lowestCost) {
-				lowestCost = getCost(point);
-			}
-		}
-	}
-	
 	private void createSurroundingCosts(Vector middlePoint) {
-		for (Vector point : sortTheList(getSurroundingPoints(middlePoint.getX(), middlePoint.getY()))) {
+		
+		for (Vector point : sortTheList( getSurroundingPoints(middlePoint.getX(), middlePoint.getY()))) {
 			if (!(point.getX() < 0 || point.getY() < 0
 					|| point.getX() >= size.getX()
 					|| point.getY() >= size.getY())) {
@@ -142,18 +87,9 @@ public class CostMap {
 		}
 	}
 	
-	private boolean checkForPoint(ArrayList<Vector> list, Vector point) {
-		for (Vector checkPoint : list) {
-			if (checkPoint.getX() == point.getX()
-					&& checkPoint.getY() == point.getY()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean isObstacle(Vector point) {
-		return map[point.getX()][point.getY()] == -1;
+	private ArrayList<Vector> sortTheList(ArrayList<Vector> sortedList) {
+		Collections.sort(sortedList);
+		return sortedList;
 	}
 	
 	public ArrayList<Vector> getSurroundingPoints(int x, int y) {
@@ -205,8 +141,80 @@ public class CostMap {
 					"xCord = " + xCord + ", yCord = " + yCord);
 		}
 	}
+	
+	public void setCost(Vector position, int value) throws ArithmeticException {
+		
+		map[position.getX()][position.getY()] = value;
+
+		if (value < -1) {
+			throw new ArithmeticException("set cost < -1 : " + value);
+		}
+	}
+	
+	public int getCost(Vector point) {
+
+		if (map[point.getX()][point.getY()] < -1) {
+			throw new ArithmeticException(
+					"set cost < -1 : " + map[point.getX()][point.getY()]);
+		}
+		return map[point.getX()][point.getY()];
+	}
 
 	
+	
+	private void copyPoints() {
+		
+		lowestCost = Integer.MAX_VALUE;
+		
+		getPointParking().clear();
+
+		for (Vector transferPoint : onHoldList) {
+			getPointParkingHelper().add(transferPoint);
+		}
+		onHoldList.clear();
+		/* At first, check all stored points for the lowest cost. */
+		for (Vector costPoint : getPointParkingHelper()) {
+			checkLowestCost(costPoint);
+		}
+		for (Vector copyPoint : getPointParkingHelper()) {
+			if (getCost(copyPoint) <= lowestCost) {
+				getPointParking().add(copyPoint);
+			} else {
+				onHoldList.add(copyPoint);
+			}
+		}
+		getPointParkingHelper().clear();
+		sortTheList(getPointParking());
+	}
+
+	
+	private ArrayList<Vector> getPointParkingHelper() {
+		return pointParkingHelper;
+	}
+	
+	private void checkLowestCost(Vector point) {
+		if (getCost(point) != 0) {
+			if (getCost(point) < lowestCost) {
+				lowestCost = getCost(point);
+			}
+		}
+	}
+	
+	
+	private boolean checkForPoint(ArrayList<Vector> list, Vector point) {
+		for (Vector checkPoint : list) {
+			if (checkPoint.getX() == point.getX()
+					&& checkPoint.getY() == point.getY()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean isObstacle(Vector point) {
+		return map[point.getX()][point.getY()] == -1;
+	}
+
 	private boolean goalReached() {
 		for (Vector point : getPointParking()) {
 			if (point.getX() == goalPoint.getX()

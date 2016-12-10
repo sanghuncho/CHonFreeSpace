@@ -25,12 +25,12 @@ public class CHmodel {
 	
 	public static Vector getStartVector2D(){
 		
-		return new Vector2D(startX,startY);
+		return new Vector2D((startX-5)/10,(startY-5)/10);
 	}
 	
 	public static Vector getGoalVector2D(){
 		
-		return new Vector2D(goalX,goalY);
+		return new Vector2D((goalX-5)/10,(goalY-5)/10);
 	}
 	
 	
