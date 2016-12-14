@@ -11,6 +11,7 @@ import util.math.Vector3D;
 public class CostMap {
 	
 	private Vector size, startPoint, goalPoint;
+	private NodeMap nodeMap;
 	
 	private ArrayList<Vector> visitedPoints = new ArrayList<Vector>(),
 							  pointParkingHelper = new ArrayList<Vector>(),
@@ -20,7 +21,7 @@ public class CostMap {
 	private int lowestCost;
 	
 	private int[][] map;
-	
+		
 	public CostMap(Vector size, Vector start,Vector goal, NodeMap nodeMap) {
 		this.size = size;
 		this.startPoint = start;
@@ -37,17 +38,23 @@ public class CostMap {
 			} else {
 				
 				//setCost(node.getPosition(), node.getObstacleValue());
-				setCost(node.getPosition(),1);
+				setCost(node.getPosition(),0);
 
 			}
 		}
 		
 		map[startPoint.getX()][startPoint.getY()] = 0;
 		visitedPoints.add(startPoint);
-		//printMapToConsole();
-		
-		floodMap();
+		//printMapToConsole();	
+		//floodMap();
 		printMapToConsole();
+		//dijkstraAlgorithm();
+		
+		
+	}
+	
+	public NodeMap getNodeMap(){
+		return nodeMap;
 	}
 	
 	private void floodMap() {
@@ -55,9 +62,7 @@ public class CostMap {
 		createSurroundingCosts(startPoint);
 		
 		while (!goalReached()) {
-			
-			System.out.println("flooding /n");
-			
+						
 			copyPoints();
 			
 			for (Vector newPoint : getPointParking()) {
@@ -235,12 +240,12 @@ public class CostMap {
 				if (map[i][j] == -1) {
 					System.out.print("X\t");
 				}
-				// else if (i == goalPoint.getX() && j == goalPoint.getY()) {
-				// System.out.print("G\t");
-				// } else if (i == startPoint.getX() && j == startPoint.getY())
-				// {
-				// System.out.print("S\t");
-				// }
+				else if (i == goalPoint.getX() && j == goalPoint.getY()) {
+					System.out.print("G\t");
+				 } else if (i == startPoint.getX() && j == startPoint.getY())
+				 {
+					System.out.print("S\t");
+				 }
 				else {
 					System.out.print(getCostForCoordinates(i, j) + "\t");
 				}

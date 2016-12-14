@@ -3,9 +3,13 @@ package view;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -18,23 +22,22 @@ import model.node.NodeMap;
 
 public class Lobby extends BorderPane{
 	
-	public Button searchButton = new Button("Search");
+	public Button contractButton = new Button("Contracting");
+	public Button searchButton = new Button("Searching");
+
 	public Obstacle obs;
 	public ArrayList<Obstacle>  obstacles;
 	public Point startPoint;
 	public Point endPoint;
 	public NodeMap nodemap;
+	public Pane bottom = new Pane();
+	public Pane center = new Pane();
 	
 	private Scene scene;
 	private int numberObs;
 	
 	
 	public Lobby(Stage stage){
-		
-		searchButton.setId("searchButtonLabel");
-		searchButton.setLayoutX(700);
-		searchButton.setLayoutY(700);
-		
 		
 		/*create the node map*/
 		createNodeMap();
@@ -55,7 +58,7 @@ public class Lobby extends BorderPane{
 		
 		while(itr.hasNext()){
 			Obstacle obs = (Obstacle)itr.next();
-			this.getChildren().add(obs);
+			center.getChildren().add(obs);
 		}
 		
 		/*create the staring - and end points*/
@@ -70,11 +73,29 @@ public class Lobby extends BorderPane{
 		endPoint.setCenterY(CHmodel.getGoalY());
 		endPoint.setFill(Color.RED);
 		
-		this.getChildren().addAll(searchButton,startPoint,endPoint);
+		/*create search button for CH algorithm*/
+		contractButton.setId("contractButtonLabel");
 		
+		this.setBottom(bottom);
+		this.setCenter(center);
+		
+		BorderPane.setAlignment(bottom, Pos.TOP_CENTER);
+		BorderPane.setAlignment(center, Pos.TOP_CENTER);
+		
+		center.setMaxSize(600,600);
+		center.getChildren().addAll(startPoint,endPoint);
+		
+		HBox hBox = new HBox();
+		hBox.setSpacing(10);
+		hBox.getChildren().addAll(contractButton,searchButton);
+		bottom.setMaxSize(600,50);
+		//bottom.getChildren().addAll(contractButton,searchButton);
+		bottom.getChildren().add(hBox);
+
 		scene = new Scene(this);
-		stage.setHeight(CHmodel.getMapX());
-		stage.setWidth(CHmodel.getMapY());
+		stage.setHeight(CHmodel.getMapX()+100);
+		stage.setWidth(CHmodel.getMapY()+100);
+		
 		//this.scene.getStylesheets().add("/view/style.css");
 		stage.setScene(scene);
 			
@@ -96,11 +117,12 @@ public class Lobby extends BorderPane{
 			
 			node.setNodeCircle(nodeCircle);
 			
-			this.getChildren().add(nodeCircle);
+			//this.getChildren().add(nodeCircle);
+			center.getChildren().add(nodeCircle);
 			
-			System.out.println("X " + nodeCircle.getCenterX() + "\n");
-			System.out.println("Y " + nodeCircle.getCenterY() + "\n");
-			System.out.println("\n");
+//			System.out.println("X " + nodeCircle.getCenterX() + "\n");
+//			System.out.println("Y " + nodeCircle.getCenterY() + "\n");
+//			System.out.println("\n");
 			
 		}
 		

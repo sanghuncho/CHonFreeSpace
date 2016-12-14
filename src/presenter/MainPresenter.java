@@ -74,7 +74,8 @@ public class MainPresenter {
 		
 		nodeMapHandler = new NodeMapHandler(size);
 		
-		CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),CHmodel.getGoalVector2D(), nodeMapHandler.getNodeMap());
+		CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
+				CHmodel.getGoalVector2D(), nodeMapHandler.getNodeMap());
 		
 			
 	}

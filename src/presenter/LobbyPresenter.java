@@ -42,7 +42,7 @@ public class LobbyPresenter {
 			
 		}
 		
-		lobbyView.searchButton.setOnMouseClicked(event -> {
+		lobbyView.contractButton.setOnMouseClicked(event -> {
 				/*try {
 						Play.navigator.switchTo(AvailableScenes.GAME);
 						clientPresenter.getGameModel().setGameStateStarted();
@@ -53,6 +53,18 @@ public class LobbyPresenter {
 					}*/
 
 			});
+		
+		lobbyView.searchButton.setOnMouseClicked(event -> {
+			/*try {
+					Play.navigator.switchTo(AvailableScenes.GAME);
+					clientPresenter.getGameModel().setGameStateStarted();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}*/
+
+		});
 
 	 }
 	EventHandler<MouseEvent> circleOnMousePressedEventHandler = 
