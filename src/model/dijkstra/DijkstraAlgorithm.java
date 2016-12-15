@@ -31,6 +31,9 @@ public class DijkstraAlgorithm {
         
     public void execute(Node source) {
     	
+    	
+        System.out.println("execute \n");
+
             settledNodes = new HashSet<Node>();
             unSettledNodes = new HashSet<Node>();
             distance = new HashMap<Node, Integer>();
@@ -39,15 +42,25 @@ public class DijkstraAlgorithm {
             unSettledNodes.add(source);
             
             while (unSettledNodes.size() > 0) {
+            	
+                System.out.println("while \n");
+
             		Node node = getMinimum(unSettledNodes);
+            		
                     settledNodes.add(node);
+                    
+                    System.out.println("X : " + node.getPosition().getX() + "\n");
+                    
                     unSettledNodes.remove(node);
+                    
                     findMinimalDistances(node);
             }
     }
     
     private void findMinimalDistances(Node node) {
+    	
         List<Node> adjacentNodes = getNeighbors(node);
+        
         for (Node target : adjacentNodes) {
                 if (getShortestDistance(target) > getShortestDistance(node)
                                 + getDistance(node, target)) {
@@ -70,8 +83,14 @@ public class DijkstraAlgorithm {
     }
     
     private List<Node> getNeighbors(Node node) {
+    	
         List<Node> neighbors = new ArrayList<Node>();
+        
+        
+        System.out.println("edge size "+ edges.size() + "\n");
+
         for (Edge edge : edges) {
+        	
                 if (edge.getSource().equals(node)
                                 && !isSettled(edge.getDestination())) {
                         neighbors.add(edge.getDestination());
@@ -120,6 +139,16 @@ public class DijkstraAlgorithm {
         }
         // Put it into the correct order
         Collections.reverse(path);
+        
+        int k = path.size();
+         
+         for(int i = 0 ; i < k ; i ++){
+         	
+         System.out.println("X : "+ path.get(i).getPosition().getX() + ", " + "Y : " +
+        				path.get(i).getPosition().getY() + "\n");
+             
+         }
+         
         return path;
     }
         

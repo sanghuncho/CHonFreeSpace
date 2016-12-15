@@ -18,7 +18,7 @@ public class CostMap {
 	private Edge lane;
 	private int nodeSize;
 	private List<Node> nodes;
-    private ArrayList<Edge> edges;
+    private ArrayList<Edge> edges = new ArrayList<Edge>();
     private final static int WEIGHT = 1;
     private DijkstraAlgorithm dijkstra;
 
@@ -157,7 +157,7 @@ public class CostMap {
 	
 	private void createEdge(Vector middlePoint,Vector neighbor){
 		
-		edges = new ArrayList<Edge>();
+		
 		//lane = new Edge(edgeId,middlePoint,neighbor,WEIGHT);
 		Node nodeMiddle = nodeMap.get(middlePoint.getX(),middlePoint.getY() );
 		Node nodeNeighbor = nodeMap.get(neighbor.getX(),neighbor.getY() );
