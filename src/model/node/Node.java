@@ -20,14 +20,14 @@ public class Node implements Comparable<Node>{
 	private ArrayList<NodeProperty> startList = new ArrayList<NodeProperty>();
 	
 	/** The position. */
-	private Vector position;
+	private Vector vector;
 	private Property property;
 	private NodeCircle nodeCircle;
 
 	
 	public Node(Vector vector) {
 
-		this.position = vector;
+		this.vector = vector;
 		property = Property.DEFAULT;
 		this.costFromStart = Integer.MAX_VALUE;
 		
@@ -58,7 +58,7 @@ public class Node implements Comparable<Node>{
 	}
 	
 	public Vector getPosition() {
-		return position;
+		return vector;
 	}
 	
 	public boolean isObstacle() {

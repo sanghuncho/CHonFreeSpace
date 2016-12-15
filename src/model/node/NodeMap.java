@@ -52,6 +52,12 @@ public class NodeMap {
 		return list;
 	}
 	
+	public int getSizeNode(){
+		
+		return getNodes().size();
+
+	}
+	
 	public Node get(int x, int y) {
 
 		if (x < 0 || y < 0 || x >= size.getX() || y >= size.getY()) {

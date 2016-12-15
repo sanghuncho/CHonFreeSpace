@@ -2,6 +2,7 @@ package model.dijkstra;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import model.node.Node;
 import model.node.NodeMap;
@@ -12,6 +13,13 @@ public class CostMap {
 	
 	private Vector size, startPoint, goalPoint;
 	private NodeMap nodeMap;
+	private int edgeId = 0;
+	private Edge lane;
+	private List<Node> nodes;
+	private int nodeSize;
+    private ArrayList<Edge> edges;
+    private final static int WEIGHT = 1;
+
 	
 	private ArrayList<Vector> visitedPoints = new ArrayList<Vector>(),
 							  pointParkingHelper = new ArrayList<Vector>(),
@@ -26,6 +34,8 @@ public class CostMap {
 		this.size = size;
 		this.startPoint = start;
 		this.goalPoint = goal;
+		this.nodes = nodeMap.getNodes();
+		this.nodeSize = nodeMap.getNodes().size();
 		
 		map = new int[size.getX()][size.getY()];
 		
@@ -45,9 +55,19 @@ public class CostMap {
 		
 		map[startPoint.getX()][startPoint.getY()] = 0;
 		visitedPoints.add(startPoint);
+		
 		//printMapToConsole();	
+		
 		//floodMap();
-		printMapToConsole();
+		
+		createEdgeOnMap();
+		
+		Graph graph = new Graph(nodes,edges);
+		
+		DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph); 
+		
+		//printMapToConsole();
+		
 		//dijkstraAlgorithm();
 		
 		
@@ -60,6 +80,7 @@ public class CostMap {
 	private void floodMap() {
 		
 		createSurroundingCosts(startPoint);
+		//createSurroundingEdges(startPoint);
 		
 		while (!goalReached()) {
 						
@@ -74,6 +95,73 @@ public class CostMap {
 			createSurroundingCosts(newPoint);
 		}
 	}
+	
+	private void createEdgeOnMap() {
+		
+		//createSurroundingCosts(startPoint);
+		createSurroundingEdges(startPoint);
+		
+		
+		/*total number of node is nodeSize*/
+		while (nodeSize != visitedPoints.size()) {
+						
+			copyPoints();
+			
+			for (Vector newPoint : getPointParking()) {
+				createSurroundingEdges(newPoint);
+			}
+		}
+		copyPoints();
+		
+		for (Vector newPoint : getPointParking()) {
+			createSurroundingEdges(newPoint);
+		}
+	}
+	
+	private void createSurroundingEdges(Vector middlePoint) {
+		
+		for (Vector point : sortTheList( getSurroundingPoints(middlePoint.getX(), middlePoint.getY()))) {
+			if (!(point.getX() < 0 || point.getY() < 0
+					|| point.getX() >= size.getX()
+					|| point.getY() >= size.getY())) {
+				
+				if (!isObstacle(point)) {
+					
+					if (!(checkForPoint(visitedPoints, point))) {
+						
+						createEdge(middlePoint,point);
+						
+						//setCost(point, (getCost(middlePoint) + getCost(point)));
+						
+						visitedPoints.add(point);
+						
+						getPointParkingHelper().add(point);
+					}
+				}
+			}
+		}
+	}
+	
+	private void createEdge(Vector middlePoint,Vector neighbor){
+		
+		//lane = new Edge(edgeId,middlePoint,neighbor,WEIGHT);
+		Node nodeMiddle = nodeMap.get(middlePoint.getX(),middlePoint.getY() );
+		Node nodeNeighbor = nodeMap.get(neighbor.getX(),neighbor.getY() );
+		lane = new Edge(edgeId,nodeMiddle,nodeNeighbor,WEIGHT);
+
+		edges.add(lane);
+		edgeId++;	
+	}
+
+	private boolean checkForPoint(ArrayList<Vector> list, Vector point) {
+	for (Vector checkPoint : list) {
+		if (checkPoint.getX() == point.getX()
+				&& checkPoint.getY() == point.getY()) {
+			return true;
+		}
+	}
+	return false;
+}
 	
 	private void createSurroundingCosts(Vector middlePoint) {
 		
@@ -205,16 +293,7 @@ public class CostMap {
 		}
 	}
 	
-	
-	private boolean checkForPoint(ArrayList<Vector> list, Vector point) {
-		for (Vector checkPoint : list) {
-			if (checkPoint.getX() == point.getX()
-					&& checkPoint.getY() == point.getY()) {
-				return true;
-			}
-		}
-		return false;
-	}
+
 	
 	private boolean isObstacle(Vector point) {
 		return map[point.getX()][point.getY()] == -1;
