@@ -2,6 +2,7 @@ package presenter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
@@ -11,6 +12,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.CHmodel;
 import model.Obstacle;
+import model.dijkstra.CostMap;
+import model.node.Node;
+import model.node.NodeMapHandler;
+import util.math.Vector2D;
 import view.Lobby;
 
 public class LobbyPresenter {
@@ -22,10 +27,14 @@ public class LobbyPresenter {
 	private ArrayList<Obstacle> obstacles;
 	double orgSceneX, orgSceneY;
 	double orgTranslateX, orgTranslateY;
+	private Vector2D size;	
+	private static NodeMapHandler nodeMapHandler;
+
 	
 	public LobbyPresenter(Lobby lobbyView){
 		this.lobbyView = lobbyView;
 		obs=lobbyView.getObstacle();
+		size = CHmodel.getSizeVector2D();
 		activate();
 	}
 	
@@ -34,6 +43,7 @@ public class LobbyPresenter {
 		
 		numberObs = CHmodel.getObstacle();
 		obstacles = lobbyView.getObstacleList();
+		
 					
 		for(int i = 0; i < numberObs; i++){
 						
@@ -55,6 +65,21 @@ public class LobbyPresenter {
 			});
 		
 		lobbyView.searchButton.setOnMouseClicked(event -> {
+			
+			//nodeMapHandler = new NodeMapHandler(size);
+			
+			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
+					CHmodel.getGoalVector2D(), CHmodel.getNodeMap());
+			
+			costmap.getDijkstra().execute(costmap.getNodeMap()
+					.get(CHmodel.getStartX(),CHmodel.getStartY()));
+            LinkedList<Node> path = costmap.getDijkstra().getPath(costmap.getNodeMap()
+					.get(CHmodel.getGoalX(),CHmodel.getGoalY()));
+            
+            System.out.println("algorithm is end \n");
+            
+            
+
 			/*try {
 					Play.navigator.switchTo(AvailableScenes.GAME);
 					clientPresenter.getGameModel().setGameStateStarted();

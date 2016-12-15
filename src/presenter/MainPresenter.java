@@ -22,6 +22,7 @@ public class MainPresenter {
 	private static NodeMapHandler nodeMapHandler;
 	
 	public MainPresenter(MainView mainView) throws IOException, InterruptedException {
+		
 		this.scene = mainView.getScene();
 		this.mainView = mainView;
 		
@@ -72,10 +73,12 @@ public class MainPresenter {
 		
 		new NodeMapHandler(nodeMap);*/
 		
-		nodeMapHandler = new NodeMapHandler(size);
+		//nodeMapHandler = new NodeMapHandler(size);
 		
-		CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
-				CHmodel.getGoalVector2D(), nodeMapHandler.getNodeMap());
+		new NodeMapHandler(size);
+		
+		/*CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
+				CHmodel.getGoalVector2D(), nodeMapHandler.getNodeMap());*/
 		
 			
 	}

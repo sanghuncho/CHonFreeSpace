@@ -34,7 +34,7 @@ public class CHmodel {
 	}
 	
 	
-	public static Vector getSizeVector2D() {
+	public static Vector2D getSizeVector2D() {
 		return sizeVector;
 	}
 

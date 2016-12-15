@@ -7,6 +7,7 @@ import java.util.List;
 import model.node.Node;
 import model.node.NodeMap;
 import util.math.Vector;
+import util.math.Vector2D;
 import util.math.Vector3D;
 
 public class CostMap {
@@ -15,10 +16,11 @@ public class CostMap {
 	private NodeMap nodeMap;
 	private int edgeId = 0;
 	private Edge lane;
-	private List<Node> nodes;
 	private int nodeSize;
+	private List<Node> nodes;
     private ArrayList<Edge> edges;
     private final static int WEIGHT = 1;
+    private DijkstraAlgorithm dijkstra;
 
 	
 	private ArrayList<Vector> visitedPoints = new ArrayList<Vector>(),
@@ -31,11 +33,13 @@ public class CostMap {
 	private int[][] map;
 		
 	public CostMap(Vector size, Vector start,Vector goal, NodeMap nodeMap) {
+		
 		this.size = size;
 		this.startPoint = start;
 		this.goalPoint = goal;
 		this.nodes = nodeMap.getNodes();
 		this.nodeSize = nodeMap.getNodes().size();
+		this.nodeMap = nodeMap;
 		
 		map = new int[size.getX()][size.getY()];
 		
@@ -64,7 +68,7 @@ public class CostMap {
 		
 		Graph graph = new Graph(nodes,edges);
 		
-		DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph); 
+		dijkstra = new DijkstraAlgorithm(graph); 
 		
 		//printMapToConsole();
 		
@@ -73,8 +77,17 @@ public class CostMap {
 		
 	}
 	
+	public DijkstraAlgorithm getDijkstra(){
+		return dijkstra;
+	}
+	
 	public NodeMap getNodeMap(){
 		return nodeMap;
+	}
+	
+	public List<Node> getNodes(){
+		
+		return nodes;
 	}
 	
 	private void floodMap() {
@@ -144,6 +157,7 @@ public class CostMap {
 	
 	private void createEdge(Vector middlePoint,Vector neighbor){
 		
+		edges = new ArrayList<Edge>();
 		//lane = new Edge(edgeId,middlePoint,neighbor,WEIGHT);
 		Node nodeMiddle = nodeMap.get(middlePoint.getX(),middlePoint.getY() );
 		Node nodeNeighbor = nodeMap.get(neighbor.getX(),neighbor.getY() );
