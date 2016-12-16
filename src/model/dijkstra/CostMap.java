@@ -112,39 +112,15 @@ public class CostMap {
 	
 	private void createEdgeOnMap() {
 		
-		//createSurroundingCosts(startPoint);
 		createSurroundingEdges(nodes);
 		
-		
-		/*total number of node is nodeSize*/
-		/*while (nodeSize != visitedPoints.size()) {
-						
-			copyPoints();
-			
-			for (Vector newPoint : getPointParking()) {
-				createSurroundingEdges(newPoint);
-			}
-		}
-		copyPoints();
-		
-		for (Vector newPoint : getPointParking()) {
-			createSurroundingEdges(newPoint);
-		}*/
 	}
 	
 	private void createSurroundingEdges(List<Node> nodes) {
 		
 		for (Node node : nodes){
 			
-			System.out.println("X : " + node.getPosition().getX() + "\n");
-            System.out.println("Y : " + node.getPosition().getY() + "\n");
-			
-			for (Node neighbor : node.getNeighborList()) {//getSurroundingNodes(node)
-				
-				//System.out.println("neighbor size " + node.getNeighborList().size() + "\n");
-				
-				System.out.println("neighbor X : " + neighbor.getPosition().getX() + "\n");
-	            System.out.println("neighbor Y : " + neighbor.getPosition().getY() + "\n");
+			for (Node neighbor : node.getNeighborList()) {
 	            
 				if (!isObstacle(node.getPosition()) &&
 						!(checkForNode(visitedNodes, neighbor))){
@@ -153,73 +129,17 @@ public class CostMap {
 						
 						createEdge(node,neighbor);
 						
-						System.out.println("create edge \n");
-						//setCost(point, (getCost(middlePoint) + getCost(point)));
-						
-						//visitedNodes.add(node);
-						
-						//getPointParkingHelper().add(point);
 					}
 				}
 			}
 			visitedNodes.add(node);
 		}
-		System.out.println("edge size " + edges.size() + "\n");
-		
 
-	}
-	
-	public ArrayList<Node> getSurroundingNodes(Node node) {
-		
-		int x = node.getPosition().getX();
-		int y = node.getPosition().getY();
-		
-		ArrayList<Node> neighbors = new ArrayList<Node>();
-
-		if (y >= 1) {
-			neighbors.add(
-					new Node(new Vector3D(x, y - 1, getCostForCoordinates(x, y - 1))));
-		}
-		if ((y >= 1) && (x < nodeMap.getDimensions().getX() - 1)) {
-			neighbors.add(new Node(new Vector3D(x + 1, y - 1,
-					getCostForCoordinates(x + 1, y - 1))));
-		}
-		if (x < nodeMap.getDimensions().getX() - 1) {
-			neighbors.add(
-					new Node(new Vector3D(x + 1, y, getCostForCoordinates(x + 1, y))));
-		}
-		if ((y < nodeMap.getDimensions().getY()- 1) && (x < nodeMap.getDimensions().getX() - 1)) {
-			neighbors.add(new Node(new Vector3D(x + 1, y + 1,
-					getCostForCoordinates(x + 1, y + 1))));
-		}
-		if (y < nodeMap.getDimensions().getY() - 1) {
-			neighbors.add(new Node(
-					new Vector3D(x, y + 1, getCostForCoordinates(x, y + 1))));
-		}
-		if ((x >= 1) && (y < nodeMap.getDimensions().getY() - 1)) {
-			neighbors.add(new Node(new Vector3D(x - 1, y + 1,
-					getCostForCoordinates(x - 1, y + 1))));
-		}
-		if (x >= 1) {
-			neighbors.add(
-					new Node(new Vector3D(x - 1, y, getCostForCoordinates(x - 1, y))));
-		}
-		if ((y >= 1) && (x >= 1)) {
-			neighbors.add(new Node(new Vector3D(x - 1, y - 1,
-					getCostForCoordinates(x - 1, y - 1))));
-		}
-
-		return neighbors;
 	}
 	
 	private void createEdge(Node node,Node neighbor){
-		
-		
-		//lane = new Edge(edgeId,middlePoint,neighbor,WEIGHT);
-		/*Node nodeMiddle = nodeMap.get(middlePoint.getX(),middlePoint.getY() );
-		Node nodeNeighbor = nodeMap.get(neighbor.getX(),neighbor.getY() );*/
+				
 		lane = new Edge(edgeId,node,neighbor,WEIGHT);
-
 		edges.add(lane);
 		edgeId++;	
 	}

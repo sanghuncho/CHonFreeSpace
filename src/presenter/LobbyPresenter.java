@@ -72,22 +72,24 @@ public class LobbyPresenter {
 					CHmodel.getGoalVector2D(), CHmodel.getNodeMap());
 			
 			costmap.getDijkstra().execute(costmap.getNodeMap()
-					.get( CHmodel.getStartX(), CHmodel.getStartY()));
+					.get( CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));
 			
             LinkedList<Node> path = costmap.getDijkstra().getPath(costmap.getNodeMap()
-					.get(CHmodel.getGoalX(),CHmodel.getGoalY()));
+					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));
             
-            //int k = path.size();
+            int k = path.size();
+            System.out.println("path size : " + k + "\n"); 
+            
             
            /* System.out.println("start first X : " + costmap.getNodeMap()
 			.get( CHmodel.getStartX(), CHmodel.getStartY() ).getPosition().getX() + "\n");*/
             
-            /*for(int i = 0 ; i < k ; i ++){
+            for(int i = 0 ; i < k ; i ++){
             	
             System.out.println("X : "+ path.get(i).getPosition().getX() + ", " + "Y : " +
            				path.get(i).getPosition().getY() + "\n");
                 
-            }*/
+            }
             
             
             System.out.println("algorithm is the end \n");

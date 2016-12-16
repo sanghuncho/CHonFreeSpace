@@ -189,5 +189,21 @@ public class Node implements Comparable<Node>{
 		}
 	}
 	
+	public boolean equals(Object obj) {
+        if (this == obj)
+                return true;
+        if (obj == null)
+                return false;
+        if (getClass() != obj.getClass())
+                return false;
+        Node other = (Node) obj;
+        if (this.getPosition() == null) {
+                if (other.getPosition() != null)
+                        return false;
+        } else if (!this.getPosition().equals(other.getPosition()))
+                return false;
+        return true;
+}
+	
 
 }

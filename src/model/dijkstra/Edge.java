@@ -30,6 +30,6 @@ public class Edge{
 	public int getWeight() {
         return weight;
 	}
-
+	
 
 }
