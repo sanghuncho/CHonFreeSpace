@@ -49,8 +49,9 @@ public class DijkstraAlgorithm {
             		
                     settledNodes.add(node);
                     
-                    System.out.println("X : " + node.getPosition().getX() + "\n");
-                    
+                   /* System.out.println("X : " + node.getPosition().getX() + "\n");
+                    System.out.println("Y : " + node.getPosition().getY() + "\n");*/
+
                     unSettledNodes.remove(node);
                     
                     findMinimalDistances(node);
@@ -87,8 +88,8 @@ public class DijkstraAlgorithm {
         List<Node> neighbors = new ArrayList<Node>();
         
         
-        System.out.println("edge size "+ edges.size() + "\n");
-
+/*        System.out.println("edge size "+ edges.size() + "\n");
+*/
         for (Edge edge : edges) {
         	
                 if (edge.getSource().equals(node)

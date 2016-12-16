@@ -22,7 +22,8 @@ public class CostMap {
     private final static int WEIGHT = 1;
     private DijkstraAlgorithm dijkstra;
 
-	
+	private ArrayList<Node> visitedNodes = new ArrayList<Node>();
+
 	private ArrayList<Vector> visitedPoints = new ArrayList<Vector>(),
 							  pointParkingHelper = new ArrayList<Vector>(),
 							  onHoldList = new ArrayList<Vector>(),
@@ -90,7 +91,7 @@ public class CostMap {
 		return nodes;
 	}
 	
-	private void floodMap() {
+	/*private void floodMap(){
 		
 		createSurroundingCosts(startPoint);
 		//createSurroundingEdges(startPoint);
@@ -107,16 +108,16 @@ public class CostMap {
 		for (Vector newPoint : getPointParking()) {
 			createSurroundingCosts(newPoint);
 		}
-	}
+	}*/
 	
 	private void createEdgeOnMap() {
 		
 		//createSurroundingCosts(startPoint);
-		createSurroundingEdges(startPoint);
+		createSurroundingEdges(nodes);
 		
 		
 		/*total number of node is nodeSize*/
-		while (nodeSize != visitedPoints.size()) {
+		/*while (nodeSize != visitedPoints.size()) {
 						
 			copyPoints();
 			
@@ -128,56 +129,123 @@ public class CostMap {
 		
 		for (Vector newPoint : getPointParking()) {
 			createSurroundingEdges(newPoint);
-		}
+		}*/
 	}
 	
-	private void createSurroundingEdges(Vector middlePoint) {
+	private void createSurroundingEdges(List<Node> nodes) {
 		
-		for (Vector point : sortTheList( getSurroundingPoints(middlePoint.getX(), middlePoint.getY()))) {
-			if (!(point.getX() < 0 || point.getY() < 0
-					|| point.getX() >= size.getX()
-					|| point.getY() >= size.getY())) {
+		for (Node node : nodes){
+			
+			System.out.println("X : " + node.getPosition().getX() + "\n");
+            System.out.println("Y : " + node.getPosition().getY() + "\n");
+			
+			for (Node neighbor : node.getNeighborList()) {//getSurroundingNodes(node)
 				
-				if (!isObstacle(point)) {
+				//System.out.println("neighbor size " + node.getNeighborList().size() + "\n");
+				
+				System.out.println("neighbor X : " + neighbor.getPosition().getX() + "\n");
+	            System.out.println("neighbor Y : " + neighbor.getPosition().getY() + "\n");
+	            
+				if (!isObstacle(node.getPosition()) &&
+						!(checkForNode(visitedNodes, neighbor))){
 					
-					if (!(checkForPoint(visitedPoints, point))) {
+					if (!(checkForNode(visitedNodes, node))) {
 						
-						createEdge(middlePoint,point);
+						createEdge(node,neighbor);
 						
+						System.out.println("create edge \n");
 						//setCost(point, (getCost(middlePoint) + getCost(point)));
 						
-						visitedPoints.add(point);
+						//visitedNodes.add(node);
 						
-						getPointParkingHelper().add(point);
+						//getPointParkingHelper().add(point);
 					}
 				}
 			}
+			visitedNodes.add(node);
 		}
+		System.out.println("edge size " + edges.size() + "\n");
+		
+
 	}
 	
-	private void createEdge(Vector middlePoint,Vector neighbor){
+	public ArrayList<Node> getSurroundingNodes(Node node) {
+		
+		int x = node.getPosition().getX();
+		int y = node.getPosition().getY();
+		
+		ArrayList<Node> neighbors = new ArrayList<Node>();
+
+		if (y >= 1) {
+			neighbors.add(
+					new Node(new Vector3D(x, y - 1, getCostForCoordinates(x, y - 1))));
+		}
+		if ((y >= 1) && (x < nodeMap.getDimensions().getX() - 1)) {
+			neighbors.add(new Node(new Vector3D(x + 1, y - 1,
+					getCostForCoordinates(x + 1, y - 1))));
+		}
+		if (x < nodeMap.getDimensions().getX() - 1) {
+			neighbors.add(
+					new Node(new Vector3D(x + 1, y, getCostForCoordinates(x + 1, y))));
+		}
+		if ((y < nodeMap.getDimensions().getY()- 1) && (x < nodeMap.getDimensions().getX() - 1)) {
+			neighbors.add(new Node(new Vector3D(x + 1, y + 1,
+					getCostForCoordinates(x + 1, y + 1))));
+		}
+		if (y < nodeMap.getDimensions().getY() - 1) {
+			neighbors.add(new Node(
+					new Vector3D(x, y + 1, getCostForCoordinates(x, y + 1))));
+		}
+		if ((x >= 1) && (y < nodeMap.getDimensions().getY() - 1)) {
+			neighbors.add(new Node(new Vector3D(x - 1, y + 1,
+					getCostForCoordinates(x - 1, y + 1))));
+		}
+		if (x >= 1) {
+			neighbors.add(
+					new Node(new Vector3D(x - 1, y, getCostForCoordinates(x - 1, y))));
+		}
+		if ((y >= 1) && (x >= 1)) {
+			neighbors.add(new Node(new Vector3D(x - 1, y - 1,
+					getCostForCoordinates(x - 1, y - 1))));
+		}
+
+		return neighbors;
+	}
+	
+	private void createEdge(Node node,Node neighbor){
 		
 		
 		//lane = new Edge(edgeId,middlePoint,neighbor,WEIGHT);
-		Node nodeMiddle = nodeMap.get(middlePoint.getX(),middlePoint.getY() );
-		Node nodeNeighbor = nodeMap.get(neighbor.getX(),neighbor.getY() );
-		lane = new Edge(edgeId,nodeMiddle,nodeNeighbor,WEIGHT);
+		/*Node nodeMiddle = nodeMap.get(middlePoint.getX(),middlePoint.getY() );
+		Node nodeNeighbor = nodeMap.get(neighbor.getX(),neighbor.getY() );*/
+		lane = new Edge(edgeId,node,neighbor,WEIGHT);
 
 		edges.add(lane);
 		edgeId++;	
 	}
+	
+	private boolean checkForNode(ArrayList<Node> list, Node node) {
+		for (Node checkPoint : list) {
+			if (checkPoint.getPosition().getX() == node.getPosition().getX()
+					&& checkPoint.getPosition().getY() == node.getPosition().getY()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private boolean checkForPoint(ArrayList<Vector> list, Vector point) {
-	for (Vector checkPoint : list) {
-		if (checkPoint.getX() == point.getX()
-				&& checkPoint.getY() == point.getY()) {
-			return true;
+		for (Vector checkPoint : list) {
+			if (checkPoint.getX() == point.getX()
+					&& checkPoint.getY() == point.getY()) {
+				return true;
+			}
 		}
+		return false;
 	}
-	return false;
-}
 	
-	private void createSurroundingCosts(Vector middlePoint) {
+	
+	/*private void createSurroundingCosts(Vector middlePoint) {
 		
 		for (Vector point : sortTheList( getSurroundingPoints(middlePoint.getX(), middlePoint.getY()))) {
 			if (!(point.getX() < 0 || point.getY() < 0
@@ -192,9 +260,9 @@ public class CostMap {
 				}
 			}
 		}
-	}
+	}*/
 	
-	private ArrayList<Vector> sortTheList(ArrayList<Vector> sortedList) {
+	private ArrayList<Node> sortTheList(ArrayList<Node> sortedList) {
 		Collections.sort(sortedList);
 		return sortedList;
 	}
@@ -269,7 +337,7 @@ public class CostMap {
 
 	
 	
-	private void copyPoints() {
+	/*private void copyPoints() {
 		
 		lowestCost = Integer.MAX_VALUE;
 		
@@ -279,7 +347,7 @@ public class CostMap {
 			getPointParkingHelper().add(transferPoint);
 		}
 		onHoldList.clear();
-		/* At first, check all stored points for the lowest cost. */
+		 At first, check all stored points for the lowest cost. 
 		for (Vector costPoint : getPointParkingHelper()) {
 			checkLowestCost(costPoint);
 		}
@@ -292,7 +360,7 @@ public class CostMap {
 		}
 		getPointParkingHelper().clear();
 		sortTheList(getPointParking());
-	}
+	}*/
 
 	
 	private ArrayList<Vector> getPointParkingHelper() {
