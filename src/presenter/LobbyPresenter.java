@@ -72,7 +72,7 @@ public class LobbyPresenter {
 					CHmodel.getGoalVector2D(), CHmodel.getNodeMap());
 			
 			costmap.getDijkstra().execute(costmap.getNodeMap()
-					.get( CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));
+					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));
 			
             LinkedList<Node> path = costmap.getDijkstra().getPath(costmap.getNodeMap()
 					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));

@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -120,10 +121,6 @@ public class Lobby extends BorderPane{
 			//this.getChildren().add(nodeCircle);
 			center.getChildren().add(nodeCircle);
 			
-//			System.out.println("X " + nodeCircle.getCenterX() + "\n");
-//			System.out.println("Y " + nodeCircle.getCenterY() + "\n");
-//			System.out.println("\n");
-			
 		}
 		
 		
@@ -135,6 +132,18 @@ public class Lobby extends BorderPane{
 	
 	public ArrayList<Obstacle>  getObstacleList(){
 		return obstacles;
+	}
+	
+	public void createLane(LinkedList<Node> path){
+		
+		int k = path.size();
+		for(int i = 0 ; i < k ; i ++){
+			
+			Rectangle lane = new Rectangle
+			
+			
+		}
+		
 	}
 
 }
