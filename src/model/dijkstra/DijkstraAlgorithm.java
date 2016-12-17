@@ -11,6 +11,7 @@ import java.util.Set;
 
 import model.node.Node;
 import model.node.NodeMap;
+import util.math.MathHelper;
 import util.math.Vector;
 
 public class DijkstraAlgorithm {
@@ -44,7 +45,7 @@ public class DijkstraAlgorithm {
             while (unSettledNodes.size() > 0) {
             	
 
-            		Node node = getMinimum(unSettledNodes);
+            		Node node = getMinimumCost(unSettledNodes);
             		
                     settledNodes.add(node);
 
@@ -52,8 +53,36 @@ public class DijkstraAlgorithm {
                     
                     findMinimalDistances(node);
             }
+            
     }  
-    private Node getMinimum(Set<Node> vertexes) {
+    
+    private void findMinimalDistances(Node node) {
+    	
+        List<Node> adjacentNodes = getNeighbors(node);
+        
+        for (Node target : adjacentNodes) {
+                if (getShortestDistance(target) > getShortestDistance(node)//node self cost
+                                + 1) { // between node and target cost, getDistance(node, target)
+                        distance.put(target, getShortestDistance(node)+1);//getDistance(node, target)
+                        predecessors.put(target, node);
+                        unSettledNodes.add(target);
+                }
+               else if(getShortestDistance(target) == getShortestDistance(node)
+                                + getDistance(node, target)) {
+            	   
+            	   Node prevNode = predecessors.get(target);
+            	   Node minimum = MathHelper.shortestDistanceBetweenGoal(node,prevNode);
+            	   predecessors.remove(target,prevNode);
+            	   predecessors.put(target, minimum);
+                   distance.put(target, getShortestDistance(node)
+                                        + getDistance(node, target));
+                   //unSettledNodes.add(target);
+               }
+        }//for end
+           
+    }
+ 
+    private Node getMinimumCost(Set<Node> vertexes) {
     	Node minimum = null;
         for (Node vertex : vertexes) {
                 if (minimum == null) {
@@ -62,6 +91,10 @@ public class DijkstraAlgorithm {
                         if (getShortestDistance(vertex) < getShortestDistance(minimum)) {
                                 minimum = vertex;
                         }
+                        /*else if(getShortestDistance(vertex) == getShortestDistance(minimum)){
+                        	
+                        	minimum = MathHelper.shortestDistanceBetweenGoal(vertex, minimum);
+                        }*/
                 }
         }
         return minimum;
@@ -79,22 +112,7 @@ public class DijkstraAlgorithm {
         }
     }
     
-    private void findMinimalDistances(Node node) {
-    	
-        List<Node> adjacentNodes = getNeighbors(node);
-        
-        for (Node target : adjacentNodes) {
-                if (getShortestDistance(target) > getShortestDistance(node)
-                                + getDistance(node, target)) {
-                        distance.put(target, getShortestDistance(node)
-                                        + getDistance(node, target));
-                        predecessors.put(target, node); //HashMap<Node, Node>();
-                        unSettledNodes.add(target);
-                }
-        }
-
-    }
- 
+    
     private int getDistance(Node node, Node target) {
         for (Edge edge : edges) {
                 if (edge.getSource().equals(node)

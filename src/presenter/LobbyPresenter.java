@@ -91,6 +91,8 @@ public class LobbyPresenter {
                 
             }
             
+            lobbyView.createLane(path);
+            
             
             System.out.println("algorithm is the end \n");
             

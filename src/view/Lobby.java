@@ -15,11 +15,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.CHmodel;
+import model.Lane;
 import model.Obstacle;
 import model.Point;
 import model.node.Node;
 import model.node.NodeCircle;
 import model.node.NodeMap;
+import util.math.Vector;
 
 public class Lobby extends BorderPane{
 	
@@ -33,6 +35,9 @@ public class Lobby extends BorderPane{
 	public NodeMap nodemap;
 	public Pane bottom = new Pane();
 	public Pane center = new Pane();
+	public Pane right = new Pane();
+	public Pane left = new Pane();
+
 	
 	private Scene scene;
 	private int numberObs;
@@ -77,25 +82,35 @@ public class Lobby extends BorderPane{
 		/*create search button for CH algorithm*/
 		contractButton.setId("contractButtonLabel");
 		
-		this.setBottom(bottom);
+		//this.setBottom(bottom);
 		this.setCenter(center);
+		this.setRight(right);
+		this.setLeft(left);
 		
-		BorderPane.setAlignment(bottom, Pos.TOP_CENTER);
+		//BorderPane.setAlignment(bottom, Pos.TOP_CENTER);
 		BorderPane.setAlignment(center, Pos.TOP_CENTER);
+		BorderPane.setAlignment(right, Pos.TOP_LEFT);
 		
-		center.setMaxSize(600,600);
+		
+		
+		center.setMaxSize(1000,600);
 		center.getChildren().addAll(startPoint,endPoint);
 		
-		HBox hBox = new HBox();
-		hBox.setSpacing(10);
-		hBox.getChildren().addAll(contractButton,searchButton);
-		bottom.setMaxSize(600,50);
+		VBox vBox = new VBox();
+		vBox.setSpacing(10);
+		vBox.getChildren().addAll(contractButton,searchButton);
+		right.setMaxSize(100, 200);
+		right.getChildren().add(vBox);
+		
+		left.setMaxSize(100,200);
+		
+		//bottom.setMaxSize(600,50);
 		//bottom.getChildren().addAll(contractButton,searchButton);
-		bottom.getChildren().add(hBox);
+		//bottom.getChildren().add(hBox);
 
 		scene = new Scene(this);
-		stage.setHeight(CHmodel.getMapX()+100);
-		stage.setWidth(CHmodel.getMapY()+100);
+		stage.setHeight(CHmodel.getMapX()+50);
+		stage.setWidth(CHmodel.getMapY()+50);
 		
 		//this.scene.getStylesheets().add("/view/style.css");
 		stage.setScene(scene);
@@ -137,11 +152,13 @@ public class Lobby extends BorderPane{
 	public void createLane(LinkedList<Node> path){
 		
 		int k = path.size();
-		for(int i = 0 ; i < k ; i ++){
+		for(int i = 0 ; i < k-1 ; i ++){
 			
-			Rectangle lane = new Rectangle
-			
-			
+			Vector start = path.get(i).getPosition();
+			Vector goal = path.get(i+1).getPosition();
+			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
+					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
+			center.getChildren().add(lane);
 		}
 		
 	}

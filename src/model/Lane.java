@@ -1,13 +1,20 @@
 package model;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
-public class Lane extends Rectangle{
+public class Lane extends Line{
 	
-	public Lane(){
+	public Lane(Double startX, Double startY, Double goalX, Double goalY){
 		
-		
+		this.setStartX(startX);
+		this.setStartY(startY);
+		this.setEndX(goalX);
+		this.setEndY(goalY);
+		this.setStroke(Color.RED);
 		
 	}
 
+	
 }

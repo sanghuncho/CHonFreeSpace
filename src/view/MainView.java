@@ -50,7 +50,7 @@ public class MainView extends Pane{
 		
 		/*textfield initialization map */
 		
-		mapXField = new TextField("600");
+		mapXField = new TextField("900");
 		mapXField.setMinHeight(70);
 		mapXField.setId("mapXTextField");
 		mapXField.setFocusTraversable(false);
@@ -71,13 +71,13 @@ public class MainView extends Pane{
 		
 		/*textfield initialization starting point */
 		
-		startPointX = new TextField("55");
+		startPointX = new TextField("5");
 		startPointX.setMinHeight(70);
 		startPointX.setId("startXTextField");
 		startPointX.setFocusTraversable(false);
 		startPointX.setPromptText("X");
 		
-		startPointY = new TextField("55");
+		startPointY = new TextField("25");
 		startPointY.setMinHeight(70);
 		startPointY.setId("startYTextField");
 		startPointY.setFocusTraversable(false);
@@ -91,7 +91,7 @@ public class MainView extends Pane{
 		
 		/*textfield initialization end point */
 		
-		endPointX = new TextField("555");
+		endPointX = new TextField("885");
 		endPointX.setMinHeight(70);
 		endPointX.setId("endXTextField");
 		endPointX.setFocusTraversable(false);
