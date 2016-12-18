@@ -16,6 +16,7 @@ public class CostMap {
 	private NodeMap nodeMap;
 	private int edgeId = 0;
 	private Edge lane;
+	private Edge lane_backward;
 	private int nodeSize;
 	private List<Node> nodes;
     private ArrayList<Edge> edges = new ArrayList<Edge>();
@@ -141,6 +142,8 @@ public class CostMap {
 				
 		lane = new Edge(edgeId,node,neighbor,WEIGHT);
 		edges.add(lane);
+		lane_backward = new Edge(edgeId,neighbor,node,WEIGHT);
+		edges.add(lane_backward);
 		edgeId++;	
 	}
 	

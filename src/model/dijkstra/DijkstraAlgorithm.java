@@ -74,7 +74,9 @@ public class DijkstraAlgorithm {
             	   Node minimum = MathHelper.shortestDistanceBetweenGoal(node,prevNode);
             	   predecessors.remove(target,prevNode);
             	   predecessors.put(target, minimum);
-                   distance.put(target, getShortestDistance(node)
+                   
+            	   
+            	   distance.put(target, getShortestDistance(node)
                                         + getDistance(node, target));
                    //unSettledNodes.add(target);
                }

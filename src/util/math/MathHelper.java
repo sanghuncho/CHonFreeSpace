@@ -3,15 +3,16 @@ package util.math;
 import model.CHmodel;
 import model.node.Node;
 
-public class MathHelper {
+public abstract class MathHelper {
 	
 	public static Node shortestDistanceBetweenGoal(Node nodeFirst, Node nodeSecond) {
 
 		double goalX = CHmodel.getGoalVector2D().getX();
-		double goalY = CHmodel.getGoalVector2D().getX();
-		/*
-		double startX = CHmodel.getStartVector2D().getX();
-		double startY = CHmodel.getStartVector2D().getX();*/
+		double goalY = CHmodel.getGoalVector2D().getY();
+		
+		
+		double targetX = CHmodel.getStartVector2D().getX();
+		double targetY = CHmodel.getStartVector2D().getX();
 		
 		double firstX = nodeFirst.getPosition().getX();
 		double firstY = nodeFirst.getPosition().getY();
