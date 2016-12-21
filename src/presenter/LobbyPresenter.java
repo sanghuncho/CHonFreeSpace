@@ -69,7 +69,9 @@ public class LobbyPresenter {
 			//nodeMapHandler = new NodeMapHandler(size);
 			
 			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
-					CHmodel.getGoalVector2D(), CHmodel.getNodeMap());
+					CHmodel.getGoalVector2D(), CHmodel.getNodeMap(), obstacles);
+			
+			costmap.removeObstacleOnMap();
 			
 			costmap.getDijkstra().execute(costmap.getNodeMap()
 					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));
@@ -77,19 +79,21 @@ public class LobbyPresenter {
             LinkedList<Node> path = costmap.getDijkstra().getPath(costmap.getNodeMap()
 					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));
             
-            int k = path.size();
+            
+            
+          /*  int k = path.size();
             System.out.println("path size : " + k + "\n"); 
             
             
-           /* System.out.println("start first X : " + costmap.getNodeMap()
-			.get( CHmodel.getStartX(), CHmodel.getStartY() ).getPosition().getX() + "\n");*/
+            System.out.println("start first X : " + costmap.getNodeMap()
+			.get( CHmodel.getStartX(), CHmodel.getStartY() ).getPosition().getX() + "\n");
             
             for(int i = 0 ; i < k ; i ++){
             	
             System.out.println("X : "+ path.get(i).getPosition().getX() + ", " + "Y : " +
            				path.get(i).getPosition().getY() + "\n");
                 
-            }
+            }*/
             
             lobbyView.createLane(path);
             

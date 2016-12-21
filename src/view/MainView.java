@@ -71,7 +71,7 @@ public class MainView extends Pane{
 		
 		/*textfield initialization starting point */
 		
-		startPointX = new TextField("5");
+		startPointX = new TextField("55");
 		startPointX.setMinHeight(70);
 		startPointX.setId("startXTextField");
 		startPointX.setFocusTraversable(false);
@@ -110,7 +110,7 @@ public class MainView extends Pane{
 		
 		/*textfield initialization obstacle */
 		
-		numberOfObstacle = new TextField("5");
+		numberOfObstacle = new TextField("1");
 		numberOfObstacle.setMinHeight(70);
 		numberOfObstacle.setId("numeberTextField");
 		numberOfObstacle.setFocusTraversable(false);

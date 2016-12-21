@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import model.Obstacle;
 import model.node.Node;
 import model.node.NodeMap;
 import util.math.Vector;
@@ -22,6 +23,7 @@ public class CostMap {
     private ArrayList<Edge> edges = new ArrayList<Edge>();
     private final static int WEIGHT = 1;
     private DijkstraAlgorithm dijkstra;
+    private  ArrayList<Obstacle> obstacles;
 
 	private ArrayList<Node> visitedNodes = new ArrayList<Node>();
 
@@ -34,7 +36,7 @@ public class CostMap {
 	
 	private int[][] map;
 		
-	public CostMap(Vector size, Vector start,Vector goal, NodeMap nodeMap) {
+	public CostMap(Vector size, Vector start,Vector goal, NodeMap nodeMap, ArrayList<Obstacle> obstacles) {
 		
 		this.size = size;
 		this.startPoint = start;
@@ -42,6 +44,7 @@ public class CostMap {
 		this.nodes = nodeMap.getNodes();
 		this.nodeSize = nodeMap.getNodes().size();
 		this.nodeMap = nodeMap;
+		this.obstacles = obstacles;
 		
 		map = new int[size.getX()][size.getY()];
 		
@@ -66,6 +69,8 @@ public class CostMap {
 		
 		//floodMap();
 		
+		//setObstacleNode();
+		
 		createEdgeOnMap();
 		
 		Graph graph = new Graph(nodes,edges);
@@ -78,6 +83,74 @@ public class CostMap {
 		
 		
 	}
+	
+	private void setObstacleNode(){
+		
+		for (Obstacle obstacle : obstacles) {
+			
+			int obsXpos = (int)obstacle.getX();
+			int obsXposWidth = (int)(obsXpos + obstacle.getWidth());
+			
+			int obsYpos = (int)obstacle.getY();
+			int obsYposWidth = (int)(obsYpos + obstacle.getHeight());
+			
+			for(Node node : nodeMap.getNodes()){
+				
+				int m = node.getPosition().getX();
+				int n = node.getPosition().getY();
+				
+				for(m = obsXpos ; m < obsXposWidth + 1 ; m ++){
+					
+					for(n = obsYpos ; n < obsYposWidth + 1 ; n++){
+						
+						setCost(node.getPosition(), -1);
+						
+					}
+					
+				}
+			}
+		}
+	}
+	
+	public void removeObstacleOnMap(){
+		
+		
+		for(Obstacle obstacle : obstacles){
+			int obsXpos = (int)obstacle.getX();
+			int obsXposWidth = (int)(obsXpos + obstacle.getWidth());
+			
+			int obsYpos = (int)obstacle.getY();
+			int obsYposWidth = (int)(obsYpos + obstacle.getHeight());
+		
+		
+		for (Edge edge : edges) {
+			
+			int edgeSourceX = edge.getSource().getPosition().getX();
+			int edgeSourceY = edge.getSource().getPosition().getY();
+			
+			int edgeGoalX = edge.getDestination().getPosition().getX();
+			int edgeGoalY = edge.getDestination().getPosition().getY();
+			
+			if( (obsXpos <= edgeSourceX) && (edgeSourceX <= obsXposWidth)){
+				
+				if((obsYpos <= edgeSourceY) && (edgeSourceY <= obsYposWidth)){
+					
+					edges.remove(edge);
+				}
+			}
+			
+			if( (obsXpos <= edgeGoalX) && (edgeGoalX <= obsXposWidth)){
+				
+				if((obsYpos <= edgeGoalY) && (edgeGoalY <= obsYposWidth)){
+					
+					edges.remove(edge);
+					}
+				}
+			
+			}
+		}
+	}
+
 	
 	public DijkstraAlgorithm getDijkstra(){
 		return dijkstra;
@@ -156,7 +229,8 @@ public class CostMap {
 		}
 		return false;
 	}
-
+	
+	
 	private boolean checkForPoint(ArrayList<Vector> list, Vector point) {
 		for (Vector checkPoint : list) {
 			if (checkPoint.getX() == point.getX()

@@ -7,12 +7,16 @@ import javafx.scene.shape.Rectangle;
 
 public class Obstacle extends Rectangle {
 	
+	int xPos;
+	int yPos;
+	int width;
+	int height;
+	
 	public Obstacle(){
 		
-		/*this.setX(300);
-		this.setY(300);*/
-		this.setX(getRandomX());
-		this.setY(getRandomY());
+		
+		this.setX(xPos = getRandomX());
+		this.setY(yPos = getRandomY());
 		this.setWidth(50);
 		this.setHeight(50);
 		this.setFill(Color.BLUE);
@@ -29,5 +33,15 @@ public class Obstacle extends Rectangle {
 		int randomNumY = rand.nextInt( CHmodel.getMapY() + 1);
 		return randomNumY;
 	}
+	
+	/*public int getXpos(){
+		
+		return xPos;
+	}
+	
+	public int intgetYpos(){
+		
+		return yPos;
+	}*/
 
 }
