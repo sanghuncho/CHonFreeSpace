@@ -15,8 +15,12 @@ public class Obstacle extends Rectangle {
 	public Obstacle(){
 		
 		
-		this.setX(xPos = getRandomX());
-		this.setY(yPos = getRandomY());
+		/*this.setX(xPos = getRandomX());
+		this.setY(yPos = getRandomY());*/
+		
+		this.setX(xPos = 255);
+		this.setY(yPos = 255);
+		
 		this.setWidth(50);
 		this.setHeight(50);
 		this.setFill(Color.BLUE);

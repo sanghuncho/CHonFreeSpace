@@ -68,10 +68,14 @@ public class LobbyPresenter {
 			
 			//nodeMapHandler = new NodeMapHandler(size);
 			
+			
+			
 			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
 					CHmodel.getGoalVector2D(), CHmodel.getNodeMap(), obstacles);
 			
-			costmap.removeObstacleOnMap();
+			//costmap.removeObstacleOnMap();
+			
+			//costmap.startDijkstra();
 			
 			costmap.getDijkstra().execute(costmap.getNodeMap()
 					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));

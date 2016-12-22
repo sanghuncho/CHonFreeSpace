@@ -73,14 +73,25 @@ public class CostMap {
 		
 		createEdgeOnMap();
 		
-		Graph graph = new Graph(nodes,edges);
+		//startDijistra();
+		
+		/*Graph graph = new Graph(nodes,edges);
 		
 		dijkstra = new DijkstraAlgorithm(graph); 
-		
+		*/
 		//printMapToConsole();
 		
 		//dijkstraAlgorithm();
 		
+		startDijkstra();
+		
+	}
+	
+	public void startDijkstra(){
+		
+		Graph graph = new Graph(nodes,edges);
+		
+		dijkstra = new DijkstraAlgorithm(graph,obstacles); 
 		
 	}
 	
@@ -114,18 +125,28 @@ public class CostMap {
 	
 	public void removeObstacleOnMap(){
 		
+		ArrayList<Edge> edgesHelper = new ArrayList<Edge>();
+
+		edgesHelper = edges;
 		
 		for(Obstacle obstacle : obstacles){
-			int obsXpos = (int)obstacle.getX();
-			int obsXposWidth = (int)(obsXpos + obstacle.getWidth());
 			
-			int obsYpos = (int)obstacle.getY();
-			int obsYposWidth = (int)(obsYpos + obstacle.getHeight());
+			int obsXpos = (int)obstacle.getX()/10;
+			int obsXposWidth = (int)(obsXpos + obstacle.getWidth())/10;
+			
+			System.out.println("obsXpos :  "+ obsXpos + "\n");
+			System.out.println("obsXposWidth :  "+ obsXposWidth + "\n");
+			int obsYpos = (int)obstacle.getY()/10;
+			int obsYposWidth = (int)(obsYpos + obstacle.getHeight())/10;
 		
+			
+
 		
-		for (Edge edge : edges) {
+		for (Edge edge : edgesHelper) {
 			
 			int edgeSourceX = edge.getSource().getPosition().getX();
+			
+			//System.out.println("edgeSourceX :  "+ edgeSourceX + "\n");
 			int edgeSourceY = edge.getSource().getPosition().getY();
 			
 			int edgeGoalX = edge.getDestination().getPosition().getX();
@@ -145,10 +166,13 @@ public class CostMap {
 					
 					edges.remove(edge);
 					}
-				}
-			
+				
 			}
-		}
+			
+		 }
+		}//end loop for obstacle
+		
+		this.edges = edgesHelper;
 	}
 
 	

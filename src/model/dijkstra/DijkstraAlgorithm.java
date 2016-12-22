@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import model.Obstacle;
 import model.node.Node;
 import model.node.NodeMap;
 import util.math.MathHelper;
@@ -23,11 +24,14 @@ public class DijkstraAlgorithm {
     private Set<Node> unSettledNodes;
     private Map<Node, Node> predecessors;
     private Map<Node, Integer> distance;
+    private ArrayList<Obstacle> obstacles;
     
-    public DijkstraAlgorithm(Graph graph){
+    public DijkstraAlgorithm(Graph graph, ArrayList<Obstacle> obstacles){
     	
     	nodes = new ArrayList<Node>(graph.getNodes());
         edges = new ArrayList<Edge>(graph.getEdges());
+        this.obstacles = obstacles;
+        
     }
         
     public void execute(Node source) {
@@ -61,6 +65,7 @@ public class DijkstraAlgorithm {
         List<Node> adjacentNodes = getNeighbors(node);
         
         for (Node target : adjacentNodes) {
+        	
                 if (getShortestDistance(target) > getShortestDistance(node)//node self cost
                                 + 1) { // between node and target cost, getDistance(node, target)
                         distance.put(target, getShortestDistance(node)+1);//getDistance(node, target)
@@ -83,6 +88,47 @@ public class DijkstraAlgorithm {
         }//for end
            
     }
+    
+    private List<Node> getNeighbors(Node node) {
+    	
+    	List<Node> neighbors = new ArrayList<Node>();
+    	
+    	for (Obstacle obstacle : obstacles) {
+			
+			int obsXpos = (int)obstacle.getX()/10;
+			int obsXposWidth = (int)(obsXpos + (obstacle.getWidth()/10));
+			
+			/*System.out.println("obsXpos :  "+ obsXpos + "\n");
+			System.out.println("obsXposWidth :  "+ obsXposWidth + "\n");*/
+			
+			int obsYpos = (int)obstacle.getY()/10;
+			int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()/10));
+	    	
+	        for (Edge edge : edges) {
+	        	
+	        	int edgeGoalX = edge.getDestination().getPosition().getX();
+				int edgeGoalY = edge.getDestination().getPosition().getY();
+				
+				//System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
+				//System.out.println("edgeGoalY :  "+ edgeGoalY + "\n");
+	                if (edge.getSource().equals(node)
+	                                && !isSettled(edge.getDestination())) {
+	                	
+	                	
+	                	if( (edgeGoalX < obsXpos) || (obsXposWidth < edgeGoalX) || 
+	                			(edgeGoalY < obsYpos) || (obsYposWidth < edgeGoalY)){
+	        					
+	        					neighbors.add(edge.getDestination());
+	        				}
+	        			}     
+	                }
+	        }
+        
+    	System.out.println("neighbor :  "+ neighbors.size() + "\n");
+        return neighbors;
+    }
+    
+    
  
     private Node getMinimumCost(Set<Node> vertexes) {
     	Node minimum = null;
@@ -123,22 +169,6 @@ public class DijkstraAlgorithm {
                 }
         }
         throw new RuntimeException("Should not happen");
-    }
-    
-    private List<Node> getNeighbors(Node node) {
-    	
-        List<Node> neighbors = new ArrayList<Node>();
-        
-   
-        for (Edge edge : edges) {
-        	
-                if (edge.getSource().equals(node)
-                                && !isSettled(edge.getDestination())) {
-                        neighbors.add(edge.getDestination());
-                }
-        }
-        
-        return neighbors;
     }
     
     

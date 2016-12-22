@@ -152,6 +152,7 @@ public class Lobby extends BorderPane{
 	public void createLane(LinkedList<Node> path){
 		
 		int k = path.size();
+		
 		for(int i = 0 ; i < k-1 ; i ++){
 			
 			Vector start = path.get(i).getPosition();
