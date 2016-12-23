@@ -95,13 +95,14 @@ public class DijkstraAlgorithm {
     	
     	for (Obstacle obstacle : obstacles) {
 			
-			int obsXpos = (int)obstacle.getX()/10;
+			
+       		int obsXpos = (int)obstacle.xProperty().get()/10;
 			int obsXposWidth = (int)(obsXpos + (obstacle.getWidth()/10));
 			
-			/*System.out.println("obsXpos :  "+ obsXpos + "\n");
-			System.out.println("obsXposWidth :  "+ obsXposWidth + "\n");*/
+			System.out.println("obsXpos :  "+ obsXpos + "\n");
+			System.out.println("obsXposWidth :  "+ obsXposWidth + "\n");
 			
-			int obsYpos = (int)obstacle.getY()/10;
+			int obsYpos = (int)obstacle.yProperty().get()/10;
 			int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()/10));
 	    	
 	        for (Edge edge : edges) {
@@ -124,7 +125,7 @@ public class DijkstraAlgorithm {
 	                }
 	        }
         
-    	System.out.println("neighbor :  "+ neighbors.size() + "\n");
+    	//System.out.println("neighbor :  "+ neighbors.size() + "\n");
         return neighbors;
     }
     

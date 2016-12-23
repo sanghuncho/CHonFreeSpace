@@ -56,7 +56,8 @@ public class Lobby extends BorderPane{
 		obstacles = new ArrayList<Obstacle>();
 					
 		for(int i = 0; i < numberObs; i++){
-			obs = new Obstacle();	
+			obs = new Obstacle();
+			
 			obstacles.add(obs);
 		}
 		
