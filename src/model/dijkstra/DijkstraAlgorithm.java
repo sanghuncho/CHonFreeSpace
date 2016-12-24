@@ -60,6 +60,34 @@ public class DijkstraAlgorithm {
             
     }  
     
+    /*private void findMinimalDistances(Node node) {
+    	
+        List<Node> adjacentNodes = getNeighbors(node);
+        
+        for (Node target : adjacentNodes) {
+        	
+                if (getShortestDistance(target) > getShortestDistance(node)
+                                + 1) { 
+                        distance.put(target, getShortestDistance(node)+1);
+                        predecessors.put(target, node);
+                        unSettledNodes.add(target);
+                }
+               else if(getShortestDistance(target) == getShortestDistance(node)
+                                + getDistance(node, target)) {
+            	   
+            	   Node prevNode = predecessors.get(target);
+            	   Node minimum = MathHelper.shortestDistanceBetweenGoal(node,prevNode);
+            	   predecessors.remove(target,prevNode);
+            	   predecessors.put(target, minimum);
+                   
+            	   
+            	   distance.put(target, getShortestDistance(node)
+                                        + getDistance(node, target));
+               }
+        }
+           
+    }*/
+    
     private void findMinimalDistances(Node node) {
     	
         List<Node> adjacentNodes = getNeighbors(node);
@@ -87,6 +115,34 @@ public class DijkstraAlgorithm {
         }
            
     }
+   /* 
+    private int getShortestDistance(Node destination) {
+    	
+        Integer d = distance.get(destination);
+        
+        if (d == null) {
+                return Integer.MAX_VALUE;
+        	
+        } else {
+                return d;
+        }
+    }*/
+    
+    
+    private int getShortestDistance(Node destination) {
+    	
+        Integer d = distance.get(destination);
+        
+        if (d == null) {
+                return Integer.MAX_VALUE;
+        	
+        	
+        } else {
+                return d;
+        }
+    }
+    
+    
     
     private List<Node> getNeighbors(Node node) {
     	
@@ -134,12 +190,14 @@ public class DijkstraAlgorithm {
 		System.out.println("obsYpos :  "+ obsYpos + "\n");
 		System.out.println("obsYposWidth :  "+ obsYposWidth + "\n");
 		
-		System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
-		System.out.println("edgeGoalY :  "+ edgeGoalY + "\n");
 		
-		if( (obsXpos+1<= edgeGoalX ) && ( edgeGoalX <= obsXposWidth+1)){ 
+		
+		if( (obsXpos <= edgeGoalX ) && ( edgeGoalX < obsXposWidth+1)){ 
 			
-			if(( obsYpos+1 <= edgeGoalY) && ( edgeGoalY <= obsYposWidth+1)){
+			if(( obsYpos <= edgeGoalY) && ( edgeGoalY < obsYposWidth+1)){
+				
+				System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
+				System.out.println("edgeGoalY :  "+ edgeGoalY + "\n");
     			
 				return true;
 				
@@ -156,7 +214,7 @@ public class DijkstraAlgorithm {
 	}
     
  
-    private Node getMinimumCost(Set<Node> vertexes) {
+    /*private Node getMinimumCost(Set<Node> vertexes) {
     	Node minimum = null;
         for (Node vertex : vertexes) {
                 if (minimum == null) {
@@ -168,19 +226,26 @@ public class DijkstraAlgorithm {
                 }
         }
         return minimum;
-    }
-    
-    
-    private int getShortestDistance(Node destination) {
-    	
-        Integer d = distance.get(destination);
-        
-        if (d == null) {
-                return Integer.MAX_VALUE;
-        } else {
-                return d;
+    }*/
+	
+	private Node getMinimumCost(Set<Node> vertexes) {
+    	Node minimum = null;
+        for (Node vertex : vertexes) {
+                if (minimum == null) {
+                        minimum = vertex;
+                } else {
+                        if (getShortestDistance(vertex) < getShortestDistance(minimum)) {
+                                minimum = vertex;
+                        }
+                        else if(getShortestDistance(vertex) < getShortestDistance(minimum)){
+                        	
+                        	minimum = MathHelper.shortestDistanceBetweenGoal(vertex,minimum);
+                        }
+                }
         }
+        return minimum;
     }
+    
     
     
     private int getDistance(Node node, Node target) {
