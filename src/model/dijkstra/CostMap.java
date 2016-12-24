@@ -56,7 +56,6 @@ public class CostMap {
 				
 			} else {
 				
-				//setCost(node.getPosition(), node.getObstacleValue());
 				setCost(node.getPosition(),0);
 
 			}
@@ -67,21 +66,8 @@ public class CostMap {
 		
 		//printMapToConsole();	
 		
-		//floodMap();
-		
-		//setObstacleNode();
-		
 		createEdgeOnMap();
 		
-		//startDijistra();
-		
-		/*Graph graph = new Graph(nodes,edges);
-		
-		dijkstra = new DijkstraAlgorithm(graph); 
-		*/
-		//printMapToConsole();
-		
-		//dijkstraAlgorithm();
 		
 		startDijkstra();
 		

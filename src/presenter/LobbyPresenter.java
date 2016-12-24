@@ -31,9 +31,6 @@ public class LobbyPresenter {
 	double orgTranslateX, orgTranslateY;
 	private Vector2D size;	
 	private static NodeMapHandler nodeMapHandler;
-	/*private DoubleProperty xPosProperty ;
-    private DoubleProperty yPosProperty;*/
-
 	
 	public LobbyPresenter(Lobby lobbyView){
 		this.lobbyView = lobbyView;
@@ -64,15 +61,9 @@ public class LobbyPresenter {
 		
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 			
-			//nodeMapHandler = new NodeMapHandler(size);
-					
-			
 			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
 					CHmodel.getGoalVector2D(), CHmodel.getNodeMap(), obstacles);
 			
-			//costmap.removeObstacleOnMap();
-			
-			//costmap.startDijkstra();
 			
 			costmap.getDijkstra().execute(costmap.getNodeMap()
 					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));
@@ -80,21 +71,6 @@ public class LobbyPresenter {
             LinkedList<Node> path = costmap.getDijkstra().getPath(costmap.getNodeMap()
 					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));
             
-            
-            
-          /*  int k = path.size();
-            System.out.println("path size : " + k + "\n"); 
-            
-            
-            System.out.println("start first X : " + costmap.getNodeMap()
-			.get( CHmodel.getStartX(), CHmodel.getStartY() ).getPosition().getX() + "\n");
-            
-            for(int i = 0 ; i < k ; i ++){
-            	
-            System.out.println("X : "+ path.get(i).getPosition().getX() + ", " + "Y : " +
-           				path.get(i).getPosition().getY() + "\n");
-                
-            }*/
             
             lobbyView.createLane(path);
             
@@ -125,8 +101,7 @@ public class LobbyPresenter {
 	            orgSceneY = t.getSceneY();
 	            orgTranslateX = ((Obstacle)(t.getSource())).getTranslateX();
 	            orgTranslateY = ((Obstacle)(t.getSource())).getTranslateY();
-	        	System.out.println("orgSceneX :" + t.getSceneX() + "\n");
-	        	System.out.println("orgTranslateX :" + orgTranslateX + "\n");
+	        	
 	        }       
 	    };
 	    
@@ -142,10 +117,10 @@ public class LobbyPresenter {
 	            double offsetY = t.getSceneY() - orgSceneY;
 	            double newTranslateX = orgTranslateX;// + offsetX;
 	            double newTranslateY = orgTranslateY;// + offsetY;
-	            
+	            /*
 	            System.out.println("offsetX :" + offsetX + "\n");
 	            System.out.println("newTranslateX :" + newTranslateX + "\n");
-	            
+	            */
 	            ((Obstacle)(t.getSource())).setTranslateX(newTranslateX);
 	            ((Obstacle)(t.getSource())).setTranslateY(newTranslateY);
 	            
@@ -154,9 +129,7 @@ public class LobbyPresenter {
 	            
 		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );
 		        ((Obstacle)(t.getSource())).yProperty().bind(yPosProperty );
-		        
-		        System.out.println("((Obstacle)(t.getSource())) :" + ((Obstacle)(t.getSource())).getX() + "\n");
-		  
+		        		  
 	        }
 	        
 	    };
@@ -167,9 +140,10 @@ public class LobbyPresenter {
 		        @Override
 		        public void handle(MouseEvent t) {
 		             
-		          double position =  ((Obstacle)(t.getSource())).getXPoperty().get();
-		
-		        	System.out.println("relese position :" + position + "\n");
+		          double xposition =  ((Obstacle)(t.getSource())).getXPoperty().get();
+		          double yposition =  ((Obstacle)(t.getSource())).getYPoperty().get();
+		        	System.out.println("relese Xposition :" + xposition + "\n");
+		        	System.out.println("relese Yposition :" + yposition + "\n");
 		            
 		        }
 		        

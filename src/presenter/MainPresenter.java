@@ -66,21 +66,9 @@ public class MainPresenter {
 		
 		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		
-		System.out.println("X " + size.getX() + "\n");
-		System.out.println("Y " + size.getY() + "\n");
-		
-		/*CHmodel.setNodeMap(nodeMap = new NodeMap(size));
-		
-		new NodeMapHandler(nodeMap);*/
-		
-		//nodeMapHandler = new NodeMapHandler(size);
-		
 		new NodeMapHandler(size);
 		
-		/*CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
-				CHmodel.getGoalVector2D(), nodeMapHandler.getNodeMap());*/
-		
-			
+	
 	}
 		
 }

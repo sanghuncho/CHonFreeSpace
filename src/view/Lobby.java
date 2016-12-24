@@ -134,12 +134,9 @@ public class Lobby extends BorderPane{
 			
 			node.setNodeCircle(nodeCircle);
 			
-			//this.getChildren().add(nodeCircle);
 			center.getChildren().add(nodeCircle);
 			
-		}
-		
-		
+		}	
 	}
 	
 	public Obstacle getObstacle(){
