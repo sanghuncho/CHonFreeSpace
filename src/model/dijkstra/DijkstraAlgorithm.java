@@ -66,10 +66,21 @@ public class DijkstraAlgorithm {
         
         for (Node target : adjacentNodes) {
         	
+        	 System.out.print("target x : " +target.getPosition().getX() + "\n");
+             System.out.print("target y : " +target.getPosition().getY() + "\n");
+             System.out.print( "\n");
                 if (getShortestDistance(target) > getShortestDistance(node)
                                 + 1) { 
                         distance.put(target, getShortestDistance(node)+1);
                         predecessors.put(target, node);
+                        System.out.print("pre1 target x : " +target.getPosition().getX() + "\n");
+                        System.out.print("pre1 target y : " +target.getPosition().getY() + "\n");
+                        
+                        System.out.print("pre1 node x : " +node.getPosition().getX() + "\n");
+                        System.out.print("pre1 node y : " +node.getPosition().getY() + "\n");
+                        
+                        System.out.print( "\n");
+                        
                         unSettledNodes.add(target);
                 }
                else if(getShortestDistance(target) == getShortestDistance(node)
@@ -79,10 +90,19 @@ public class DijkstraAlgorithm {
             	   Node minimum = MathHelper.shortestDistanceBetweenGoal(node,prevNode);
             	   predecessors.remove(target,prevNode);
             	   predecessors.put(target, minimum);
-                   
+            	   
             	   
             	   distance.put(target, getShortestDistance(node)
                                         + getDistance(node, target));
+            	   
+            	   
+            	   System.out.print("pre2 target x : " +target.getPosition().getX() + "\n");
+                   System.out.print("pre2 target y : " +target.getPosition().getY() + "\n");
+                   
+                   System.out.print("pre2 node x : " +node.getPosition().getX() + "\n");
+                   System.out.print("pre2 node y : " +node.getPosition().getY() + "\n");
+                   
+                   System.out.print( "\n");
                }
         }
            
@@ -93,6 +113,7 @@ public class DijkstraAlgorithm {
         Integer d = distance.get(destination);
         
         if (d == null) {
+        	
                 return Integer.MAX_VALUE;
         	
         	
@@ -119,10 +140,14 @@ public class DijkstraAlgorithm {
 	    	    		
 	                	insideObs = (insideObs || isNodeInsideObs(edge,obstacle));
 	                
+	                	} 
 	                	
-	        		 } 
 	                if(!insideObs){
 	                	neighbors.add(edge.getDestination());
+	                    System.out.print("added edgeX : " +edge.getDestination().getPosition().getX() + "\n");
+	                    System.out.print("added edgeY : " +edge.getDestination().getPosition().getY() + "\n");
+	                    System.out.print("\n");
+
 	                }
 	                	
 	               }
@@ -132,7 +157,7 @@ public class DijkstraAlgorithm {
          return neighbors;
     }
 
-	private boolean isNodeInsideObs(Edge edge, Obstacle obstacle){
+/*	private boolean isNodeInsideObs(Edge edge, Obstacle obstacle){
 		
 		int edgeGoalX = edge.getDestination().getPosition().getX();
 		int edgeGoalY = edge.getDestination().getPosition().getY();
@@ -170,6 +195,45 @@ public class DijkstraAlgorithm {
 			return false;
 		}
 		
+	}*/
+    
+    
+	private boolean isNodeInsideObs(Edge edge, Obstacle obstacle){
+		
+		int edgeGoalX = edge.getDestination().getPosition().getX()*10;
+		int edgeGoalY = edge.getDestination().getPosition().getY()*10;
+		
+		int obsXpos = (int)obstacle.xProperty().get();
+		int obsXposWidth = (int)(obsXpos + (obstacle.getWidth()));
+		
+		int obsYpos = (int)obstacle.yProperty().get();
+		int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()));
+		
+		/*System.out.println("obsXpos :  "+ obsXpos + "\n");
+		System.out.println("obsXposWidth :  "+ obsXposWidth + "\n");
+		
+		System.out.println("obsYpos :  "+ obsYpos + "\n");
+		System.out.println("obsYposWidth :  "+ obsYposWidth + "\n");*/
+		
+		if( (obsXpos <= edgeGoalX ) && ( edgeGoalX < obsXposWidth)){ 
+			
+			if(( obsYpos <= edgeGoalY) && ( edgeGoalY < obsYposWidth)){
+				
+				/*System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
+				System.out.println("edgeGoalY :  "+ edgeGoalY + "\n");*/
+    			
+				return true;
+				
+			}
+			else{
+				return false;
+			}
+		
+		}
+		else{
+			return false;
+		}
+		
 	}
 	
 	private Node getMinimumCost(Set<Node> vertexes) {
@@ -181,12 +245,16 @@ public class DijkstraAlgorithm {
                         if (getShortestDistance(vertex) < getShortestDistance(minimum)) {
                                 minimum = vertex;
                         }
-                        else if(getShortestDistance(vertex) < getShortestDistance(minimum)){
+                        else if(getShortestDistance(vertex) == getShortestDistance(minimum)){
                         	
                         	minimum = MathHelper.shortestDistanceBetweenGoal(vertex,minimum);
                         }
                 }
         }
+        System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
+        System.out.print("Minimu y : " +minimum.getPosition().getY() + "\n");
+        System.out.print( "\n");
+
         return minimum;
     }
     

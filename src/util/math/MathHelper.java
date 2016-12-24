@@ -10,10 +10,6 @@ public abstract class MathHelper {
 		double goalX = CHmodel.getGoalVector2D().getX();
 		double goalY = CHmodel.getGoalVector2D().getY();
 		
-		
-		double targetX = CHmodel.getStartVector2D().getX();
-		double targetY = CHmodel.getStartVector2D().getX();
-		
 		double firstX = nodeFirst.getPosition().getX();
 		double firstY = nodeFirst.getPosition().getY();
 		
