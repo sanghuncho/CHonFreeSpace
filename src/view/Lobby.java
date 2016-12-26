@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,6 +23,7 @@ import model.node.Node;
 import model.node.NodeCircle;
 import model.node.NodeMap;
 import util.math.Vector;
+import util.math.Vector2D;
 
 public class Lobby extends BorderPane{
 	
@@ -37,6 +39,12 @@ public class Lobby extends BorderPane{
 	public Pane center = new Pane();
 	public Pane right = new Pane();
 	public Pane left = new Pane();
+	
+	private Point viaNode;
+	private Random randX;
+	private Random randY;
+	private int randomNumX;	
+	private int randomNumY;
 
 	
 	private Scene scene;
@@ -158,6 +166,53 @@ public class Lobby extends BorderPane{
 			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
 					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
 			center.getChildren().add(lane);
+		}
+		
+	}
+	
+	public void createViaNodePoint(Vector2D size, int[][] map){
+		
+		
+		
+		randX = new Random();
+		int randomNumX = randX.nextInt( size.getX());
+		randY = new Random();
+		int randomNumY = randY.nextInt( size.getY());
+		
+		System.out.println("size x " + size.getX() + "\n");
+		System.out.println("size y " + size.getY() + "\n");
+		
+		System.out.println("random x " + randomNumX + "\n");
+		System.out.println("random y " + randomNumY + "\n");
+		
+		/*while(!insideObstacle(randomNumX,randomNumY,map)){
+			
+				randX = new Random();
+				randomNumX = randX.nextInt( size.getX());
+				randY = new Random();
+				randomNumY = randY.nextInt( size.getY());		
+			}*/
+		
+		viaNode = new Point();
+		viaNode.setCenterX(randomNumX*10+5);
+		viaNode.setCenterY(randomNumY*10+5);
+		viaNode.setFill(Color.DARKGOLDENROD);
+		center.getChildren().add(viaNode);	
+				
+	}
+	
+	public Vector2D getViaNode2D(){
+		return new Vector2D(( viaNode.getCenterX()-5 )/10,( viaNode.getCenterY()-5 )/10);
+	}
+	
+	private boolean insideObstacle(int randomX, int randomY,int[][] map){
+		
+		if( (map[randomX][randomY]) == -1){
+			return false;
+			
+		}
+		else{
+			return true;
 		}
 		
 	}

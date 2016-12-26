@@ -3,8 +3,12 @@ package model.dijkstra;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
+import javafx.scene.paint.Color;
+import model.CHmodel;
 import model.Obstacle;
+import model.Point;
 import model.node.Node;
 import model.node.NodeMap;
 import util.math.Vector;
@@ -17,13 +21,13 @@ public class CostMap {
 	private NodeMap nodeMap;
 	private int edgeId = 0;
 	private Edge lane;
-	private Edge lane_backward;
 	private int nodeSize;
 	private List<Node> nodes;
     private ArrayList<Edge> edges = new ArrayList<Edge>();
     private final static int WEIGHT = 1;
     private DijkstraAlgorithm dijkstra;
     private  ArrayList<Obstacle> obstacles;
+   
 
 	private ArrayList<Node> visitedNodes = new ArrayList<Node>();
 
@@ -36,7 +40,7 @@ public class CostMap {
 	
 	private int[][] map;
 		
-	public CostMap(Vector size, Vector start,Vector goal, NodeMap nodeMap, ArrayList<Obstacle> obstacles) {
+	/*public CostMap(Vector size, Vector start,Vector goal, NodeMap nodeMap, ArrayList<Obstacle> obstacles) {
 		
 		this.size = size;
 		this.startPoint = start;
@@ -65,21 +69,63 @@ public class CostMap {
 		visitedPoints.add(startPoint);
 		
 		//printMapToConsole();	
+
 		
 		createEdgeOnMap();
 		
 		
 		startDijkstra();
 		
+	}*/
+	
+public CostMap(Vector size, Vector start, NodeMap nodeMap, ArrayList<Obstacle> obstacles) {
+		
+		this.size = size;
+		this.startPoint = start;
+		//this.goalPoint = goal;
+		this.nodes = nodeMap.getNodes();
+		this.nodeSize = nodeMap.getNodes().size();
+		this.nodeMap = nodeMap;
+		this.obstacles = obstacles;
+		
+		map = new int[size.getX()][size.getY()];
+		
+		for (Node node : nodeMap.getNodes()) {
+
+			if (node.isObstacle()) {
+
+				setCost(node.getPosition(), -1);
+				
+			} else {
+				
+				setCost(node.getPosition(),0);
+
+			}
+		}
+		
+		map[startPoint.getX()][startPoint.getY()] = 0;
+		
+		
+	}
+
+	public void startDijkstra(){
+	
+		Graph graph = new Graph(nodes,edges);
+	
+		dijkstra = new DijkstraAlgorithm(graph,obstacles); 
+	
 	}
 	
-	public void startDijkstra(){
-		
-		Graph graph = new Graph(nodes,edges);
-		
-		dijkstra = new DijkstraAlgorithm(graph,obstacles); 
+	public void createEdgeOnMap() {
+		createSurroundingEdges(nodes);
 		
 	}
+	
+
+	public int[][] getMap(){return map;}
+	
+	
+
 	
 	private void setObstacleNode(){
 		
@@ -119,15 +165,10 @@ public class CostMap {
 			
 			int obsXpos = (int)obstacle.getX()/10;
 			int obsXposWidth = (int)(obsXpos + obstacle.getWidth())/10;
-			
-			System.out.println("obsXpos :  "+ obsXpos + "\n");
-			System.out.println("obsXposWidth :  "+ obsXposWidth + "\n");
+		
 			int obsYpos = (int)obstacle.getY()/10;
 			int obsYposWidth = (int)(obsYpos + obstacle.getHeight())/10;
-		
-			
 
-		
 		for (Edge edge : edgesHelper) {
 			
 			int edgeSourceX = edge.getSource().getPosition().getX();
@@ -194,11 +235,7 @@ public class CostMap {
 		}
 	}*/
 	
-	private void createEdgeOnMap() {
-		
-		createSurroundingEdges(nodes);
-		
-	}
+	
 	
 	private void createSurroundingEdges(List<Node> nodes) {
 		
@@ -392,7 +429,7 @@ public class CostMap {
 
 	
 	
-	private boolean goalReached() {
+	/*private boolean goalReached() {
 		for (Vector point : getPointParking()) {
 			if (point.getX() == goalPoint.getX()
 					&& point.getY() == goalPoint.getY()) {
@@ -400,13 +437,13 @@ public class CostMap {
 			}
 		}
 		return false;
-	}
+	}*/
 	
 	private ArrayList<Vector> getPointParking() {
 		return pointParking;
 	}
 	
-	public void printMapToConsole() {
+/*	public void printMapToConsole() {
 		for (int i = 0; i < size.getX(); i++) {
 			for (int j = 0; j < size.getY(); j++) {
 				if (map[i][j] == -1) {
@@ -424,7 +461,7 @@ public class CostMap {
 			}
 			System.out.println();
 		}
-	}
+	}*/
 
 	
 	

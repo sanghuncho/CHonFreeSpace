@@ -78,9 +78,7 @@ public class DijkstraAlgorithm {
             	   Node prevNode = predecessors.get(target);
             	   Node minimum = MathHelper.shortestDistanceBetweenGoal(node,prevNode);
             	   predecessors.remove(target,prevNode);
-            	   predecessors.put(target, minimum);
-            	   
-            	   
+            	   predecessors.put(target, minimum); 
             	   distance.put(target, getShortestDistance(node)
                                         + getDistance(node, target));
             	   
@@ -195,9 +193,9 @@ public class DijkstraAlgorithm {
 		/*System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
 		System.out.println("edgeGoalY :  "+ edgeGoalY + "\n");*/
 		
-		if( (obsXpos <= edgeGoalX ) && ( edgeGoalX < obsXposWidth)){ 
+		if( (obsXpos <= edgeGoalX ) && ( edgeGoalX <= obsXposWidth)){ 
 			
-			if(( obsYpos <= edgeGoalY) && ( edgeGoalY < obsYposWidth)){
+			if(( obsYpos <= edgeGoalY) && ( edgeGoalY <= obsYposWidth)){
 				
 				return true;
 				

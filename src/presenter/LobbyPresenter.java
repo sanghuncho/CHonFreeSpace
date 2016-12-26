@@ -50,47 +50,67 @@ public class LobbyPresenter {
 						
 			obstacles.get(i).setOnMousePressed(obstacleOnMousePressedEventHandler);
 			obstacles.get(i).setOnMouseDragged(obstacleOnMouseDraggedEventHandler);
-			obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);
-			System.out.println("numer obstacle " + i +"\n");
-			
+			obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
 		}
 		
 		lobbyView.contractButton.setOnMouseClicked(event -> {
+			
+			
+			
+			
+			
 
 			});
 		
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 			
-			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
-					CHmodel.getGoalVector2D(), CHmodel.getNodeMap(), obstacles);
+			/*CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
+					CHmodel.getGoalVector2D(), CHmodel.getNodeMap(), obstacles);*/
+			
+			CostMap costmap1 = new CostMap(size, CHmodel.getStartVector2D(),
+					CHmodel.getNodeMap(), obstacles);
+			
+			lobbyView.createViaNodePoint(size,costmap1.getMap());
+			
+			CostMap costmap2 = new CostMap(size,lobbyView.getViaNode2D(),
+				  CHmodel.getNodeMap(), obstacles);
+			
+			costmap1.createEdgeOnMap();
+			costmap1.startDijkstra();
+			
+			costmap2.createEdgeOnMap();
+			costmap2.startDijkstra();
 			
 			
-			costmap.getDijkstra().execute(costmap.getNodeMap()
+			
+			/*costmap.getDijkstra().execute(costmap.getNodeMap()
 					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));
 			
             LinkedList<Node> path = costmap.getDijkstra().getPath(costmap.getNodeMap()
+					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));*/
+			
+			costmap1.getDijkstra().execute(costmap1.getNodeMap()
+					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));
+			
+            LinkedList<Node> path1 = costmap1.getDijkstra().getPath(costmap1.getNodeMap()
+					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY()));
+            
+            lobbyView.createLane(path1);
+            
+            costmap2.getDijkstra().execute(costmap2.getNodeMap()
+					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY()));
+			
+            LinkedList<Node> path2 = costmap2.getDijkstra().getPath(costmap2.getNodeMap()
 					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));
-            
-            
-            lobbyView.createLane(path);
+
+            lobbyView.createLane(path2);
             
             
             System.out.println("algorithm is the end \n");
             
-            
-
-			/*try {
-					Play.navigator.switchTo(AvailableScenes.GAME);
-					clientPresenter.getGameModel().setGameStateStarted();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}*/
-
 		});
 
-	 }//activate end
+	}//activate end
 	
 	EventHandler<MouseEvent> obstacleOnMousePressedEventHandler = 
 	        new EventHandler<MouseEvent>() {

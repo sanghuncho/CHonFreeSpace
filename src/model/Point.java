@@ -7,6 +7,7 @@ public class Point extends Circle{
 	
 	public Point(){	
 		this.setRadius(6);
+		
 	}
 
 
