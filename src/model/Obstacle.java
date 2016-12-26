@@ -30,11 +30,11 @@ public class Obstacle extends Rectangle {
 		this.setY(yPos = 255);
 		*/
 		
-		/*this.xProperty().set(getRandomX());
-		this.yProperty().set(getRandomY());*/
+		this.xProperty().set(getRandomX());
+		this.yProperty().set(getRandomY());
 		
-		this.xProperty().set(110);
-		this.yProperty().set(85);
+		/*this.xProperty().set(110);
+		this.yProperty().set(85);*/
 		
 		this.setWidth(50);
 		this.setHeight(50);
