@@ -206,14 +206,14 @@ public class CostMap {
 			
 			for (Node neighbor : node.getNeighborList()) {
 	            
-				if (!isObstacle(node.getPosition()) &&
-						!(checkForNode(visitedNodes, neighbor))){
+				if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){
 					
 					if (!(checkForNode(visitedNodes, node))) {
-						
+						 
 						createEdge(node,neighbor);
 						
 					}
+					
 				}
 			}
 			visitedNodes.add(node);
@@ -221,16 +221,13 @@ public class CostMap {
 
 	}
 	
-	private void createEdge(Node node,Node neighbor){
-				
-		lane = new Edge(edgeId,node,neighbor,WEIGHT);
-		edges.add(lane);
-		lane_backward = new Edge(edgeId,neighbor,node,WEIGHT);
-		edges.add(lane_backward);
-		edgeId++;	
+	private boolean isObstacle(Vector point) {
+		return map[point.getX()][point.getY()] == -1;
 	}
+
 	
 	private boolean checkForNode(ArrayList<Node> list, Node node) {
+		
 		for (Node checkPoint : list) {
 			if (checkPoint.getPosition().getX() == node.getPosition().getX()
 					&& checkPoint.getPosition().getY() == node.getPosition().getY()) {
@@ -238,6 +235,16 @@ public class CostMap {
 			}
 		}
 		return false;
+		
+	}
+	
+	private void createEdge(Node node,Node neighbor){
+				
+		lane = new Edge(edgeId,node,neighbor,WEIGHT);
+		edges.add(lane);
+		/*lane_backward = new Edge(edgeId,neighbor,node,WEIGHT);
+		edges.add(lane_backward);*/
+		edgeId++;	
 	}
 	
 	
@@ -384,10 +391,7 @@ public class CostMap {
 	
 
 	
-	private boolean isObstacle(Vector point) {
-		return map[point.getX()][point.getY()] == -1;
-	}
-
+	
 	private boolean goalReached() {
 		for (Vector point : getPointParking()) {
 			if (point.getX() == goalPoint.getX()

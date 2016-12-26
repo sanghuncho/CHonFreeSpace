@@ -66,21 +66,10 @@ public class DijkstraAlgorithm {
         
         for (Node target : adjacentNodes) {
         	
-        	 System.out.print("target x : " +target.getPosition().getX() + "\n");
-             System.out.print("target y : " +target.getPosition().getY() + "\n");
-             System.out.print( "\n");
                 if (getShortestDistance(target) > getShortestDistance(node)
                                 + 1) { 
                         distance.put(target, getShortestDistance(node)+1);
                         predecessors.put(target, node);
-                        System.out.print("pre1 target x : " +target.getPosition().getX() + "\n");
-                        System.out.print("pre1 target y : " +target.getPosition().getY() + "\n");
-                        
-                        System.out.print("pre1 node x : " +node.getPosition().getX() + "\n");
-                        System.out.print("pre1 node y : " +node.getPosition().getY() + "\n");
-                        
-                        System.out.print( "\n");
-                        
                         unSettledNodes.add(target);
                 }
                else if(getShortestDistance(target) == getShortestDistance(node)
@@ -95,14 +84,6 @@ public class DijkstraAlgorithm {
             	   distance.put(target, getShortestDistance(node)
                                         + getDistance(node, target));
             	   
-            	   
-            	   System.out.print("pre2 target x : " +target.getPosition().getX() + "\n");
-                   System.out.print("pre2 target y : " +target.getPosition().getY() + "\n");
-                   
-                   System.out.print("pre2 node x : " +node.getPosition().getX() + "\n");
-                   System.out.print("pre2 node y : " +node.getPosition().getY() + "\n");
-                   
-                   System.out.print( "\n");
                }
         }
            
@@ -133,21 +114,17 @@ public class DijkstraAlgorithm {
 	        for (Edge edge : edges) {
 	        	
 	        
-	                if (edge.getSource().equals(node)
-	                                && !isSettled(edge.getDestination())) {
+	                if (edge.getSource().equals(node) && 
+	                		!isSettled(edge.getDestination()) ){//
 	                	
 	                	for (Obstacle obstacle : obstacles) {
 	    	    		
-	                	insideObs = (insideObs || isNodeInsideObs(edge,obstacle));
+	                		insideObs = (insideObs || isNodeInsideObs(edge,obstacle));
 	                
 	                	} 
 	                	
 	                if(!insideObs){
 	                	neighbors.add(edge.getDestination());
-	                    System.out.print("added edgeX : " +edge.getDestination().getPosition().getX() + "\n");
-	                    System.out.print("added edgeY : " +edge.getDestination().getPosition().getY() + "\n");
-	                    System.out.print("\n");
-
 	                }
 	                	
 	               }
@@ -215,13 +192,13 @@ public class DijkstraAlgorithm {
 		System.out.println("obsYpos :  "+ obsYpos + "\n");
 		System.out.println("obsYposWidth :  "+ obsYposWidth + "\n");*/
 		
+		/*System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
+		System.out.println("edgeGoalY :  "+ edgeGoalY + "\n");*/
+		
 		if( (obsXpos <= edgeGoalX ) && ( edgeGoalX < obsXposWidth)){ 
 			
 			if(( obsYpos <= edgeGoalY) && ( edgeGoalY < obsYposWidth)){
 				
-				/*System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
-				System.out.println("edgeGoalY :  "+ edgeGoalY + "\n");*/
-    			
 				return true;
 				
 			}
@@ -251,9 +228,9 @@ public class DijkstraAlgorithm {
                         }
                 }
         }
-        System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
+       /* System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
         System.out.print("Minimu y : " +minimum.getPosition().getY() + "\n");
-        System.out.print( "\n");
+        System.out.print( "\n");*/
 
         return minimum;
     }
