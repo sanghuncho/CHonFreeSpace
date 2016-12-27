@@ -70,7 +70,7 @@ public class LobbyPresenter {
 			CostMap costmap1 = new CostMap(size, CHmodel.getStartVector2D(),
 					CHmodel.getNodeMap(), obstacles);
 			
-			lobbyView.createViaNodePoint(size,costmap1.getMap());
+			lobbyView.createViaNodePoint(size, costmap1.getMap());
 			
 			CostMap costmap2 = new CostMap(size,lobbyView.getViaNode2D(),
 				  CHmodel.getNodeMap(), obstacles);
@@ -90,7 +90,8 @@ public class LobbyPresenter {
 					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));*/
 			
 			costmap1.getDijkstra().execute(costmap1.getNodeMap()
-					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));
+					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()),costmap1.getNodeMap()
+					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY()));
 			
             LinkedList<Node> path1 = costmap1.getDijkstra().getPath(costmap1.getNodeMap()
 					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY()));
@@ -98,7 +99,8 @@ public class LobbyPresenter {
             lobbyView.createLane(path1);
             
             costmap2.getDijkstra().execute(costmap2.getNodeMap()
-					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY()));
+					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY())
+							,costmap2.getNodeMap().get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));
 			
             LinkedList<Node> path2 = costmap2.getDijkstra().getPath(costmap2.getNodeMap()
 					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));

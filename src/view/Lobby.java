@@ -205,6 +205,10 @@ public class Lobby extends BorderPane{
 		return new Vector2D(( viaNode.getCenterX()-5 )/10,( viaNode.getCenterY()-5 )/10);
 	}
 	
+	public Vector2D getViaNodeScreen(){
+		return new Vector2D( viaNode.getCenterX(),viaNode.getCenterY());
+	}
+	
 	private boolean insideObstacle(int randomX, int randomY,int[][] map){
 		
 		if( (map[randomX][randomY]) == -1){
