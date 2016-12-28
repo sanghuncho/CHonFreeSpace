@@ -17,6 +17,7 @@ import model.Obstacle;
 import model.dijkstra.CostMap;
 import model.node.Node;
 import model.node.NodeMapHandler;
+import util.math.Vector;
 import util.math.Vector2D;
 import view.Lobby;
 
@@ -25,17 +26,23 @@ public class LobbyPresenter {
 	Stage stage;
 	Lobby lobbyView;
 	Obstacle obs;
-	private int numberObs;
-	private ArrayList<Obstacle> obstacles;
 	double orgSceneX, orgSceneY;
 	double orgTranslateX, orgTranslateY;
+	
+	private int numberObs;
+	private ArrayList<Obstacle> obstacles;
 	private Vector2D size;	
 	private static NodeMapHandler nodeMapHandler;
+	private Vector startPointNode;
+	private Vector goalPointNode;
+	private int loop;
 	
 	public LobbyPresenter(Lobby lobbyView){
 		this.lobbyView = lobbyView;
 		obs=lobbyView.getObstacle();
 		size = CHmodel.getSizeVector2D();
+		startPointNode = CHmodel.getStartVector2D();
+		goalPointNode = CHmodel.getGoalVector2D();
 		activate();
 	}
 	
@@ -44,6 +51,7 @@ public class LobbyPresenter {
 		
 		numberObs = CHmodel.getObstacle();
 		obstacles = lobbyView.getObstacleList();
+		
 		
 					
 		for(int i = 0; i < numberObs; i++){
@@ -66,23 +74,28 @@ public class LobbyPresenter {
 			
 			/*CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
 					CHmodel.getGoalVector2D(), CHmodel.getNodeMap(), obstacles);*/
+			loop=0;
 			
 			CostMap costmap1 = new CostMap(size, CHmodel.getStartVector2D(),
 					CHmodel.getNodeMap(), obstacles);
 			
-			lobbyView.createViaNodePoint(size, costmap1.getMap());
-			
-			CostMap costmap2 = new CostMap(size,lobbyView.getViaNode2D(),
-				  CHmodel.getNodeMap(), obstacles);
-			
 			costmap1.createEdgeOnMap();
 			costmap1.startDijkstra();
 			
+			
+			
+			
+			
+			
+		while(loop <numberObs ){
+			
+			lobbyView.createViaNodePoint(size, costmap1.getMap());
+				
+			CostMap costmap2 = new CostMap(size,lobbyView.getViaNode2D(),
+					  CHmodel.getNodeMap(), obstacles);
+				
 			costmap2.createEdgeOnMap();
 			costmap2.startDijkstra();
-			
-			
-			
 			/*costmap.getDijkstra().execute(costmap.getNodeMap()
 					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()));
 			
@@ -90,7 +103,7 @@ public class LobbyPresenter {
 					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));*/
 			
 			costmap1.getDijkstra().execute(costmap1.getNodeMap()
-					.get(CHmodel.getStartVector2D().getX(), CHmodel.getStartVector2D().getY()),costmap1.getNodeMap()
+					.get(startPointNode.getX(),startPointNode.getY()),costmap1.getNodeMap()
 					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY()));
 			
             LinkedList<Node> path1 = costmap1.getDijkstra().getPath(costmap1.getNodeMap()
@@ -100,12 +113,16 @@ public class LobbyPresenter {
             
             costmap2.getDijkstra().execute(costmap2.getNodeMap()
 					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY())
-							,costmap2.getNodeMap().get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));
+							,costmap2.getNodeMap().get(goalPointNode.getX(),goalPointNode.getY()));
 			
             LinkedList<Node> path2 = costmap2.getDijkstra().getPath(costmap2.getNodeMap()
-					.get(CHmodel.getGoalVector2D().getX(),CHmodel.getGoalVector2D().getY()));
+					.get(goalPointNode.getX(),goalPointNode.getY()));
 
             lobbyView.createLane(path2);
+            
+            loop++;
+            
+		 }
             
             
             System.out.println("algorithm is the end \n");
@@ -139,10 +156,7 @@ public class LobbyPresenter {
 	            double offsetY = t.getSceneY() - orgSceneY;
 	            double newTranslateX = orgTranslateX;// + offsetX;
 	            double newTranslateY = orgTranslateY;// + offsetY;
-	            /*
-	            System.out.println("offsetX :" + offsetX + "\n");
-	            System.out.println("newTranslateX :" + newTranslateX + "\n");
-	            */
+	           
 	            ((Obstacle)(t.getSource())).setTranslateX(newTranslateX);
 	            ((Obstacle)(t.getSource())).setTranslateY(newTranslateY);
 	            
@@ -164,9 +178,7 @@ public class LobbyPresenter {
 		             
 		          double xposition =  ((Obstacle)(t.getSource())).getXPoperty().get();
 		          double yposition =  ((Obstacle)(t.getSource())).getYPoperty().get();
-		        	System.out.println("relese Xposition :" + xposition + "\n");
-		        	System.out.println("relese Yposition :" + yposition + "\n");
-		            
+		        
 		        }
 		        
 		    };

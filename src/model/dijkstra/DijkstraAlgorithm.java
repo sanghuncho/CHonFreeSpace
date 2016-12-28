@@ -166,8 +166,7 @@ public class DijkstraAlgorithm {
 	        for (Edge edge : edges) {
 	        	
 	        
-	                if (edge.getSource().equals(node) && 
-	                		!isSettled(edge.getDestination()) ){//
+	                if (edge.getSource().equals(node) ){//&& !isSettled(edge.getDestination()) 
 	                	
 	                	for (Obstacle obstacle : obstacles) {
 	    	    		
@@ -242,9 +241,9 @@ public class DijkstraAlgorithm {
 		System.out.println("obsXposWidth :  "+ obsXposWidth + "\n");
 		
 		System.out.println("obsYpos :  "+ obsYpos + "\n");
-		System.out.println("obsYposWidth :  "+ obsYposWidth + "\n");*/
+		System.out.println("obsYposWidth :  "+ obsYposWidth + "\n");
 		
-		/*System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
+		System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
 		System.out.println("edgeGoalY :  "+ edgeGoalY + "\n");*/
 		
 		if( (obsXpos <= edgeGoalX ) && ( edgeGoalX <= obsXposWidth)){ 

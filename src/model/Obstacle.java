@@ -45,12 +45,12 @@ public class Obstacle extends Rectangle {
 	
 	private int getRandomX(){
 		Random rand = new Random();
-		int randomNumX = rand.nextInt( CHmodel.getMapX() + 1);
+		int randomNumX = rand.nextInt( CHmodel.getMapX());
 		return randomNumX;
 	}
 	private int getRandomY(){
 		Random rand = new Random();
-		int randomNumY = rand.nextInt( CHmodel.getMapY() + 1);
+		int randomNumY = rand.nextInt( CHmodel.getMapY());
 		return randomNumY;
 	}
 	

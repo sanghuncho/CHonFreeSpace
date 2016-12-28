@@ -178,20 +178,20 @@ public class Lobby extends BorderPane{
 		int randomNumX = randX.nextInt( size.getX());
 		randY = new Random();
 		int randomNumY = randY.nextInt( size.getY());
-		
+		/*
 		System.out.println("size x " + size.getX() + "\n");
 		System.out.println("size y " + size.getY() + "\n");
 		
 		System.out.println("random x " + randomNumX + "\n");
-		System.out.println("random y " + randomNumY + "\n");
+		System.out.println("random y " + randomNumY + "\n");*/
 		
-		/*while(!insideObstacle(randomNumX,randomNumY,map)){
+		while(insideObstacle(randomNumX,randomNumY,map)){
 			
 				randX = new Random();
 				randomNumX = randX.nextInt( size.getX());
 				randY = new Random();
 				randomNumY = randY.nextInt( size.getY());		
-			}*/
+			}
 		
 		viaNode = new Point();
 		viaNode.setCenterX(randomNumX*10+5);
@@ -212,11 +212,11 @@ public class Lobby extends BorderPane{
 	private boolean insideObstacle(int randomX, int randomY,int[][] map){
 		
 		if( (map[randomX][randomY]) == -1){
-			return false;
+			return true;
 			
 		}
 		else{
-			return true;
+			return false;
 		}
 		
 	}
