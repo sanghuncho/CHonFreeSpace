@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import javafx.geometry.Pos;
@@ -49,6 +50,7 @@ public class Lobby extends BorderPane{
 	
 	private Scene scene;
 	private int numberObs;
+	private ArrayList<Point> viaNodes = new ArrayList<Point>();
 	
 	
 	public Lobby(Stage stage){
@@ -64,6 +66,7 @@ public class Lobby extends BorderPane{
 		obstacles = new ArrayList<Obstacle>();
 					
 		for(int i = 0; i < numberObs; i++){
+			
 			obs = new Obstacle();
 			
 			obstacles.add(obs);
@@ -172,35 +175,73 @@ public class Lobby extends BorderPane{
 	
 	public void createViaNodePoint(Vector2D size, int[][] map){
 		
-		
-		
 		randX = new Random();
-		int randomNumX = randX.nextInt( size.getX());
+		randomNumX = randX.nextInt( size.getX());
 		randY = new Random();
-		int randomNumY = randY.nextInt( size.getY());
+		randomNumY = randY.nextInt( size.getY());
 		/*
 		System.out.println("size x " + size.getX() + "\n");
 		System.out.println("size y " + size.getY() + "\n");
-		
+		*/
 		System.out.println("random x " + randomNumX + "\n");
-		System.out.println("random y " + randomNumY + "\n");*/
-		
-		while(insideObstacle(randomNumX,randomNumY,map)){
+		System.out.println("random y " + randomNumY + "\n");
+	
+		/*while(insideObstacle(randomNumX,randomNumY,map)){
 			
 				randX = new Random();
 				randomNumX = randX.nextInt( size.getX());
 				randY = new Random();
-				randomNumY = randY.nextInt( size.getY());		
-			}
+				randomNumY = randY.nextInt( size.getY());
+				
+				System.out.println("new random x " + randomNumX + "\n");
+				System.out.println("new random y " + randomNumY + "\n");
+			
+			}*/
 		
 		viaNode = new Point();
 		viaNode.setCenterX(randomNumX*10+5);
 		viaNode.setCenterY(randomNumY*10+5);
 		viaNode.setFill(Color.DARKGOLDENROD);
 		center.getChildren().add(viaNode);	
+		
+		System.out.println("random x " + randomNumX + "\n");
+		System.out.println("random y " + randomNumY + "\n");
+		//viaNodes.add(viaNode);
 				
 	}
 	
+	private boolean insideObstacle(int randomX, int randomY,int[][] map){
+		
+		
+		System.out.println("map " +map[randomX][randomY] +"\n");
+		
+		if( (map[randomX][randomY]) == -1){
+			
+			System.out.println("inside \n");
+			/*
+			System.out.println("random x " + randomNumX + "\n");
+			System.out.println("random y " + randomNumY + "\n");*/
+		
+			
+			return true;
+			
+		}
+		else{
+			//System.out.println("outside \n");
+			return false;
+		}
+		
+	}
+	
+	public Vector2D getViaNode2D(int i){
+		
+		
+		System.out.println("viaNodeX " + (viaNodes.get(i).getCenterX()-5)/10 + "\n");
+		System.out.println("viaNodeY " + (viaNodes.get(i).getCenterY()-5)/10 + "\n");
+
+		return new Vector2D((viaNodes.get(i).getCenterX()-5)/10,(viaNodes.get(i).getCenterY()-5)/10);
+	}
+
 	public Vector2D getViaNode2D(){
 		return new Vector2D(( viaNode.getCenterX()-5 )/10,( viaNode.getCenterY()-5 )/10);
 	}
@@ -209,16 +250,6 @@ public class Lobby extends BorderPane{
 		return new Vector2D( viaNode.getCenterX(),viaNode.getCenterY());
 	}
 	
-	private boolean insideObstacle(int randomX, int randomY,int[][] map){
-		
-		if( (map[randomX][randomY]) == -1){
-			return true;
-			
-		}
-		else{
-			return false;
-		}
-		
-	}
+	
 
 }

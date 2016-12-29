@@ -25,6 +25,7 @@ public class DijkstraAlgorithm {
     private Map<Node, Node> predecessors;
     private Map<Node, Integer> distance;
     private ArrayList<Obstacle> obstacles;
+    private Node goal;
     
     public DijkstraAlgorithm(Graph graph, ArrayList<Obstacle> obstacles){
     	
@@ -69,13 +70,17 @@ public class DijkstraAlgorithm {
             unSettledNodes = new HashSet<Node>();
             distance = new HashMap<Node, Integer>();
             predecessors = new HashMap<Node, Node>();
+            this.goal = goal;
             distance.put(source, 0);
             unSettledNodes.add(source);
             
             while (unSettledNodes.size() > 0) {
-            	
-
+        
+        		
             		Node node = getMinimumCost(unSettledNodes,goal);
+            		/*
+            		System.out.println("node x " + node.getPosition().getX() + "\n");
+            		System.out.println("node y " + node.getPosition().getY()  + "\n");*/
             		
                     settledNodes.add(node);
 
@@ -91,12 +96,19 @@ public class DijkstraAlgorithm {
      List<Node> adjacentNodes = getNeighbors(node);
      
      for (Node target : adjacentNodes) {
+    	 
+    	/* System.out.println("target x " + target.getPosition().getX() + "\n");
+  		 System.out.println("target y " + target.getPosition().getY()  + "\n");*/
+    	 
      	
              if (getShortestDistance(target) > getShortestDistance(node)
                              + 1) { 
                      distance.put(target, getShortestDistance(node)+1);
                      predecessors.put(target, node);
                      unSettledNodes.add(target);
+                     /*System.out.println("target x " + target.getPosition().getX() + "\n");
+             		System.out.println("target y " + target.getPosition().getY()  + "\n");*/
+                     
              }
             else if(getShortestDistance(target) == getShortestDistance(node)
                              + getDistance(node, target)) {
@@ -107,6 +119,8 @@ public class DijkstraAlgorithm {
          	   predecessors.put(target, minimum); 
          	   distance.put(target, getShortestDistance(node)
                                      + getDistance(node, target));
+         	 /* System.out.println("target2 x " + target.getPosition().getX() + "\n");
+       		  System.out.println("target2 y " + target.getPosition().getY()  + "\n");*/
          	   
             }
      }
@@ -279,9 +293,9 @@ public class DijkstraAlgorithm {
                         }
                 }
         }
-       /* System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
+        System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
         System.out.print("Minimu y : " +minimum.getPosition().getY() + "\n");
-        System.out.print( "\n");*/
+        System.out.print( "\n");
 
         return minimum;
     }
@@ -308,12 +322,19 @@ public class DijkstraAlgorithm {
     public LinkedList<Node> getPath(Node target) {
     	
         LinkedList<Node> path = new LinkedList<Node>();
+        
+        if(target == null){
+        	
+        	System.out.println("target is null");
+        }
+        
         Node step = target;
+        
         // check if a path exists
         if (predecessors.get(step) == null) {
-        
+       
+        	System.out.println("target predecessor is null");
         	return null;
-                
                 
         }
         path.add(step);

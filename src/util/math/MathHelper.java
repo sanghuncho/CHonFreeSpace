@@ -41,7 +41,9 @@ public abstract class MathHelper {
 	public static Node shortestDistanceBetweenGoal(Node nodeFirst, Node nodeSecond, Node goal) {
 
 		double goalX = goal.getPosition().getX();
-		double goalY = goal.getPosition().getY();;
+		double goalY = goal.getPosition().getY();
+
+
 		
 		double firstX = nodeFirst.getPosition().getX();
 		double firstY = nodeFirst.getPosition().getY();

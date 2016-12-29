@@ -78,7 +78,7 @@ public class CostMap {
 		
 	}*/
 	
-public CostMap(Vector size, Vector start, NodeMap nodeMap, ArrayList<Obstacle> obstacles) {
+public CostMap(Vector size, Vector start, NodeMap nodeMap, ArrayList<Obstacle> obstacles,int[][] map) {
 		
 		this.size = size;
 		this.startPoint = start;
@@ -87,8 +87,8 @@ public CostMap(Vector size, Vector start, NodeMap nodeMap, ArrayList<Obstacle> o
 		this.nodeSize = nodeMap.getNodes().size();
 		this.nodeMap = nodeMap;
 		this.obstacles = obstacles;
-		
-		map = new int[size.getX()][size.getY()];
+		this.map = map;
+		/*map = new int[size.getX()][size.getY()];
 		
 		for (Node node : nodeMap.getNodes()) {
 
@@ -103,7 +103,7 @@ public CostMap(Vector size, Vector start, NodeMap nodeMap, ArrayList<Obstacle> o
 			}
 		}
 		
-		map[startPoint.getX()][startPoint.getY()] = 0;
+		map[startPoint.getX()][startPoint.getY()] = 0;*/
 		
 		
 	}
@@ -124,36 +124,6 @@ public CostMap(Vector size, Vector start, NodeMap nodeMap, ArrayList<Obstacle> o
 
 	public int[][] getMap(){return map;}
 	
-	
-
-	
-	private void setObstacleNode(){
-		
-		for (Obstacle obstacle : obstacles) {
-			
-			int obsXpos = (int)obstacle.getX();
-			int obsXposWidth = (int)(obsXpos + obstacle.getWidth());
-			
-			int obsYpos = (int)obstacle.getY();
-			int obsYposWidth = (int)(obsYpos + obstacle.getHeight());
-			
-			for(Node node : nodeMap.getNodes()){
-				
-				int m = node.getPosition().getX();
-				int n = node.getPosition().getY();
-				
-				for(m = obsXpos ; m < obsXposWidth + 1 ; m ++){
-					
-					for(n = obsYpos ; n < obsYposWidth + 1 ; n++){
-						
-						setCost(node.getPosition(), -1);
-						
-					}
-					
-				}
-			}
-		}
-	}
 	
 	public void removeObstacleOnMap(){
 		

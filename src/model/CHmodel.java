@@ -23,12 +23,12 @@ public class CHmodel {
 	
 	public static NodeMap nodeMap;
 	
-	public static Vector getStartVector2D(){
+	public static Vector2D getStartVector2D(){
 		
 		return new Vector2D((startX-5)/10,(startY-5)/10);
 	}
 	
-	public static Vector getGoalVector2D(){
+	public static Vector2D getGoalVector2D(){
 		
 		return new Vector2D((goalX-5)/10,(goalY-5)/10);
 	}
