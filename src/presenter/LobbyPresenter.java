@@ -70,7 +70,7 @@ public class LobbyPresenter {
 		
 		lobbyView.contractButton.setOnMouseClicked(event -> {
 			
-			/*this.map = new int[size.getX()][size.getY()];
+			this.map = new int[size.getX()][size.getY()];
 			
 			for (Node node : nodeMap.getNodes()) {
 
@@ -83,7 +83,7 @@ public class LobbyPresenter {
 					setCost(node.getPosition(),0);
 
 				}
-			}*/
+			}
 			
 			map[startPointNode.getX()][startPointNode.getY()] = 0;
 			
@@ -95,9 +95,7 @@ public class LobbyPresenter {
 				lobbyView.createViaNodePoint(size,map);
 				
 				loop_map++;
-			}
-			
-			
+			}			
 
 		});
 		
@@ -105,37 +103,8 @@ public class LobbyPresenter {
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 		
 		loop=0;
-			
 		
-		
-		this.map = new int[size.getX()][size.getY()];
-		
-		for (Node node : nodeMap.getNodes()) {
-
-			if (node.isObstacle()) {
-			
-				setCost(node.getPosition(), -1);
-				
-			} else {
-				
-				setCost(node.getPosition(),0);
-
-			}
-		}
-		
-		loop_map=0;
-		
-		/*while(loop_map < numberObs){
-			
-			lobbyView.createViaNodePoint(size,map);
-			
-			loop_map++;
-		}*/
-		
-		lobbyView.createViaNodePoint(size,map);
-		
-		
-		//while(loop < numberObs ){
+		while(loop < numberObs ){
 			
 			
 			
@@ -147,16 +116,16 @@ public class LobbyPresenter {
 			
 			costmap1.getDijkstra().execute(nodeMap
 					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
-					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY()));
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
 			
 			System.out.println("execute end \n");
 			
             LinkedList<Node> path1 = costmap1.getDijkstra().getPath(nodeMap
-					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY()));
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
             
             lobbyView.createLane(path1);
             			
-            CostMap costmap2 = new CostMap(size, lobbyView.getViaNode2D(),
+            CostMap costmap2 = new CostMap(size, lobbyView.getViaNode2D(loop),
 					  nodeMap, obstacles, map);
 			
 			/*CostMap costmap2 = new CostMap(size,CHmodel.getStartVector2D(),
@@ -166,7 +135,7 @@ public class LobbyPresenter {
 			costmap2.startDijkstra();
             
             costmap2.getDijkstra().execute(nodeMap
-					.get(lobbyView.getViaNode2D().getX(),lobbyView.getViaNode2D().getY())
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY())
 							,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()) );
             
 			
@@ -181,9 +150,9 @@ public class LobbyPresenter {
             
           lobbyView.createLane(path2);
             
-           // loop++;
+          loop++;
            
-		// }
+		}
             
             
             System.out.println("algorithm is the end \n");
@@ -208,7 +177,7 @@ public class LobbyPresenter {
 	
 	private void setNodeObstacleProperty(NodeMap nodeMap){
 		
-		boolean insideObs = false;
+		//boolean insideObs = false;
 		
 		
 		for(Node node : nodeMap.getNodes()){
@@ -216,16 +185,19 @@ public class LobbyPresenter {
 			for (Obstacle obstacle : obstacles) {
 				
 				
-				insideObs = (insideObs || isNodeInsideObs(node,obstacle));
+				//insideObs = (insideObs || isNodeInsideObs(node,obstacle));
+					if(isNodeInsideObs(node,obstacle)){
 						
+						node.setProperty(Property.OBSTACLE);
+					}	
 			}
 			
-			if(insideObs){
+			/*if(insideObs){
 				
 				node.setProperty(Property.OBSTACLE);
 				
 	        }
-			insideObs = false;
+			insideObs = false;*/
 		}
 		
 	}
@@ -233,11 +205,18 @@ public class LobbyPresenter {
 	
 	private boolean isNodeInsideObs(Node node, Obstacle obstacle){
 		
-		int nodeGoalX = node.getPosition().getX();
-		int nodeGoalY = node.getPosition().getY();
+		int nodeGoalX = node.getPosition().getX()*10;
+		int nodeGoalY = node.getPosition().getY()*10;
 		
 		int obsXpos = (int)obstacle.xProperty().get();
 		int obsXposWidth = (int)(obsXpos + (obstacle.getWidth()));
+		
+		
+		/*System.out.println("nodeGoalX" + nodeGoalX+ "\n");
+        System.out.println("nodeGoalY" + nodeGoalX + "\n");
+        
+        System.out.println("obstacleX" + obsXpos +"\n");
+        System.out.println("obstacleY" + obsXposWidth +"\n");*/
 		
 		int obsYpos = (int)obstacle.yProperty().get();
 		int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()));

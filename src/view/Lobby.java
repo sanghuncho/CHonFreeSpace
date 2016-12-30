@@ -183,8 +183,8 @@ public class Lobby extends BorderPane{
 		System.out.println("size x " + size.getX() + "\n");
 		System.out.println("size y " + size.getY() + "\n");
 		*/
-		System.out.println("random x " + randomNumX + "\n");
-		System.out.println("random y " + randomNumY + "\n");
+		/*System.out.println("random x " + randomNumX + "\n");
+		System.out.println("random y " + randomNumY + "\n");*/
 	
 		/*while(insideObstacle(randomNumX,randomNumY,map)){
 			
@@ -195,39 +195,36 @@ public class Lobby extends BorderPane{
 				
 				System.out.println("new random x " + randomNumX + "\n");
 				System.out.println("new random y " + randomNumY + "\n");
+				System.out.println("\n");
 			
 			}*/
 		
-		viaNode = new Point();
-		viaNode.setCenterX(randomNumX*10+5);
-		viaNode.setCenterY(randomNumY*10+5);
-		viaNode.setFill(Color.DARKGOLDENROD);
-		center.getChildren().add(viaNode);	
+		if( !insideObstacle(randomNumX,randomNumY,map )){
+			
+			System.out.println("created viaNode \n");
+
+			viaNode = new Point();
+			viaNode.setCenterX(randomNumX*10+5);
+			viaNode.setCenterY(randomNumY*10+5);
+			viaNode.setFill(Color.DARKGOLDENROD);
+			center.getChildren().add(viaNode);
+			viaNodes.add(viaNode);
+		}
 		
-		System.out.println("random x " + randomNumX + "\n");
-		System.out.println("random y " + randomNumY + "\n");
-		//viaNodes.add(viaNode);
-				
 	}
 	
-	private boolean insideObstacle(int randomX, int randomY,int[][] map){
+	private boolean insideObstacle(int randomX, int randomY, int[][] map){
 		
 		
 		System.out.println("map " +map[randomX][randomY] +"\n");
 		
-		if( (map[randomX][randomY]) == -1){
-			
-			System.out.println("inside \n");
-			/*
-			System.out.println("random x " + randomNumX + "\n");
-			System.out.println("random y " + randomNumY + "\n");*/
 		
-			
+		if( (map[randomX][randomY]) == -1){
+		
 			return true;
 			
 		}
 		else{
-			//System.out.println("outside \n");
 			return false;
 		}
 		
@@ -236,8 +233,8 @@ public class Lobby extends BorderPane{
 	public Vector2D getViaNode2D(int i){
 		
 		
-		System.out.println("viaNodeX " + (viaNodes.get(i).getCenterX()-5)/10 + "\n");
-		System.out.println("viaNodeY " + (viaNodes.get(i).getCenterY()-5)/10 + "\n");
+		/*System.out.println("viaNodeX " + (viaNodes.get(i).getCenterX()-5)/10 + "\n");
+		System.out.println("viaNodeY " + (viaNodes.get(i).getCenterY()-5)/10 + "\n");*/
 
 		return new Vector2D((viaNodes.get(i).getCenterX()-5)/10,(viaNodes.get(i).getCenterY()-5)/10);
 	}
