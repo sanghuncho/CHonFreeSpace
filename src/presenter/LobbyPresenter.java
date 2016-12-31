@@ -112,20 +112,33 @@ public class LobbyPresenter {
 		
 		loop=0;
 		
+		CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
+				nodeMap, obstacles , map);
+		Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
+		
 		while( loop < numberObs ){
 			
-			CostMap costmap_head = new CostMap(size, CHmodel.getStartVector2D(),
-					nodeMap, obstacles , map);
+			/*CostMap costmap_head = new CostMap(size, CHmodel.getStartVector2D(),
+					nodeMap, obstacles , map);*/
 			
 			//costmap1.createEdgeOnMap();
 			
 				
-			Graph graph_head = new Graph(nodeMap.getNodes(),costmap_head.getEdges());
+			//Graph graph_head = new Graph(nodeMap.getNodes(),costmap_head.getEdges());
+			//Graph graph_head = new Graph(nodeMap.getNodes(),costmap.getEdges());
 			
-			DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph_head,obstacles,
+			
+			/*DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph_head,obstacles,
 					nodeMap
 					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
 					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()),lobbyView); 
+			*/
+			
+			DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
+					nodeMap
+					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()),lobbyView); 
+			
 			
 			dijkstra_head.start();
 			
@@ -142,12 +155,18 @@ public class LobbyPresenter {
 			
 		
 			
-            CostMap costmap_tail = new CostMap(size, lobbyView.getViaNode2D(loop),
-					  nodeMap, obstacles, map);
+           /* CostMap costmap_tail = new CostMap(size, lobbyView.getViaNode2D(loop),
+					  nodeMap, obstacles, map);*/
             
-            Graph graph_tail = new Graph(nodeMap.getNodes(),costmap_tail.getEdges());
+           // Graph graph_tail = new Graph(nodeMap.getNodes(),costmap_tail.getEdges());
 			
-			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph_tail,obstacles,
+			/*DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph_tail,obstacles,
+					nodeMap
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY())
+					,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+			*/
+			
+			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 					nodeMap
 					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY())
 					,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
@@ -175,7 +194,7 @@ public class LobbyPresenter {
 		}
 		
             
-            System.out.println("algorithm is the end \n");
+            //System.out.println("algorithm is the end \n");
             
 		});
 		

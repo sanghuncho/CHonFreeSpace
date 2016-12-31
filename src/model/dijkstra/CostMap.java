@@ -51,20 +51,6 @@ public class CostMap {
 		createSurroundingEdges(nodes);
 	}
 
-	/*public void startDijkstra(){
-	
-		Graph graph = new Graph(nodes,edges);
-	
-		dijkstra = new DijkstraAlgorithm(graph,obstacles); 
-	
-	}*/
-	
-	/*public void createEdgeOnMap() {
-		createSurroundingEdges(nodes);
-		
-	}*/
-	
-
 	public int[][] getMap(){return map;}
 	
 		
@@ -102,6 +88,15 @@ public class CostMap {
 
 	}
 	
+	private void createEdge(Node node,Node neighbor){
+		
+		lane = new Edge(edgeId,node,neighbor,WEIGHT);
+		edges.add(lane);
+		edgeId++;	
+	}
+	
+	public ArrayList<Edge> getEdges(){return edges;}
+	
 	private boolean isObstacle(Vector point) {
 		return map[point.getX()][point.getY()] == -1;
 	}
@@ -119,30 +114,6 @@ public class CostMap {
 		
 	}
 	
-	private void createEdge(Node node,Node neighbor){
-				
-		lane = new Edge(edgeId,node,neighbor,WEIGHT);
-		edges.add(lane);
-		/*lane_backward = new Edge(edgeId,neighbor,node,WEIGHT);
-		edges.add(lane_backward);*/
-		edgeId++;	
-	}
-	
-	
-	private boolean checkForPoint(ArrayList<Vector> list, Vector point) {
-		for (Vector checkPoint : list) {
-			if (checkPoint.getX() == point.getX()
-					&& checkPoint.getY() == point.getY()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private ArrayList<Node> sortTheList(ArrayList<Node> sortedList) {
-		Collections.sort(sortedList);
-		return sortedList;
-	}
 	
 	public ArrayList<Vector> getSurroundingPoints(int x, int y) {
 		ArrayList<Vector> neighbors = new ArrayList<Vector>();
@@ -227,6 +198,6 @@ public class CostMap {
 		return pointParking;
 	}
 	
-	public ArrayList<Edge> getEdges(){return edges;}
+	
 	
 }
