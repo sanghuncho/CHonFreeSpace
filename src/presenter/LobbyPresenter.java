@@ -63,7 +63,7 @@ public class LobbyPresenter {
 		numberObs = CHmodel.getObstacle();
 		obstacles = lobbyView.getObstacleList();
 		
-		setNodeObstacleProperty(nodeMap);
+		
 		
 		for(int i = 0; i < numberObs; i++){
 						
@@ -72,7 +72,11 @@ public class LobbyPresenter {
 			obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
 		}
 		
+		//setNodeObstacleProperty(nodeMap);
+		
 		lobbyView.contractButton.setOnMouseClicked(event -> {
+			
+			setNodeObstacleProperty(nodeMap);
 			
 			this.map = new int[size.getX()][size.getY()];
 			
@@ -218,10 +222,10 @@ public class LobbyPresenter {
 		
 		
 		/*System.out.println("nodeGoalX" + nodeGoalX+ "\n");
-        System.out.println("nodeGoalY" + nodeGoalX + "\n");
+        System.out.println("nodeGoalY" + nodeGoalX + "\n");*/
         
-        System.out.println("obstacleX" + obsXpos +"\n");
-        System.out.println("obstacleY" + obsXposWidth +"\n");*/
+        System.out.println("obstacleX " + obsXpos +"\n");
+        System.out.println("obstacleY " + obsXposWidth +"\n");
 		
 		int obsYpos = (int)obstacle.yProperty().get();
 		int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()));
@@ -277,14 +281,35 @@ public class LobbyPresenter {
 	            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX());
 	            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY());
 	            
+	            System.out.println("XProperty" + xPosProperty +"\n");
+	            
+	            
 		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );
 		        ((Obstacle)(t.getSource())).yProperty().bind(yPosProperty );
 		        		  
 	        }
 	        
 	    };
-	  
+	    
 	    EventHandler<MouseEvent> obstacleOnMouseRelesedEventHandler = 
+		        new EventHandler<MouseEvent>() {
+		 
+		        @Override
+		        public void handle(MouseEvent t) {
+		        	
+		        DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX());
+		        DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY());
+		        
+		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );
+		        ((Obstacle)(t.getSource())).yProperty().bind(yPosProperty );
+		          /*double xposition =  ((Obstacle)(t.getSource())).getXPoperty().get();
+		          double yposition =  ((Obstacle)(t.getSource())).getYPoperty().get();*/
+		        
+		        }
+		        
+		    };
+	  
+	    /*EventHandler<MouseEvent> obstacleOnMouseRelesedEventHandler = 
 		        new EventHandler<MouseEvent>() {
 		 
 		        @Override
@@ -295,7 +320,7 @@ public class LobbyPresenter {
 		        
 		        }
 		        
-		    };
+		    };*/
 		    
 		   
 
