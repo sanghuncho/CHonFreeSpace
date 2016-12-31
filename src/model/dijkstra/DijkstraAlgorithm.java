@@ -9,14 +9,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.application.Platform;
 import model.Obstacle;
 import model.node.Node;
 import model.node.NodeMap;
 import util.math.MathHelper;
 import util.math.Vector;
+import view.Lobby;
 
-public class DijkstraAlgorithm {
+public class DijkstraAlgorithm implements Runnable {
 	
+	private Thread thread;
 	private List<Node> nodes;
     private List<Edge> edges;
     
@@ -26,42 +29,72 @@ public class DijkstraAlgorithm {
     private Map<Node, Integer> distance;
     private ArrayList<Obstacle> obstacles;
     private Node goal;
+    private Node source;
+    private Lobby lobbyView;
+    private LinkedList<Node> path;
     
-    public DijkstraAlgorithm(Graph graph, ArrayList<Obstacle> obstacles){
+    /*public DijkstraAlgorithm(Graph graph, ArrayList<Obstacle> obstacles){
     	
     	nodes = new ArrayList<Node>(graph.getNodes());
         edges = new ArrayList<Edge>(graph.getEdges());
         this.obstacles = obstacles;
         
-    }
-        
-   /* public void execute(Node source) {
-    	
-    	
-        System.out.println("execute \n");
-
-            settledNodes = new HashSet<Node>();
-            unSettledNodes = new HashSet<Node>();
-            distance = new HashMap<Node, Integer>();
-            predecessors = new HashMap<Node, Node>();
-            distance.put(source, 0);
-            unSettledNodes.add(source);
-            
-            while (unSettledNodes.size() > 0) {
-            	
-
-            		Node node = getMinimumCost(unSettledNodes);
-            		
-                    settledNodes.add(node);
-
-                    unSettledNodes.remove(node);
-                    
-                    findMinimalDistances(node);
-            }
-            
-    }  */
+    }*/
     
- public void execute(Node source, Node goal) {
+    public DijkstraAlgorithm(Graph graph, ArrayList<Obstacle> obstacles,Node source, Node goal,Lobby lobbyView){
+    	
+    	nodes = new ArrayList<Node>(graph.getNodes());
+        edges = new ArrayList<Edge>(graph.getEdges());
+        this.obstacles = obstacles;
+        this.source = source;
+        this.goal = goal;
+        this.lobbyView = lobbyView;
+        
+    }
+    
+    private void setPath() {
+   
+        this.path = new LinkedList<Node>();
+        
+        if(goal == null){
+        	
+        	System.out.println("target is null");
+        }
+        
+        Node step = goal;
+        
+        // check if a path exists
+        if (predecessors.get(step) == null) {
+       
+        	System.out.println("target predecessor is null");
+                
+        }
+        path.add(step);
+        while (predecessors.get(step) != null) {
+                step = predecessors.get(step);
+                path.add(step);
+        }
+        // Put it into the correct order
+        Collections.reverse(path);
+        
+    }
+    
+    public LinkedList<Node> getPath(){return path;}
+
+   /* public void startDijkstra(){
+    	
+		Graph graph = new Graph(nodes,edges);
+	
+		dijkstra = new DijkstraAlgorithm(graph,obstacles); 
+	
+	}*/
+    
+    @Override
+	public void run() {
+		execute();
+	}
+    
+    public void execute() {
     	
     	
         System.out.println("execute \n");
@@ -70,7 +103,6 @@ public class DijkstraAlgorithm {
             unSettledNodes = new HashSet<Node>();
             distance = new HashMap<Node, Integer>();
             predecessors = new HashMap<Node, Node>();
-            this.goal = goal;
             distance.put(source, 0);
             unSettledNodes.add(source);
             
@@ -87,9 +119,52 @@ public class DijkstraAlgorithm {
                     unSettledNodes.remove(node);
                     
                     findMinimalDistances(node,goal);
+                    
             }
             
+        	//getThread().interrupt();
+        	
+            setPath();
+          //  System.out.println("Path size " + path.size() + "\n");
+            
+            
+            Platform.runLater(new Runnable() {
+                @Override public void run() {
+                	lobbyView.createLane(getPath());      
+                }
+            });
+            //lobbyView.createLane(getPath());
     } 
+    
+    /*public void execute(Node source, Node goal) {
+    	
+    	
+        System.out.println("execute \n");
+
+            settledNodes = new HashSet<Node>();
+            unSettledNodes = new HashSet<Node>();
+            distance = new HashMap<Node, Integer>();
+            predecessors = new HashMap<Node, Node>();
+            this.goal = goal;
+            distance.put(source, 0);
+            unSettledNodes.add(source);
+            
+            while (unSettledNodes.size() > 0) {
+        
+        		
+            		Node node = getMinimumCost(unSettledNodes,goal);
+            		
+            		System.out.println("node x " + node.getPosition().getX() + "\n");
+            		System.out.println("node y " + node.getPosition().getY()  + "\n");
+            		
+                    settledNodes.add(node);
+
+                    unSettledNodes.remove(node);
+                    
+                    findMinimalDistances(node,goal);
+            }
+            
+    } */
  
  	private void findMinimalDistances(Node node,Node goal) {
  	
@@ -293,10 +368,10 @@ public class DijkstraAlgorithm {
                         }
                 }
         }
-        System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
+        /*System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
         System.out.print("Minimu y : " +minimum.getPosition().getY() + "\n");
         System.out.print( "\n");
-
+*/
         return minimum;
     }
     
@@ -319,7 +394,7 @@ public class DijkstraAlgorithm {
 
     
     
-    public LinkedList<Node> getPath(Node target) {
+    /*public LinkedList<Node> getPath(Node target) {
     	
         LinkedList<Node> path = new LinkedList<Node>();
         
@@ -346,7 +421,22 @@ public class DijkstraAlgorithm {
         Collections.reverse(path);
         
         return path;
-    }
+    }*/
+    
+    public Thread getThread() {
+		return thread;
+	}
+
+    public void setThread(Thread thread) {
+		this.thread = thread;
+	}
+    
+    public void start() {
+		if (getThread() == null) {
+			setThread(new Thread(this));
+			getThread().start();
+		}
+	}
         
    
 

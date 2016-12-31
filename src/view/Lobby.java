@@ -164,6 +164,9 @@ public class Lobby extends BorderPane{
 		
 		for(int i = 0 ; i < k-1 ; i ++){
 			
+			
+	        //System.out.print("path i : " + i + "\n");
+
 			Vector start = path.get(i).getPosition();
 			Vector goal = path.get(i+1).getPosition();
 			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,

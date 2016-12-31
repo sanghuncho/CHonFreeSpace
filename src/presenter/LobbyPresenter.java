@@ -15,7 +15,9 @@ import javafx.util.Duration;
 import model.CHmodel;
 import model.Obstacle;
 import model.dijkstra.CostMap;
+import model.dijkstra.DijkstraAlgorithm;
 import model.dijkstra.Edge;
+import model.dijkstra.Graph;
 import model.node.Node;
 import model.node.NodeMap;
 import model.node.NodeMapHandler;
@@ -42,6 +44,8 @@ public class LobbyPresenter {
 	private int loop_map;
 	private int[][] map;
 	private NodeMap nodeMap;
+    private DijkstraAlgorithm dijkstra;
+
 	
 	public LobbyPresenter(Lobby lobbyView){
 		this.lobbyView = lobbyView;
@@ -104,56 +108,68 @@ public class LobbyPresenter {
 		
 		loop=0;
 		
-		while(loop < numberObs ){
+		while( loop < numberObs ){
 			
-			
-			
-			CostMap costmap1 = new CostMap(size, CHmodel.getStartVector2D(),
+			CostMap costmap_head = new CostMap(size, CHmodel.getStartVector2D(),
 					nodeMap, obstacles , map);
 			
-			costmap1.createEdgeOnMap();
-			costmap1.startDijkstra();
+			//costmap1.createEdgeOnMap();
 			
-			costmap1.getDijkstra().execute(nodeMap
-					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
-			
-			System.out.println("execute end \n");
-			
-            LinkedList<Node> path1 = costmap1.getDijkstra().getPath(nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
-            
-            lobbyView.createLane(path1);
-            			
-            CostMap costmap2 = new CostMap(size, lobbyView.getViaNode2D(loop),
-					  nodeMap, obstacles, map);
-			
-			/*CostMap costmap2 = new CostMap(size,CHmodel.getStartVector2D(),
-					  nodeMap, obstacles, map);*/
 				
-			costmap2.createEdgeOnMap();
-			costmap2.startDijkstra();
-            
-            costmap2.getDijkstra().execute(nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY())
-							,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()) );
-            
+			Graph graph_head = new Graph(nodeMap.getNodes(),costmap_head.getEdges());
 			
-			/*costmap2.getDijkstra().execute(nodeMap
-					.get(startPointNode.getX(),startPointNode.getY()),
-							nodeMap.get(goalPointNode.getX(),goalPointNode.getY()) );
-            */
-     
+			DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph_head,obstacles,
+					nodeMap
+					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()),lobbyView); 
+			
+			dijkstra_head.start();
+			
+			//costmap1.startDijkstra();
+			
+			/*costmap1.getDijkstra().execute(nodeMap
+					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));*/
+			/*			
+            LinkedList<Node> path_head = dijkstra_head.getPath(nodeMap
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
             
-          LinkedList<Node> path2 = costmap2.getDijkstra().getPath(nodeMap
-					.get(goalPointNode.getX(),goalPointNode.getY()));
+            lobbyView.createLane(path_head);*/
+			
+		
+			
+            CostMap costmap_tail = new CostMap(size, lobbyView.getViaNode2D(loop),
+					  nodeMap, obstacles, map);
             
-          lobbyView.createLane(path2);
+            Graph graph_tail = new Graph(nodeMap.getNodes(),costmap_tail.getEdges());
+			
+			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph_tail,obstacles,
+					nodeMap
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY())
+					,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+			
+			dijkstra_tail.start();
+			
+			
+			
+			
+			
+			//costmap2.createEdgeOnMap();
+           // costmap2.startDijkstra();
             
-          loop++;
+           /* costmap2.getDijkstra().execute(nodeMap
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY())
+							,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()) );*/
+        
+	       /* LinkedList<Node> path_tail = dijkstra_tail.getPath(nodeMap
+						.get(goalPointNode.getX(),goalPointNode.getY()));
+	            
+	        lobbyView.createLane(path_tail);*/
+	            
+	        loop++;
            
 		}
-            
+		
             
             System.out.println("algorithm is the end \n");
             
