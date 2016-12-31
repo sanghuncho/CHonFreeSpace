@@ -193,27 +193,16 @@ public class LobbyPresenter {
 	
 	private void setNodeObstacleProperty(NodeMap nodeMap){
 		
-		//boolean insideObs = false;
-		
-		
 		for(Node node : nodeMap.getNodes()){
 			
 			for (Obstacle obstacle : obstacles) {
-				
-				
-				//insideObs = (insideObs || isNodeInsideObs(node,obstacle));
+		
 					if(isNodeInsideObs(node,obstacle)){
 						
 						node.setProperty(Property.OBSTACLE);
 					}	
 			}
 			
-			/*if(insideObs){
-				
-				node.setProperty(Property.OBSTACLE);
-				
-	        }
-			insideObs = false;*/
 		}
 		
 	}
