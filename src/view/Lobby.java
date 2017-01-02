@@ -40,6 +40,7 @@ public class Lobby extends BorderPane{
 	public Pane center = new Pane();
 	public Pane right = new Pane();
 	public Pane left = new Pane();
+	public Pane top = new Pane();
 	
 	private Point viaNode;
 	private Random randX;
@@ -98,31 +99,39 @@ public class Lobby extends BorderPane{
 		this.setCenter(center);
 		this.setRight(right);
 		this.setLeft(left);
+		this.setTop(top);
+		this.setBottom(bottom);
 		
-		//BorderPane.setAlignment(bottom, Pos.TOP_CENTER);
+		BorderPane.setAlignment(left, Pos.TOP_LEFT);
 		BorderPane.setAlignment(center, Pos.TOP_CENTER);
-		BorderPane.setAlignment(right, Pos.TOP_LEFT);
+		BorderPane.setAlignment(right, Pos.TOP_RIGHT);
+		BorderPane.setAlignment(top, Pos.TOP_CENTER);
+		BorderPane.setAlignment(bottom, Pos.TOP_CENTER);
 		
 		
 		
-		center.setMaxSize(1000,600);
+		center.setMaxSize(1000,1000);
 		center.getChildren().addAll(startPoint,endPoint);
 		
 		VBox vBox = new VBox();
 		vBox.setSpacing(10);
 		vBox.getChildren().addAll(contractButton,searchButton);
-		right.setMaxSize(100, 200);
+		
+		
 		right.getChildren().add(vBox);
+		right.setMinWidth(50);
 		
-		left.setMaxSize(100,200);
 		
-		//bottom.setMaxSize(600,50);
-		//bottom.getChildren().addAll(contractButton,searchButton);
-		//bottom.getChildren().add(hBox);
+		left.setMinWidth(50);
+		
+		top.setMinHeight(25);
+		
+		bottom.setMinHeight(25);
+		
 
 		scene = new Scene(this);
-		stage.setHeight(CHmodel.getMapX()+50);
-		stage.setWidth(CHmodel.getMapY()+50);
+		stage.setHeight(CHmodel.getMapX()+100);
+		stage.setWidth(CHmodel.getMapY()+100);
 		
 		//this.scene.getStylesheets().add("/view/style.css");
 		stage.setScene(scene);
