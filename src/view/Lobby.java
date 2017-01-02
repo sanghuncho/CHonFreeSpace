@@ -189,7 +189,7 @@ public class Lobby extends BorderPane{
 		/*System.out.println("random x " + randomNumX + "\n");
 		System.out.println("random y " + randomNumY + "\n");*/
 	
-		/*while(insideObstacle(randomNumX,randomNumY,map)){
+		while(insideObstacle(randomNumX,randomNumY,map)){
 			
 				randX = new Random();
 				randomNumX = randX.nextInt( size.getX());
@@ -200,7 +200,7 @@ public class Lobby extends BorderPane{
 				System.out.println("new random y " + randomNumY + "\n");
 				System.out.println("\n");
 			
-			}*/
+			}
 		
 		if( !insideObstacle(randomNumX,randomNumY,map )){
 			

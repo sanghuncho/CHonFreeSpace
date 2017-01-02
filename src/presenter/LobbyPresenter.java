@@ -98,7 +98,7 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			
-			while(loop_map < numberObs){
+			while(loop_map < 1000){//numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				
@@ -116,25 +116,36 @@ public class LobbyPresenter {
 				nodeMap, obstacles , map);
 		Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
 		
-		while( loop < numberObs ){
+		
+		//try to new implementation
+		DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
+				nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
+		
+		DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
+				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+		
+		dijkstra_head.execute();
+		
+		dijkstra_tail.execute();
+		
+		
+		
+		while( loop < 1000 ){ //numberObs
+		
 			
-			/*CostMap costmap_head = new CostMap(size, CHmodel.getStartVector2D(),
-					nodeMap, obstacles , map);*/
+			dijkstra_head.setPath(nodeMap
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
 			
-			//costmap1.createEdgeOnMap();
+			lobbyView.createLane(dijkstra_head.getPath());
+	            
+			dijkstra_tail.setPath(nodeMap
+					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
 			
-				
-			//Graph graph_head = new Graph(nodeMap.getNodes(),costmap_head.getEdges());
-			//Graph graph_head = new Graph(nodeMap.getNodes(),costmap.getEdges());
+			lobbyView.createLane(dijkstra_tail.getPath());
 			
+	        loop++;
 			
-			/*DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph_head,obstacles,
-					nodeMap
-					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()),lobbyView); 
-			*/
-			
-			DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
+			/*DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
 					nodeMap
 					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
 					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()),lobbyView); 
@@ -142,29 +153,6 @@ public class LobbyPresenter {
 			
 			dijkstra_head.start();
 			
-			//costmap1.startDijkstra();
-			
-			/*costmap1.getDijkstra().execute(nodeMap
-					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));*/
-			/*			
-            LinkedList<Node> path_head = dijkstra_head.getPath(nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
-            
-            lobbyView.createLane(path_head);*/
-			
-		
-			
-           /* CostMap costmap_tail = new CostMap(size, lobbyView.getViaNode2D(loop),
-					  nodeMap, obstacles, map);*/
-            
-           // Graph graph_tail = new Graph(nodeMap.getNodes(),costmap_tail.getEdges());
-			
-			/*DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph_tail,obstacles,
-					nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY())
-					,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
-			*/
 			
 			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 					nodeMap
@@ -172,24 +160,8 @@ public class LobbyPresenter {
 					,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
 			
 			dijkstra_tail.start();
-			
-			
-			
-			
-			
-			//costmap2.createEdgeOnMap();
-           // costmap2.startDijkstra();
-            
-           /* costmap2.getDijkstra().execute(nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY())
-							,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()) );*/
-        
-	       /* LinkedList<Node> path_tail = dijkstra_tail.getPath(nodeMap
-						.get(goalPointNode.getX(),goalPointNode.getY()));
 	            
-	        lobbyView.createLane(path_tail);*/
-	            
-	        loop++;
+	        loop++;*/
            
 		}
 		
@@ -199,7 +171,7 @@ public class LobbyPresenter {
 		});
 		
 		
-	}//activate end
+	}
 	
 	private boolean isObstacle(Vector point) {
 		return map[point.getX()][point.getY()] == -1;
