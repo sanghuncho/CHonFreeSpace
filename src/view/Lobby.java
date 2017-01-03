@@ -228,7 +228,7 @@ public class Lobby extends BorderPane{
 	private boolean insideObstacle(int randomX, int randomY, int[][] map){
 		
 		
-		System.out.println("map " +map[randomX][randomY] +"\n");
+		//System.out.println("map " +map[randomX][randomY] +"\n");
 		
 		
 		if( (map[randomX][randomY]) == -1){

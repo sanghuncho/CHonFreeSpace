@@ -94,7 +94,8 @@ public class LobbyPresenter {
 			}
 			
 			map[startPointNode.getX()][startPointNode.getY()] = 0;
-			
+			/*map[startPointNode.getX()][startPointNode.getY()] = -1;
+			map[goalPointNode.getX()][goalPointNode.getY()] = -1;*/
 			
 			loop_map=0;
 			
@@ -250,8 +251,14 @@ public class LobbyPresenter {
 	        public void handle(MouseEvent t) {
 	            orgSceneX = t.getSceneX();
 	            orgSceneY = t.getSceneY();
+	            
+		        System.out.println("orgSceneX : " + orgSceneX +"\n");
+	           
+	            
 	            orgTranslateX = ((Obstacle)(t.getSource())).getTranslateX();
 	            orgTranslateY = ((Obstacle)(t.getSource())).getTranslateY();
+	            
+		        System.out.println("orgTranslateX : " +  orgTranslateX  + "\n");
 	        	
 	        }       
 	    };
@@ -268,16 +275,20 @@ public class LobbyPresenter {
 	            double offsetY = t.getSceneY() - orgSceneY;
 	            double newTranslateX = orgTranslateX;// + offsetX;
 	            double newTranslateY = orgTranslateY;// + offsetY;
+
 	           
-	            ((Obstacle)(t.getSource())).setTranslateX(newTranslateX);
-	            ((Obstacle)(t.getSource())).setTranslateY(newTranslateY);
+		        System.out.println("orgTranslateX 2  : " +  orgTranslateX  + "\n");
+
+     
+	            ((Obstacle)(t.getSource())).setTranslateX(newTranslateX-75);
+	            ((Obstacle)(t.getSource())).setTranslateY(newTranslateY-50);
 	            
 	            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX());
 	            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY());
 	            
 	          //  System.out.println("XProperty" + xPosProperty +"\n");
 	            
-	            
+	           
 		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );
 		        ((Obstacle)(t.getSource())).yProperty().bind(yPosProperty );
 		        		  
