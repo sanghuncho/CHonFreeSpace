@@ -23,6 +23,16 @@ public class CHmodel {
 	
 	public static NodeMap nodeMap;
 	
+	public static String percentage;
+	
+	public static String getPercentage() {
+		return percentage;
+	}
+
+	public static void setPercentage(String percentage) {
+		CHmodel.percentage = percentage;
+	}
+
 	public static Vector2D getStartVector2D(){
 		
 		return new Vector2D((startX-5)/10,(startY-5)/10);
@@ -105,5 +115,24 @@ public class CHmodel {
 
 	public static void setObstacle(int obstacle) {
 		CHmodel.obstacle = obstacle;
+	}
+	
+	public static int getNumberContracted() {
+				
+		int result = 0;
+		
+		switch (CHmodel.percentage){
+			case "10%" : result = 10;
+						 break;
+			case "15%" : result = 15;
+			 			 break;
+			case "20%" : result = 20;
+			 			 break;
+
+		}
+		
+		int nodes = (mapX*mapY)/100;
+	
+		return  (nodes*result)/100;
 	}
 }

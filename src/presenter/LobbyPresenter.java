@@ -98,12 +98,15 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			
-			while(loop_map < 1000){//numberObs
+			while(loop_map < CHmodel.getNumberContracted()){//numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				
 				loop_map++;
-			}			
+			}
+			
+			System.out.println("the number of contracting" + 
+			CHmodel.getNumberContracted() +"\n");
 
 		});
 		
@@ -130,7 +133,7 @@ public class LobbyPresenter {
 		
 		
 		
-		while( loop < 1000 ){ //numberObs
+		while( loop < CHmodel.getNumberContracted() ){ //numberObs
 		
 			
 			dijkstra_head.setPath(nodeMap
@@ -215,8 +218,8 @@ public class LobbyPresenter {
 		/*System.out.println("nodeGoalX" + nodeGoalX+ "\n");
         System.out.println("nodeGoalY" + nodeGoalX + "\n");*/
         
-        System.out.println("obstacleX " + obsXpos +"\n");
-        System.out.println("obstacleY " + obsXposWidth +"\n");
+        /*System.out.println("obstacleX " + obsXpos +"\n");
+        System.out.println("obstacleY " + obsXposWidth +"\n");*/
 		
 		int obsYpos = (int)obstacle.yProperty().get();
 		int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()));
@@ -272,7 +275,7 @@ public class LobbyPresenter {
 	            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX());
 	            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY());
 	            
-	            System.out.println("XProperty" + xPosProperty +"\n");
+	          //  System.out.println("XProperty" + xPosProperty +"\n");
 	            
 	            
 		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );

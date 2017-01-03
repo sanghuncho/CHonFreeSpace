@@ -66,6 +66,10 @@ public class MainPresenter {
 		
 		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		
+		CHmodel.setPercentage(mainView.getPercentage());
+		
+		System.out.println("percent : " + mainView.getPercentage()+"\n");
+		
 		new NodeMapHandler(size);
 		
 	

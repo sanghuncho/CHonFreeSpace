@@ -2,14 +2,25 @@ package view;
 
 
 
+import java.util.List;
+
+import javafx.beans.binding.IntegerExpression;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.CHmodel;
 
 public class MainView extends Pane{
 	
@@ -23,6 +34,7 @@ public class MainView extends Pane{
 	public TextField endPointX;
 	public TextField endPointY;
 	public TextField numberOfObstacle;
+	public String percentage;
 	
 	public MainView(Stage stage){
 		
@@ -121,7 +133,24 @@ public class MainView extends Pane{
 		obstacleHbox.setLayoutY(480);
 		obstacleHbox.setId("obstacleHbox");
 		
+		ObservableList<String> options = 
+			    FXCollections.observableArrayList(
+			        "10%",
+			        "15%",
+			        "20%"
+			    );
+		final ComboBox comboBox = new ComboBox(options);
 		
+		comboBox.setPromptText("the percent of contracting");
+		
+		comboBox.valueProperty().addListener(new ChangeListener<String>() {
+            @Override 
+            public void changed(ObservableValue ov, String t, String t1) {                
+                percentage = t1;
+                CHmodel.setPercentage(t1);
+            }    
+        });
+			
 		mapHbox.getChildren().addAll(mapLabel,mapXField,mapYField);
 		
 		startHbox.getChildren().addAll(startLabel,startPointX,startPointY);
@@ -131,7 +160,7 @@ public class MainView extends Pane{
 		obstacleHbox.getChildren().addAll(obstacleLabel,numberOfObstacle);
 		
 		
-		vbox.getChildren().addAll(mapHbox,startHbox,endHbox,obstacleHbox,createMap);
+		vbox.getChildren().addAll(mapHbox,startHbox,endHbox,obstacleHbox,comboBox,createMap);
 		
 		//vbox.getChildren().addAll(mapHbox,createMap);
 		this.getChildren().addAll(vbox);
@@ -144,6 +173,8 @@ public class MainView extends Pane{
 		stage.setScene(scene);
 	
 	}
+		
+	public String getPercentage(){ return percentage;}
 	
 	public TextField getMapX(){
 		
