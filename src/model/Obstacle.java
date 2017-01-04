@@ -20,21 +20,12 @@ public class Obstacle extends Rectangle {
 	
 	public Obstacle(){
 		
-		/*XPosProperty = new SimpleDoubleProperty(xPos = getRandomX());
-		yPosProperty = new SimpleDoubleProperty(yPos = getRandomY());
-		*/
-		/*this.setX(xPos = getRandomX());
-		this.setY(yPos = getRandomY());*/
+	
+		/*this.xProperty().set(getRandomX());
+		this.yProperty().set(getRandomY());*/
 		
-		/*this.setX(xPos = 255);
-		this.setY(yPos = 255);
-		*/
-		
-		this.xProperty().set(getRandomX());
-		this.yProperty().set(getRandomY());
-		
-		/*this.xProperty().set(110);
-		this.yProperty().set(85);*/
+		this.xProperty().set(100);
+		this.yProperty().set(100);
 		
 		this.setWidth(50);
 		this.setHeight(50);

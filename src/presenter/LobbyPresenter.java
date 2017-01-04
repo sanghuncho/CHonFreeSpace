@@ -69,7 +69,7 @@ public class LobbyPresenter {
 						
 			obstacles.get(i).setOnMousePressed(obstacleOnMousePressedEventHandler);
 			obstacles.get(i).setOnMouseDragged(obstacleOnMouseDraggedEventHandler);
-			obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
+			//obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
 		}
 		
 		//setNodeObstacleProperty(nodeMap);
@@ -99,15 +99,15 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			
-			while(loop_map < CHmodel.getNumberContracted()){//numberObs
+			while(loop_map < 300  ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				
 				loop_map++;
 			}
 			
-			System.out.println("the number of contracting" + 
-			CHmodel.getNumberContracted() +"\n");
+			/*System.out.println("the number of contracting" + 
+			CHmodel.getNumberContracted() +"\n");*/
 
 		});
 		
@@ -134,7 +134,7 @@ public class LobbyPresenter {
 		
 		
 		
-		while( loop < CHmodel.getNumberContracted() ){ //numberObs
+		while( loop < 300 ){  //CHmodel.getNumberContracted()
 		
 			
 			dijkstra_head.setPath(nodeMap
@@ -249,16 +249,16 @@ public class LobbyPresenter {
 	 
 	        @Override
 	        public void handle(MouseEvent t) {
-	            orgSceneX = t.getSceneX();
-	            orgSceneY = t.getSceneY();
+	        	
+	            orgSceneX = t.getSceneX()-50;
+	            orgSceneY = t.getSceneY()-25;
 	            
-		        System.out.println("orgSceneX : " + orgSceneX +"\n");
-	           
+		        System.out.println("orgSceneX : " + orgSceneX +"\n");	           
+		        System.out.println("orgSceneY : " + orgSceneY +"\n");
 	            
 	            orgTranslateX = ((Obstacle)(t.getSource())).getTranslateX();
 	            orgTranslateY = ((Obstacle)(t.getSource())).getTranslateY();
 	            
-		        System.out.println("orgTranslateX : " +  orgTranslateX  + "\n");
 	        	
 	        }       
 	    };
@@ -277,17 +277,18 @@ public class LobbyPresenter {
 	            double newTranslateY = orgTranslateY;// + offsetY;
 
 	           
-		        System.out.println("orgTranslateX 2  : " +  orgTranslateX  + "\n");
+		        System.out.println("orgTranslateX   : " +  orgTranslateX  + "\n");
+		        System.out.println("orgTranslateY   : " +  orgTranslateY  + "\n");
 
      
-	            ((Obstacle)(t.getSource())).setTranslateX(newTranslateX-75);
-	            ((Obstacle)(t.getSource())).setTranslateY(newTranslateY-50);
+	            ((Obstacle)(t.getSource())).setTranslateX(newTranslateX);
+	            ((Obstacle)(t.getSource())).setTranslateY(newTranslateY);
 	            
-	            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX());
-	            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY());
+	            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX()-75);
+	            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY()-50);
 	            
-	          //  System.out.println("XProperty" + xPosProperty +"\n");
-	            
+	          System.out.println("XProperty" + xPosProperty +"\n");
+	          System.out.println("YProperty" + yPosProperty +"\n");  
 	           
 		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );
 		        ((Obstacle)(t.getSource())).yProperty().bind(yPosProperty );
@@ -296,7 +297,7 @@ public class LobbyPresenter {
 	        
 	    };
 	    
-	    EventHandler<MouseEvent> obstacleOnMouseRelesedEventHandler = 
+	   /* EventHandler<MouseEvent> obstacleOnMouseRelesedEventHandler = 
 		        new EventHandler<MouseEvent>() {
 		 
 		        @Override
@@ -307,12 +308,12 @@ public class LobbyPresenter {
 		        
 		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );
 		        ((Obstacle)(t.getSource())).yProperty().bind(yPosProperty );
-		          /*double xposition =  ((Obstacle)(t.getSource())).getXPoperty().get();
-		          double yposition =  ((Obstacle)(t.getSource())).getYPoperty().get();*/
+		          double xposition =  ((Obstacle)(t.getSource())).getXPoperty().get();
+		          double yposition =  ((Obstacle)(t.getSource())).getYPoperty().get();
 		        
 		        }
 		        
-		    };
+		    };*/
 	  
 	    /*EventHandler<MouseEvent> obstacleOnMouseRelesedEventHandler = 
 		        new EventHandler<MouseEvent>() {
