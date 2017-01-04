@@ -77,10 +77,13 @@ public class LobbyPresenter {
 		lobbyView.contractButton.setOnMouseClicked(event -> {
 			
 			setNodeObstacleProperty(nodeMap);
+			setNodeStartProperty(nodeMap);
+			setNodeGoalProperty(nodeMap);
+						
 			
 			this.map = new int[size.getX()][size.getY()];
 			
-			for (Node node : nodeMap.getNodes()) {
+			/*for (Node node : nodeMap.getNodes()) {
 
 				if (node.isObstacle()) {
 				
@@ -91,15 +94,33 @@ public class LobbyPresenter {
 					setCost(node.getPosition(),0);
 
 				}
+			}*/
+			
+			for (Node node : nodeMap.getNodes()) {
+
+				if (node.isObstacle()) {
+				
+					setCost(node.getPosition(), -1);
+					
+				}else if(node.isStart() || node.isGoal()){
+					
+					System.out.println("node is start or goal \n");
+					setCost(node.getPosition(), 0);
+				} 
+				
+				
+				else {
+					
+					setCost(node.getPosition(),1);
+
+				}
 			}
 			
-			map[startPointNode.getX()][startPointNode.getY()] = 0;
-			/*map[startPointNode.getX()][startPointNode.getY()] = -1;
-			map[goalPointNode.getX()][goalPointNode.getY()] = -1;*/
+			/*map[startPointNode.getX()][startPointNode.getY()] = 0;*/
 			
 			loop_map=0;
 			
-			while(loop_map < 300  ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_map < 360 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				
@@ -134,7 +155,7 @@ public class LobbyPresenter {
 		
 		
 		
-		while( loop < 300 ){  //CHmodel.getNumberContracted()
+		while( loop < 360 ){  //CHmodel.getNumberContracted()
 		
 			
 			dijkstra_head.setPath(nodeMap
@@ -203,6 +224,37 @@ public class LobbyPresenter {
 			}
 			
 		}
+		
+	}
+	
+	private void setNodeStartProperty(NodeMap nodeMap){
+		
+			for(Node node : nodeMap.getNodes()){
+
+				/*System.out.println("node vectorX :" + node.getNodeVector().getX() +"\n");
+		        System.out.println("node vectorY :" + node.getNodeVector().getY() +"\n");
+		        System.out.println("start vextorX :" + CHmodel.getStartVector2D().getX() +"\n");
+		        System.out.println("start vextorY :" + CHmodel.getStartVector2D().getY() +"\n");*/
+						
+				if(node.getNodeVector().equals(CHmodel.getStartVector2D())){
+			
+							node.setProperty(Property.START);
+						}	
+				}
+				
+	}
+			
+	
+
+	private void setNodeGoalProperty(NodeMap nodeMap){
+		
+		for(Node node : nodeMap.getNodes()){
+			
+			if(node.getNodeVector().equals(CHmodel.getStartVector2D())){
+			
+						node.setProperty(Property.GOAL);
+					}	
+			}
 		
 	}
 

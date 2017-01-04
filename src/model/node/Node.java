@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import util.enums.Directions;
 import util.enums.Property;
 import util.math.Vector;
+import util.math.Vector2D;
 
 public class Node implements Comparable<Node>{
 	
@@ -20,12 +21,13 @@ public class Node implements Comparable<Node>{
 	private ArrayList<NodeProperty> startList = new ArrayList<NodeProperty>();
 	
 	/** The position. */
-	private Vector vector;
+	//private Vector vector;
+	private Vector2D vector;
 	private Property property;
 	private NodeCircle nodeCircle;
 
 	
-	public Node(Vector vector) {
+	public Node(Vector2D vector) {
 
 		this.vector = vector;
 		property = Property.DEFAULT;
@@ -61,8 +63,18 @@ public class Node implements Comparable<Node>{
 		return vector;
 	}
 	
+	public Vector2D getNodeVector() {
+		return vector;
+	}
+	
 	public boolean isObstacle() {
 		return property == Property.OBSTACLE;
+	}
+	public boolean isStart() {
+		return property == Property.START;
+	}
+	public boolean isGoal() {
+		return property == Property.GOAL;
 	}
 	
 	public int getObstacleValue() {
