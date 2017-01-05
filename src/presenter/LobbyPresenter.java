@@ -42,6 +42,7 @@ public class LobbyPresenter {
 	private Vector goalPointNode;
 	private int loop;
 	private int loop_map;
+	private int loop_viaNode;
 	private int[][] map;
 	private NodeMap nodeMap;
     private DijkstraAlgorithm dijkstra;
@@ -100,18 +101,18 @@ public class LobbyPresenter {
 
 				if (node.isObstacle()) {
 				
-					setCost(node.getPosition(), -1);
+					setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
 					
 				}else if(node.isStart() || node.isGoal()){
 					
 					System.out.println("node is start or goal \n");
-					setCost(node.getPosition(), 0);
+					setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
 				} 
 				
 				
 				else {
 					
-					setCost(node.getPosition(),1);
+					setCost(node.getPosition(),CHmodel.VALUE_MAP_POINT);
 
 				}
 			}
@@ -122,9 +123,16 @@ public class LobbyPresenter {
 			
 			while(loop_map < 360 ){//CHmodel.getNumberContracted() , numberObs
 				
-				lobbyView.createViaNodePoint(size,map);
-				
+				//lobbyView.createViaNodePoint(size,map);
+				lobbyView.generateContractedPoint(size,map);
 				loop_map++;
+			}
+			
+			loop_viaNode=0;
+			while(loop_viaNode < 100 ){//CHmodel.getNumberContracted() , numberObs
+				
+				lobbyView.createViaNodePoint(size,map);
+				loop_viaNode++;
 			}
 			
 			/*System.out.println("the number of contracting" + 

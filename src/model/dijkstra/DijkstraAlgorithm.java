@@ -198,7 +198,10 @@ public class DijkstraAlgorithm  {//implements Runnable
          
      }
      
-    public LinkedList<Node> getPath(){return path;}
+    public LinkedList<Node> getPath(){
+    	return path;
+    }
+    
 
   	private void findMinimalDistances(Node node,Node goal) {
  	
@@ -211,8 +214,8 @@ public class DijkstraAlgorithm  {//implements Runnable
     	 
      	
              if (getShortestDistance(target) > getShortestDistance(node)
-                             + 1) { 
-                     distance.put(target, getShortestDistance(node)+1);
+                             + getDistance(node, target)) { 
+                     distance.put(target, getShortestDistance(node)+getDistance(node, target));
                      predecessors.put(target, node);
                      unSettledNodes.add(target);
                      /*System.out.println("target x " + target.getPosition().getX() + "\n");

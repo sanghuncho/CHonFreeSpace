@@ -43,6 +43,7 @@ public class Lobby extends BorderPane{
 	public Pane top = new Pane();
 	
 	private Point viaNode;
+	private Point contractedNode;
 	private Random randX;
 	private Random randY;
 	private int randomNumX;	
@@ -52,7 +53,7 @@ public class Lobby extends BorderPane{
 	private Scene scene;
 	private int numberObs;
 	private ArrayList<Point> viaNodes = new ArrayList<Point>();
-	
+	private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
 	
 	public Lobby(Stage stage){
 		
@@ -185,7 +186,8 @@ public class Lobby extends BorderPane{
 		
 	}
 	
-	public void createViaNodePoint(Vector2D size, int[][] map){
+	
+	public void generateContractedPoint(Vector2D size, int[][] map){
 		
 		randX = new Random();
 		randomNumX = randX.nextInt( size.getX());
@@ -198,7 +200,7 @@ public class Lobby extends BorderPane{
 		/*System.out.println("random x " + randomNumX + "\n");
 		System.out.println("random y " + randomNumY + "\n");*/
 	
-		while(insideObstacle(randomNumX,randomNumY,map)){
+		while(insideObstacle(randomNumX,randomNumY,map) || isEdgeOfMap(randomNumX,randomNumY,map)){
 			
 				randX = new Random();
 				randomNumX = randX.nextInt( size.getX());
@@ -215,6 +217,55 @@ public class Lobby extends BorderPane{
 			
 			//System.out.println("created viaNode \n");
 
+			contractedNode = new Point();
+			contractedNode.setCenterX(randomNumX*10+5);
+			contractedNode.setCenterY(randomNumY*10+5);
+			contractedNode.setFill(Color.DARKMAGENTA);
+			center.getChildren().add(contractedNode);
+			contractedPoints.add(contractedNode);
+			map[randomNumX][randomNumY] = CHmodel.VALUE_MAP_CONTRACTING;
+		}
+		
+	}
+	
+	public boolean isEdgeOfMap (int randomNumX, int randomNumY, int[][] map){
+		
+		if(randomNumX == 0 || randomNumY == 0 || 
+				randomNumX == (CHmodel.getNodeMapSizeX()-1) || randomNumY == (CHmodel.getNodeMapSizeY()-1)){
+			
+			return true;
+			
+		}
+		else{
+			return false;
+		}
+		
+		
+	}
+	
+	public void createViaNodePoint(Vector2D size, int[][] map){
+		
+		randX = new Random();
+		randomNumX = randX.nextInt( size.getX());
+		randY = new Random();
+		randomNumY = randY.nextInt( size.getY());
+
+	
+		while(insideObstacle(randomNumX,randomNumY,map)){
+			
+				randX = new Random();
+				randomNumX = randX.nextInt( size.getX());
+				randY = new Random();
+				randomNumY = randY.nextInt( size.getY());
+				
+				System.out.println("new random x " + randomNumX + "\n");
+				System.out.println("new random y " + randomNumY + "\n");
+				System.out.println("\n");
+			
+			}
+		
+		if( !insideObstacle(randomNumX,randomNumY,map) && !isContractedNode(randomNumX,randomNumY,map)){
+			
 			viaNode = new Point();
 			viaNode.setCenterX(randomNumX*10+5);
 			viaNode.setCenterY(randomNumY*10+5);
@@ -232,6 +283,18 @@ public class Lobby extends BorderPane{
 		
 		
 		if( (map[randomX][randomY]) == -1 || (map[randomX][randomY]) == 0){
+		
+			return true;
+			
+		}
+		else{
+			return false;
+		}
+		
+	}
+	private boolean isContractedNode(int randomX, int randomY, int[][] map){		
+		
+		if( (map[randomX][randomY]) == 2){
 		
 			return true;
 			

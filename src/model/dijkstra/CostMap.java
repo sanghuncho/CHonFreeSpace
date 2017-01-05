@@ -47,7 +47,6 @@ public class CostMap {
 		this.obstacles = obstacles;
 		this.map = map;
 		
-		
 		createSurroundingEdges(nodes);
 	}
 
@@ -69,11 +68,52 @@ public class CostMap {
 	
 	private void createSurroundingEdges(List<Node> nodes) {
 		
+		int weight=1;
 		for (Node node : nodes){
 			
 			for (Node neighbor : node.getNeighborList()) {
 	            
-				if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){
+				Vector neighborVector = neighbor.getPosition();
+				
+				while(isContractedNode(neighborVector)){
+					
+					System.out.println("node positionX : "+ node.getPosition().getX() +"\n");
+					System.out.println("node positionY : "+ node.getPosition().getY() +"\n");
+					
+					System.out.println("neighbor positionX : "+ neighbor.getPosition().getX() +"\n");
+					System.out.println("neighbor positionY : "+ neighbor.getPosition().getY() +"\n");
+					// node generate direction and use that
+					neighborVector = node.getNeighborOfNeighbor(neighbor);
+					
+					weight++;
+					
+				}
+				
+				/*isObstacle mathode check the map-value*/
+				if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){ 
+					
+					if (!(checkForNode(visitedNodes, node))) {
+						 
+						createEdge(node,neighbor,weight);//added to cost for node
+						
+					}
+					
+				}
+			}
+			visitedNodes.add(node);
+		}
+
+	}
+	
+	/*private void createSurroundingEdges(List<Node> nodes) {
+		
+		for (Node node : nodes){
+			
+			for (Node neighbor : node.getNeighborList()) {
+	            
+				
+				isObstacle mathode check the map-value
+				if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){ 
 					
 					if (!(checkForNode(visitedNodes, node))) {
 						 
@@ -86,11 +126,11 @@ public class CostMap {
 			visitedNodes.add(node);
 		}
 
-	}
+	}*/
 	
-	private void createEdge(Node node,Node neighbor){
+	private void createEdge(Node node,Node neighbor,int weight){
 		
-		lane = new Edge(edgeId,node,neighbor,WEIGHT);
+		lane = new Edge(edgeId,node,neighbor,weight);
 		edges.add(lane);
 		edgeId++;	
 	}
@@ -99,6 +139,21 @@ public class CostMap {
 	
 	private boolean isObstacle(Vector point) {
 		return map[point.getX()][point.getY()] == -1;
+	}
+	
+	private boolean isContractedNode(Vector point) {
+		
+		if(map[point.getX()][point.getY()] == 2){
+			System.out.println("neighbor is contracted \n");
+				return true;
+			
+		}
+		else{
+			return false;
+		}
+		 
+		
+		
 	}
 
 	

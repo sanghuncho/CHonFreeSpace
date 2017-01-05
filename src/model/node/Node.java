@@ -147,6 +147,49 @@ public class Node implements Comparable<Node>{
 		}
 	}
 	
+	
+	public Vector getNeighborOfNeighbor( Node neighbor) {
+		
+		Vector neighborOfNeighbor = null;
+		
+		if(neighbor == null){
+			
+			System.out.print("neighbor is null \n");
+		}
+		
+		
+		
+		if(north != null && north.equals(neighbor)){
+			neighborOfNeighbor = neighbor.getNorth().getPosition();
+		
+		}
+		else if(northEast!= null && northEast.equals(neighbor)){
+			neighborOfNeighbor = neighbor.getNorthEast().getPosition();
+		}
+		else if(east != null && east.equals(neighbor)){
+			neighborOfNeighbor = neighbor.getEast().getPosition();
+		}
+		else if(southEast != null && southEast.equals(neighbor)){
+			neighborOfNeighbor = neighbor.getSouthEast().getPosition();
+		}
+		else if(south != null && south.equals(neighbor)){
+			neighborOfNeighbor = neighbor.getSouth().getPosition();
+		}
+		else if(southWest != null && southWest.equals(neighbor)){
+			neighborOfNeighbor = neighbor.getSouthWest().getPosition();
+		}
+		else if(west!= null && west.equals(neighbor)){
+			neighborOfNeighbor = neighbor.getWest().getPosition();
+		}
+		else if(northWest != null && northWest.equals(neighbor)){
+			neighborOfNeighbor = neighbor.getNorthWest().getPosition();
+		}
+		else{}
+		
+		return neighborOfNeighbor;
+		
+	}
+	
 	public synchronized int compareTo(Node otherNode) {
 		int better = -1;
 		int equal = 0;
@@ -215,7 +258,26 @@ public class Node implements Comparable<Node>{
         } else if (!this.getPosition().equals(other.getPosition()))
                 return false;
         return true;
-}
+	}
+	
+	public Node getNorth(){return north;}
+	
+	public Node getNorthEast(){return northEast;}
+	
+	public Node getEast(){return east;}
+	
+	public Node getSouthEast(){return southEast;}
+	
+	public Node getSouth(){return south;}
+	
+	public Node getSouthWest(){return southWest;}
+	
+	public Node getWest(){return west;}
+	
+	public Node getNorthWest(){return northWest;}
+	
+	
+	
 	
 
 }

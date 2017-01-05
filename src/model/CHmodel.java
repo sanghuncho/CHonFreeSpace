@@ -10,6 +10,10 @@ public class CHmodel {
 	public static int mapY;
 	
 	public static final int UNIT_MAP = 10;
+	public static final int VALUE_MAP_OBSTACLE = -1;
+	public static final int VALUE_MAP_START_GAOL = 0;
+	public static final int VALUE_MAP_POINT = 1;
+	public static final int VALUE_MAP_CONTRACTING = 2;
 	
 	public static int startX;
 	public static int startY;
@@ -63,6 +67,13 @@ public class CHmodel {
 	
 	public static int getMapX() {
 		return mapX;
+	}
+	
+	public static int getNodeMapSizeX(){
+		return mapX/10;
+	}
+	public static int getNodeMapSizeY(){
+		return mapY/10;
 	}
 
 	public static void setMapX(int mapX) {
