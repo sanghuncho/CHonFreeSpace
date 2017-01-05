@@ -129,7 +129,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 100 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < 10 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -163,7 +163,7 @@ public class LobbyPresenter {
 		
 		
 		
-		while( loop < 360 ){  //CHmodel.getNumberContracted()
+		while( loop < 10 ){  //CHmodel.getNumberContracted()
 		
 			
 			dijkstra_head.setPath(nodeMap

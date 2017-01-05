@@ -68,13 +68,15 @@ public class CostMap {
 	
 	private void createSurroundingEdges(List<Node> nodes) {
 		
-		int weight=1;
+		
+		
 		for (Node node : nodes){
+			
+			int weight=1;
 			
 			for (Node neighbor : node.getNeighborList()) {
 	            
 				Vector neighborVector = neighbor.getPosition();
-				
 				while(isContractedNode(neighborVector)){
 					
 					System.out.println("node positionX : "+ node.getPosition().getX() +"\n");
@@ -82,12 +84,20 @@ public class CostMap {
 					
 					System.out.println("neighbor positionX : "+ neighbor.getPosition().getX() +"\n");
 					System.out.println("neighbor positionY : "+ neighbor.getPosition().getY() +"\n");
-					// node generate direction and use that
-					neighborVector = node.getNeighborOfNeighbor(neighbor);
+					//node.getNotContractedNeighbor methode becomes only the direction and per position of the node
+					//get the neighbor
 					
+					//neighborVector = node.getNotContractedNeighbor(neighbor,weight);
+					
+					System.out.println("neighborVectorX positionX : "+ neighborVector.getX() +"\n");
+					System.out.println("neighborVector positionY : "+ neighborVector.getX() +"\n");
+					
+					neighbor = nodeMap.get(neighborVector.getX(), neighborVector.getY());
 					weight++;
 					
 				}
+				
+				neighbor = nodeMap.get(neighborVector.getX(), neighborVector.getY());
 				
 				/*isObstacle mathode check the map-value*/
 				if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){ 
@@ -131,6 +141,15 @@ public class CostMap {
 	private void createEdge(Node node,Node neighbor,int weight){
 		
 		lane = new Edge(edgeId,node,neighbor,weight);
+
+		System.out.println("create edge nodeX : "+ node.getPosition().getX() +"\n");
+		System.out.println("create edge nodeY : "+ node.getPosition().getY() +"\n");
+		
+		System.out.println("create edge neighborX : "+ neighbor.getPosition().getX() +"\n");
+		System.out.println("create edge neighborY : "+ neighbor.getPosition().getY() +"\n");
+		System.out.println("weight : "+ weight +"\n");
+		System.out.println("\n");
+		
 		edges.add(lane);
 		edgeId++;	
 	}

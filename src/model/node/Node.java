@@ -25,6 +25,7 @@ public class Node implements Comparable<Node>{
 	private Vector2D vector;
 	private Property property;
 	private NodeCircle nodeCircle;
+	private Vector neighborOfNeighbor;
 
 	
 	public Node(Vector2D vector) {
@@ -148,9 +149,9 @@ public class Node implements Comparable<Node>{
 	}
 	
 	
-	public Vector getNeighborOfNeighbor( Node neighbor) {
+	public Vector2D getNotContractedNeighbor(Node neighbor, int weight) {
 		
-		Vector neighborOfNeighbor = null;
+		int neighborXpos = neighbor
 		
 		if(neighbor == null){
 			
@@ -160,33 +161,51 @@ public class Node implements Comparable<Node>{
 		
 		
 		if(north != null && north.equals(neighbor)){
-			neighborOfNeighbor = neighbor.getNorth().getPosition();
+			
+			System.out.print("neighbor 1 \n");
+
+			neighborOfNeighbor = new Vector2D(
+					neighbor.getNorth().getPosition().getX(),neighbor.getNorth().getPosition().getY());
 		
 		}
 		else if(northEast!= null && northEast.equals(neighbor)){
-			neighborOfNeighbor = neighbor.getNorthEast().getPosition();
+			System.out.print("neighbor 2 \n");
+			neighborOfNeighbor = new Vector2D(
+					neighbor.getNorthEast().getPosition().getX(),neighbor.getNorthEast().getPosition().getY());
 		}
 		else if(east != null && east.equals(neighbor)){
-			neighborOfNeighbor = neighbor.getEast().getPosition();
+			System.out.print("neighbor 3 \n");
+			neighborOfNeighbor = new Vector2D(
+					neighbor.getEast().getPosition().getX(), neighbor.getEast().getPosition().getY());
 		}
 		else if(southEast != null && southEast.equals(neighbor)){
-			neighborOfNeighbor = neighbor.getSouthEast().getPosition();
+			System.out.print("neighbor 4 \n");
+			neighborOfNeighbor = new Vector2D(
+					neighbor.getSouthEast().getPosition().getX(), neighbor.getSouthEast().getPosition().getY());
 		}
 		else if(south != null && south.equals(neighbor)){
-			neighborOfNeighbor = neighbor.getSouth().getPosition();
+			System.out.print("neighbor 5 \n");
+			neighborOfNeighbor = new Vector2D(
+					neighbor.getSouth().getPosition().getX(), neighbor.getSouth().getPosition().getY());
 		}
 		else if(southWest != null && southWest.equals(neighbor)){
-			neighborOfNeighbor = neighbor.getSouthWest().getPosition();
+			System.out.print("neighbor 6 \n");
+			neighborOfNeighbor = new Vector2D(
+					neighbor.getSouthWest().getPosition().getX(), neighbor.getSouthWest().getPosition().getY());
 		}
 		else if(west!= null && west.equals(neighbor)){
-			neighborOfNeighbor = neighbor.getWest().getPosition();
+			System.out.print("neighbor 7 \n");
+			neighborOfNeighbor = new Vector2D(
+					neighbor.getWest().getPosition().getX(), neighbor.getWest().getPosition().getY());
 		}
 		else if(northWest != null && northWest.equals(neighbor)){
-			neighborOfNeighbor = neighbor.getNorthWest().getPosition();
+			System.out.print("neighbor 8 \n");
+			neighborOfNeighbor = new Vector2D(
+					neighbor.getNorthEast().getPosition().getX(), neighbor.getNorthEast().getPosition().getY());
 		}
 		else{}
 		
-		return neighborOfNeighbor;
+		return (Vector2D) neighborOfNeighbor;
 		
 	}
 	
