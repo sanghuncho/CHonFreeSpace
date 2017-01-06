@@ -11,6 +11,7 @@ import model.Obstacle;
 import model.Point;
 import model.node.Node;
 import model.node.NodeMap;
+import util.enums.Directions;
 import util.math.Vector;
 import util.math.Vector2D;
 import util.math.Vector3D;
@@ -68,31 +69,42 @@ public class CostMap {
 	
 	private void createSurroundingEdges(List<Node> nodes) {
 		
-		
-		
 		for (Node node : nodes){
 			
-			int weight=1;
+			
 			
 			for (Node neighbor : node.getNeighborList()) {
 	            
+				int weight=1;
+				
 				Vector neighborVector = neighbor.getPosition();
-				while(isContractedNode(neighborVector)){
+				Directions neighborDirection = null;
+				
+				if(isContractedNode(neighborVector)){
 					
+					neighborDirection = node.getDirectionOfNeighbor(neighbor);
+					System.out.println("direction : "+ neighborDirection +"\n");
+
+				}
+				
+				while(isContractedNode(neighborVector)){
+					 	
 					System.out.println("node positionX : "+ node.getPosition().getX() +"\n");
 					System.out.println("node positionY : "+ node.getPosition().getY() +"\n");
 					
 					System.out.println("neighbor positionX : "+ neighbor.getPosition().getX() +"\n");
 					System.out.println("neighbor positionY : "+ neighbor.getPosition().getY() +"\n");
-					//node.getNotContractedNeighbor methode becomes only the direction and per position of the node
-					//get the neighbor
 					
-					//neighborVector = node.getNotContractedNeighbor(neighbor,weight);
+					/*node.getNotContractedNeighbor methode becomes only the direction and per position of the node
+					get the neighbor*/
 					
-					System.out.println("neighborVectorX positionX : "+ neighborVector.getX() +"\n");
-					System.out.println("neighborVector positionY : "+ neighborVector.getX() +"\n");
+					Node freshNeighbor = getFreshNeighbor(node,neighborDirection,weight+1); 
 					
-					neighbor = nodeMap.get(neighborVector.getX(), neighborVector.getY());
+					
+					System.out.println("fresh positionX : "+ freshNeighbor.getPosition().getX() +"\n");
+					System.out.println("fresh positionY : "+ freshNeighbor.getPosition().getY() +"\n");
+					
+					neighborVector = freshNeighbor.getPosition();
 					weight++;
 					
 				}
@@ -104,7 +116,15 @@ public class CostMap {
 					
 					if (!(checkForNode(visitedNodes, node))) {
 						 
+						
+
 						createEdge(node,neighbor,weight);//added to cost for node
+						
+						System.out.println("edgeNode positionX : "+ node.getPosition().getX() +"\n");
+						System.out.println("edgeNode positionY : "+ node.getPosition().getY() +"\n");
+						System.out.println("edgeGoal positionX : "+ neighbor.getPosition().getX() +"\n");
+						System.out.println("edgeGoal positionY : "+ neighbor.getPosition().getY() +"\n");
+						System.out.println("weight: "+ weight +"\n");
 						
 					}
 					
@@ -113,6 +133,44 @@ public class CostMap {
 			visitedNodes.add(node);
 		}
 
+	}
+	
+	private Node getFreshNeighbor(Node node, Directions direction, int weight){
+		
+		int nodePosX = node.getPosition().getX();
+		int nodePosY = node.getPosition().getY();
+		
+		Node freshNeighbor = null;
+		
+		if(direction.equals(Directions.NORTH)){
+				freshNeighbor = nodeMap.get(nodePosX, nodePosY - weight);
+		}
+		else if(direction.equals(Directions.NORTH_EAST)){
+				freshNeighbor = nodeMap.get(nodePosX + weight, nodePosY - weight);
+		}
+		else if(direction.equals(Directions.EAST)){
+			freshNeighbor = nodeMap.get(nodePosX + weight, nodePosY);
+		}
+		else if(direction.equals(Directions.SOUTH_EAST)){
+				freshNeighbor = nodeMap.get(nodePosX + weight, nodePosY + weight);
+		}
+		else if(direction.equals(Directions.SOUTH)){
+			freshNeighbor = nodeMap.get(nodePosX, nodePosY + weight);
+		}
+		else if(direction.equals(Directions.SOUTH_WEST)){
+			freshNeighbor = nodeMap.get(nodePosX - weight, nodePosY + weight);	
+		}
+		else if(direction.equals(Directions.WEST)){
+			freshNeighbor = nodeMap.get(nodePosX-weight, nodePosY);	
+		}
+		else if(direction.equals(Directions.NORTH_WEST)){
+			freshNeighbor = nodeMap.get(nodePosX-weight, nodePosY - weight);	
+		}
+		else{
+			
+		}
+		return freshNeighbor;
+		
 	}
 	
 	/*private void createSurroundingEdges(List<Node> nodes) {
@@ -142,13 +200,13 @@ public class CostMap {
 		
 		lane = new Edge(edgeId,node,neighbor,weight);
 
-		System.out.println("create edge nodeX : "+ node.getPosition().getX() +"\n");
+		/*System.out.println("create edge nodeX : "+ node.getPosition().getX() +"\n");
 		System.out.println("create edge nodeY : "+ node.getPosition().getY() +"\n");
 		
 		System.out.println("create edge neighborX : "+ neighbor.getPosition().getX() +"\n");
 		System.out.println("create edge neighborY : "+ neighbor.getPosition().getY() +"\n");
 		System.out.println("weight : "+ weight +"\n");
-		System.out.println("\n");
+		System.out.println("\n");*/
 		
 		edges.add(lane);
 		edgeId++;	
@@ -170,8 +228,6 @@ public class CostMap {
 		else{
 			return false;
 		}
-		 
-		
 		
 	}
 

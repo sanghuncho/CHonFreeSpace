@@ -105,7 +105,7 @@ public class LobbyPresenter {
 					
 				}else if(node.isStart() || node.isGoal()){
 					
-					System.out.println("node is start or goal \n");
+					//System.out.println("node is start or goal \n");
 					setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
 				} 
 				
@@ -121,7 +121,7 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			
-			while(loop_map < 360 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_map < 200){//CHmodel.getNumberContracted() , numberObs
 				
 				//lobbyView.createViaNodePoint(size,map);
 				lobbyView.generateContractedPoint(size,map);
@@ -129,7 +129,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 10 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < 30 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -163,7 +163,7 @@ public class LobbyPresenter {
 		
 		
 		
-		while( loop < 10 ){  //CHmodel.getNumberContracted()
+		while( loop < 30 ){  //CHmodel.getNumberContracted()
 		
 			
 			dijkstra_head.setPath(nodeMap
