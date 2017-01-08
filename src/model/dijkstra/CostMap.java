@@ -89,11 +89,11 @@ public class CostMap {
 				
 				while(isContractedNode(neighborVector)){
 					 	
-					System.out.println("node positionX : "+ node.getPosition().getX() +"\n");
+					/*System.out.println("node positionX : "+ node.getPosition().getX() +"\n");
 					System.out.println("node positionY : "+ node.getPosition().getY() +"\n");
 					
 					System.out.println("neighbor positionX : "+ neighbor.getPosition().getX() +"\n");
-					System.out.println("neighbor positionY : "+ neighbor.getPosition().getY() +"\n");
+					System.out.println("neighbor positionY : "+ neighbor.getPosition().getY() +"\n");*/
 					
 					/*node.getNotContractedNeighbor methode becomes only the direction and per position of the node
 					get the neighbor*/
@@ -101,8 +101,8 @@ public class CostMap {
 					Node freshNeighbor = getFreshNeighbor(node,neighborDirection,weight+1); 
 					
 					
-					System.out.println("fresh positionX : "+ freshNeighbor.getPosition().getX() +"\n");
-					System.out.println("fresh positionY : "+ freshNeighbor.getPosition().getY() +"\n");
+					/*System.out.println("fresh positionX : "+ freshNeighbor.getPosition().getX() +"\n");
+					System.out.println("fresh positionY : "+ freshNeighbor.getPosition().getY() +"\n");*/
 					
 					neighborVector = freshNeighbor.getPosition();
 					weight++;
@@ -120,11 +120,11 @@ public class CostMap {
 
 						createEdge(node,neighbor,weight);//added to cost for node
 						
-						System.out.println("edgeNode positionX : "+ node.getPosition().getX() +"\n");
+						/*System.out.println("edgeNode positionX : "+ node.getPosition().getX() +"\n");
 						System.out.println("edgeNode positionY : "+ node.getPosition().getY() +"\n");
 						System.out.println("edgeGoal positionX : "+ neighbor.getPosition().getX() +"\n");
 						System.out.println("edgeGoal positionY : "+ neighbor.getPosition().getY() +"\n");
-						System.out.println("weight: "+ weight +"\n");
+						System.out.println("weight: "+ weight +"\n");*/
 						
 					}
 					

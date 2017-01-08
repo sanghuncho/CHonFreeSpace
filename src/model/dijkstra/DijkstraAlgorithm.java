@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javafx.application.Platform;
 import model.Obstacle;
+import model.Point;
 import model.node.Node;
 import model.node.NodeMap;
 import util.math.MathHelper;
@@ -26,13 +27,12 @@ public class DijkstraAlgorithm  {//implements Runnable
     private Set<Node> settledNodes;
     private Set<Node> unSettledNodes;
     private Map<Node, Node> predecessors;
-    private Map<Node, Integer> distance;
+    private Map<Node,Integer> distance;
     private ArrayList<Obstacle> obstacles;
-    private Node goal;
     private Node source;
     private Lobby lobbyView;
     private LinkedList<Node> path;
-    
+    private Map<Node,Double> turning;
     
     public DijkstraAlgorithm(Graph graph, ArrayList<Obstacle> obstacles,Node source,Lobby lobbyView){
     	
@@ -43,30 +43,8 @@ public class DijkstraAlgorithm  {//implements Runnable
         this.lobbyView = lobbyView;
         
     }
-   
-   /* public DijkstraAlgorithm(Graph graph, ArrayList<Obstacle> obstacles,Node source, Node goal,Lobby lobbyView){
-    	
-    	nodes = new ArrayList<Node>(graph.getNodes());
-        edges = new ArrayList<Edge>(graph.getEdges());
-        this.obstacles = obstacles;
-        this.source = source;
-        this.goal = goal;
-        this.lobbyView = lobbyView;
-        
-    }*/
-    
-    
-	/*public void run() {
-		execute();
-	}
-    */
      
-    /*public void run() {
- 		execute();
- 	}
-    */ 
-     
-     public void execute() {
+     /*public void execute() {
      	
          System.out.println("execute \n");
 
@@ -74,6 +52,8 @@ public class DijkstraAlgorithm  {//implements Runnable
              unSettledNodes = new HashSet<Node>();
              distance = new HashMap<Node, Integer>();
              predecessors = new HashMap<Node, Node>();
+             turning = new HashMap<Node,Integer>();
+             turning.put(source, 0);
              distance.put(source, 0);
              unSettledNodes.add(source);
              
@@ -82,95 +62,44 @@ public class DijkstraAlgorithm  {//implements Runnable
          		
              		Node node = getMinimumNode(unSettledNodes,source);
              		
-             		/*
-             		System.out.println("node x " + node.getPosition().getX() + "\n");
-             		System.out.println("node y " + node.getPosition().getY()  + "\n");*/
-             		
-                     settledNodes.add(node);
+                    settledNodes.add(node);
 
-                     unSettledNodes.remove(node);
+                    unSettledNodes.remove(node);
                      
-                     findMinimalDistances(node,source);
+                    findMinimalDistances(node,source);
                      
              }
  	
-             //setPath();
-             
-            /* Platform.runLater(new Runnable() {
-                 @Override public void run() {
-                 	lobbyView.createLane(getPath());      
-                 }
-             });*/
-     } 
-     
+     }*/
     
-    /*public void execute() {
-    	
+    public void execute() {
+     	
         System.out.println("execute \n");
 
             settledNodes = new HashSet<Node>();
             unSettledNodes = new HashSet<Node>();
             distance = new HashMap<Node, Integer>();
             predecessors = new HashMap<Node, Node>();
+            turning = new HashMap<Node,Double>();
+            turning.put(source, 0.0);
             distance.put(source, 0);
             unSettledNodes.add(source);
             
             while (unSettledNodes.size() > 0) {
         
         		
-            		Node node = getMinimumNode(unSettledNodes,goal);
+            	   Node node = getMinimumNode(unSettledNodes,source);
             		
-            		
-            		System.out.println("node x " + node.getPosition().getX() + "\n");
-            		System.out.println("node y " + node.getPosition().getY()  + "\n");
-            		
-                    settledNodes.add(node);
+                   settledNodes.add(node);
 
-                    unSettledNodes.remove(node);
+                   unSettledNodes.remove(node);
                     
-                    findMinimalDistances(node,goal);
+                   findMinimalDistances(node,source);
                     
             }
 	
-            setPath();
-            
-            Platform.runLater(new Runnable() {
-                @Override public void run() {
-                	lobbyView.createLane(getPath());      
-                }
-            });
     } 
-    */
-     
-     
-     
-     /*private void setPath() {
-    	   
-         this.path = new LinkedList<Node>();
-         
-         if(goal == null){
-         	
-         	System.out.println("target is null");
-         }
-         
-         Node step = goal;
-         
-         // check if a path exists
-         if (predecessors.get(step) == null) {
-        
-         	System.out.println("target predecessor is null");
-                 
-         }
-         path.add(step);
-         while (predecessors.get(step) != null) {
-                 step = predecessors.get(step);
-                 path.add(step);
-         }
-         // Put it into the correct order
-         Collections.reverse(path);
-         
-     }*/
-     
+ 
      public void setPath(Node goal) {
   	   
          this.path = new LinkedList<Node>();
@@ -202,15 +131,147 @@ public class DijkstraAlgorithm  {//implements Runnable
     	return path;
     }
     
-
   	private void findMinimalDistances(Node node,Node goal) {
+  	 	
+  	     List<Node> adjacentNodes = getNeighbors(node);
+  	     
+  	     for (Node target : adjacentNodes) {
+  	    	
+  	     	
+  	           if (getShortestDistance(target) > getShortestDistance(node)
+  	                             + getDistance(node, target)) { 
+  	        	   
+  	                     distance.put(target, getShortestDistance(node)+getDistance(node, target));
+  	                     predecessors.put(target, node);
+  	                     unSettledNodes.add(target);
+  	                   
+  	                     if(predecessors.get(node) == null){
+  	                    
+  	                    	 turning.put(node, 0.0);
+  	                    	 
+  	                    	 //System.out.println("turning : "+ turning.get(node) +"\n");
+  	                    	 
+  	                     	 //setNumberTurningPath(node, target);
+  	                     	 turning.put(target, 0.0);
+  	                     }else{
+  	                    	 Node pastNode = predecessors.get(node);
+  	                     	 setNumberTurningPath(pastNode,node,target);
+  	                    	 
+  	                    	//setNumberTurningPath(node, target);
+  	                     }
+  	                     
+  	          }
+  	          
+  	          else if(getShortestDistance(target) == getShortestDistance(node)
+  	                             + getDistance(node, target)) {
+  	        	  
+
+  	        	  double turningNumberTarget = turning.get(target);
+  	        	  
+               	 
+  	        	  
+  	        	  Node pastNode = predecessors.get(node);
+                  double turningNodeToTarget = getNumberOfTurning(node,pastNode,target); 
+                  
+                  if(turningNumberTarget >= turningNodeToTarget){
+                  
+                	  predecessors.put(target, node);
+                	  distance.put(target, getShortestDistance(node)
+      	                      + getDistance(node, target));
+                  } 
+  	         	   
+  	           }
+  	     	}
+  	        
+  	 }
+  	private Node getMinimumTurningPathNode(Node node, Node prevNode){
+  		
+  		if(turning.get(node) < turning.get(prevNode)){
+  			
+  			return node;
+  			
+  		}
+  		else{
+  			
+  			return prevNode;
+  		}
+  		
+  	}
+  	
+  	private double getNumberOfTurning(Node node,Node pastNode, Node target){
+  		
+  	/*	System.out.println("pastX : "+ pastNode.getPosition().getX() +"\n");
+  		System.out.println("pastY : "+ pastNode.getPosition().getY() +"\n");
+  		
+  		System.out.println("nodeX : "+ node.getPosition().getX() +"\n");
+  		System.out.println("nodeY : "+ node.getPosition().getY() +"\n");
+  		
+  		System.out.println("targetX : "+ target.getPosition().getX() +"\n");
+  		System.out.println("targetY : "+ target.getPosition().getY() +"\n");*/
+  		
+  		int angle_PastNode_Node = getAngle(pastNode,node);
+  		int angle_Target_Node = getAngle(target,node);
+  		
+  		int angle = angle_PastNode_Node - angle_Target_Node;
+  		
+  		if (angle < 0) {
+			angle += 360;
+		}
+  		/*
+  		System.out.println("turning target : "+ turning.get(target) +"\n");
+  		System.out.println("turning node : "+ turning.get(node) +"\n");
+  		
+  		
+  		System.out.println("angle : "+ angle +"\n");
+  		
+  		System.out.println("\n");*/
+
+  		double turningNode = turning.get(node);
+  		double turningToTarget = 0;
+  		
+	  		switch(angle){
+	  		
+		  		case 0 : 
+		  			turningToTarget = 0.0 + turningNode;
+		  			
+		  		case 45 :
+		  			turningToTarget = 0.5 + turningNode;
+		  		
+		  		case 90 :
+		  			turningToTarget =  1.0 + turningNode;
+		  			
+		  		case 135 :
+		  			turningToTarget = 0.5 + turningNode;
+		  			
+		  		case 180 :
+		  			turningToTarget = 0.0 + turningNode;
+		  		case 225 :
+		  			turningToTarget = 0.5 + turningNode;
+		  			
+		  		case 270 :
+		  			turningToTarget = 1.0 + turningNode;
+		  			
+		  		case 315 :
+		  			turningToTarget = 0.5 + turningNode;
+		  			
+		  		case 360 :
+		  			turningToTarget = 0.0 + turningNode;
+		  			
+		  			
+	  	}
+	  		return turningToTarget;
+			
+			
+  	}
+    
+
+/*  	private void findMinimalDistances(Node node,Node goal) {
  	
      List<Node> adjacentNodes = getNeighbors(node);
      
      for (Node target : adjacentNodes) {
     	 
-    	System.out.println("node x " + node.getPosition().getX() + "\n");
-  		 System.out.println("node y " + node.getPosition().getY()  + "\n");
+    	
     	 
      	
              if (getShortestDistance(target) > getShortestDistance(node)
@@ -218,47 +279,113 @@ public class DijkstraAlgorithm  {//implements Runnable
                      distance.put(target, getShortestDistance(node)+getDistance(node, target));
                      predecessors.put(target, node);
                      unSettledNodes.add(target);
-                     System.out.println("target x " + target.getPosition().getX() + "\n");
-             		System.out.println("target y " + target.getPosition().getY()  + "\n");
+                   
+                     if(predecessors.get(node).equals(null)){
+                    	 Node past = node;
+                    	 turning.put(past, 0.0);
+                     	 setNumberTurningPath(past, target);
+                     }
                      
              }
-             
-             else if(getShortestDistance(target) == getShortestDistance(node)
-                     + getDistance(node, target)) {
- 	   
-			 	   Node prevNode = predecessors.get(target);
-			 	   Node prevPrevNode = predecessors.get(node);
-			 	   Node minimum = null;
-			 	    if(MathHelper.shortestDistanceBetweenGoal(prevPrevNode,prevNode,goal).equals(prevPrevNode)){
-			 	    	minimum = node;
-			 	    }
-			 	    else{
-			 	    	minimum = prevNode;
-			 	    }
-			 	   predecessors.remove(target,prevNode);
-			 	   predecessors.put(target, minimum); 
-			 	   distance.put(target, getShortestDistance(node)
-			                             + getDistance(node, target));
-			 	  System.out.println("target2 x " + target.getPosition().getX() + "\n");
-			 	  System.out.println("target2 y " + target.getPosition().getY()  + "\n");
- 	   
-             }
-          /* else if(getShortestDistance(target) == getShortestDistance(node)
+          
+          else if(getShortestDistance(target) == getShortestDistance(node)
                              + getDistance(node, target)) {
          	   
          	   Node prevNode = predecessors.get(target);
          	   Node minimum = MathHelper.shortestDistanceBetweenGoal(node,prevNode,goal);
-         	   predecessors.remove(target,prevNode);
+         	  // predecessors.remove(target,prevNode);
+         	   //predecessors.remove(target);
          	   predecessors.put(target, minimum); 
          	   distance.put(target, getShortestDistance(node)
                                      + getDistance(node, target));
+         	   
+         	  distance.put(target, getShortestDistance(minimum)
+                      + getDistance(minimum, target));
+         	  
          	  System.out.println("target2 x " + target.getPosition().getX() + "\n");
        		  System.out.println("target2 y " + target.getPosition().getY()  + "\n");
          	   
-            }*/
+            }
      }
         
- }
+  	}*/
+  	
+  	private int getAngle(Node node, Node target){
+  		
+  		double nodeX = node.getPosition().getX();
+  		double nodeY = node.getPosition().getY();
+  		
+
+  		
+  		double targetX = target.getPosition().getX();
+  		double targetY = target.getPosition().getY();
+  		
+  		
+  		
+  		double theta =Math.atan2((targetY - nodeY),(targetX - nodeX));
+  		
+  		theta += Math.PI / 2.0;
+  		
+  		int angle = (int) Math.toDegrees(theta);
+  		
+  		if (angle < 0) {
+			angle += 360;
+		}
+  		
+  		return angle;
+			
+  	}
+
+  	
+  	
+  	private void setNumberTurningPath(Node pastNode,Node node ,Node target){
+  		
+  		int angle_PastNode_Node = getAngle(pastNode,node);
+  		int angle_Target_Node = getAngle(target,node);
+  		
+  		int angle = angle_PastNode_Node - angle_Target_Node;
+  		
+  		if (angle < 0) {
+			angle += 360;
+		}
+  		
+  		double turningNode = turning.get(node);
+  		
+  		
+	  		switch(angle){
+	  		
+		  		case 0 : 
+		  			turning.put(target,0.0 + turningNode);
+		  			break;
+		  		case 45 :
+		  			turning.put(target,0.5 + turningNode);
+		  			break;
+		  		case 90 :
+		  			turning.put(target,1.0 + turningNode);
+		  			break;
+		  		case 135 :
+		  			turning.put(target,0.5 + turningNode);
+		  			break;
+		  		case 180 :
+		  			turning.put(target,0.0 + turningNode);
+		  			break;
+		  		case 225 :
+		  			turning.put(target,0.5 + turningNode);
+		  			break;
+		  		case 270 :
+		  			turning.put(target,1.0 + turningNode);
+		  			break;
+		  		case 315 :
+		  			turning.put(target,0.5 + turningNode);
+		  			break;
+		  		case 360 :
+		  			turning.put(target,0.0 + turningNode);
+		  			break;
+			
+  		}
+  	
+  		
+  	}
 
 
     private int getShortestDistance(Node destination) {
@@ -344,7 +471,7 @@ public class DijkstraAlgorithm  {//implements Runnable
 		
 	}
 	
-	private Node getMinimumNode(Set<Node> vertexes,Node goal) {
+	/*private Node getMinimumNode(Set<Node> vertexes,Node goal) {
     	Node minimum = null;
         for (Node vertex : vertexes) {
                 if (minimum == null) {
@@ -359,15 +486,42 @@ public class DijkstraAlgorithm  {//implements Runnable
                         }
                 }
         }
-        /*System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
+        System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
         System.out.print("Minimu y : " +minimum.getPosition().getY() + "\n");
         System.out.print( "\n");
-*/
+
+        return minimum;
+    }*/
+	private Node getMinimumNode(Set<Node> vertexes,Node goal) {
+    	Node minimum = null;
+        for (Node vertex : vertexes) {
+                if (minimum == null) {
+                        minimum = vertex;
+                } else {
+                        if (getShortestDistance(vertex) < getShortestDistance(minimum)) {
+                                minimum = vertex;
+                        }
+                        else if(getShortestDistance(vertex) == getShortestDistance(minimum)){
+                        	
+                        	//minimum = MathHelper.shortestDistanceBetweenGoal(vertex,minimum,goal);
+                        	if(turning.get(vertex) < turning.get(minimum)){
+                        		
+                        		minimum =  vertex;
+                        	}
+                        	else{
+                        	
+                        		}
+                        }
+                }
+        }
+       /* System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
+        System.out.print("Minimu y : " +minimum.getPosition().getY() + "\n");
+        System.out.print( "\n");*/
+
         return minimum;
     }
-    
-    
-    
+	
+
     private int getDistance(Node node, Node target) {
         for (Edge edge : edges) {
                 if (edge.getSource().equals(node)

@@ -279,7 +279,7 @@ public class Lobby extends BorderPane{
 	private boolean insideObstacle(int randomX, int randomY, int[][] map){
 		
 		
-		System.out.println("map " + map[randomX][randomY] + "\n");
+		//System.out.println("map " + map[randomX][randomY] + "\n");
 		
 		
 		if( (map[randomX][randomY]) == -1 || (map[randomX][randomY]) == 0){
@@ -313,14 +313,19 @@ public class Lobby extends BorderPane{
 
 		return new Vector2D((viaNodes.get(i).getCenterX()-5)/10,(viaNodes.get(i).getCenterY()-5)/10);
 	}
-
-	public Vector2D getViaNode2D(){
-		return new Vector2D(( viaNode.getCenterX()-5 )/10,( viaNode.getCenterY()-5 )/10);
-	}
 	
-	public Vector2D getViaNodeScreen(){
-		return new Vector2D( viaNode.getCenterX(),viaNode.getCenterY());
+	public ArrayList<Point> getViaNodes(){
+		
+		return viaNodes;
 	}
+
+	/*public Vector2D getViaNode2D(){
+		return new Vector2D(( viaNode.getCenterX()-5 )/10,( viaNode.getCenterY()-5 )/10);
+	}*/
+	
+	/*public Vector2D getViaNodeScreen(){
+		return new Vector2D( viaNode.getCenterX(),viaNode.getCenterY());
+	}*/
 	
 	
 

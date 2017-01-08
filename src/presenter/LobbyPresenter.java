@@ -121,7 +121,7 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			
-			while(loop_map < 200){//CHmodel.getNumberContracted() , numberObs
+			while(loop_map < 20){//CHmodel.getNumberContracted() , numberObs
 				
 				//lobbyView.createViaNodePoint(size,map);
 				lobbyView.generateContractedPoint(size,map);
@@ -129,14 +129,12 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 30 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < 3 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
 			}
 			
-			/*System.out.println("the number of contracting" + 
-			CHmodel.getNumberContracted() +"\n");*/
 
 		});
 		
@@ -151,11 +149,19 @@ public class LobbyPresenter {
 		
 		
 		//try to new implementation
+		/*DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
+				nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
+		
+		DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
+				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); */
+		
 		DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
 				nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
 		
 		DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+		
+		 
 		
 		dijkstra_head.execute();
 		
@@ -163,7 +169,7 @@ public class LobbyPresenter {
 		
 		
 		
-		while( loop < 30 ){  //CHmodel.getNumberContracted()
+		while( loop < 3 ){  //CHmodel.getNumberContracted()
 		
 			
 			dijkstra_head.setPath(nodeMap
