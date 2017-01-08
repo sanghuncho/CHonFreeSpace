@@ -83,7 +83,7 @@ public class CostMap {
 				if(isContractedNode(neighborVector)){
 					
 					neighborDirection = node.getDirectionOfNeighbor(neighbor);
-					System.out.println("direction : "+ neighborDirection +"\n");
+					//System.out.println("direction : "+ neighborDirection +"\n");
 
 				}
 				

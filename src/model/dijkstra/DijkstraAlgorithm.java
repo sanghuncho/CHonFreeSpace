@@ -111,6 +111,10 @@ public class DijkstraAlgorithm  {//implements Runnable
          
          Node step = goal;
          
+         System.out.println("number of Path turning : " +turning.get(goal)+ "\n");
+         System.out.println("goal pointX : " +goal.getPosition().getX() + "\n");
+         System.out.println("goal pointY : " +goal.getPosition().getY() + "\n");
+         
          // check if a path exists
          if (predecessors.get(step) == null) {
         
@@ -164,20 +168,23 @@ public class DijkstraAlgorithm  {//implements Runnable
   	          
   	          else if(getShortestDistance(target) == getShortestDistance(node)
   	                             + getDistance(node, target)) {
-  	        	  
 
   	        	  double turningNumberTarget = turning.get(target);
-  	        	  
-               	 
-  	        	  
+  	        	 
   	        	  Node pastNode = predecessors.get(node);
+  	        	  
                   double turningNodeToTarget = getNumberOfTurning(node,pastNode,target); 
                   
                   if(turningNumberTarget >= turningNodeToTarget){
-                  
+                	  
+                	  //predecessors.remove(target);
                 	  predecessors.put(target, node);
+                	 // turning.remove(target);
+                	  System.out.println("turningNodeToTarget : " + turningNodeToTarget + "\n");
+                	  turning.put(target,turningNodeToTarget);
                 	  distance.put(target, getShortestDistance(node)
       	                      + getDistance(node, target));
+                	  System.out.println("turning value of target : " + turning.get(target) + "\n");
                   } 
   	         	   
   	           }
@@ -209,10 +216,10 @@ public class DijkstraAlgorithm  {//implements Runnable
   		System.out.println("targetX : "+ target.getPosition().getX() +"\n");
   		System.out.println("targetY : "+ target.getPosition().getY() +"\n");*/
   		
-  		int angle_PastNode_Node = getAngle(pastNode,node);
+  		int angle_PastNode_Node = getAngle(node,pastNode);
   		int angle_Target_Node = getAngle(target,node);
   		
-  		int angle = angle_PastNode_Node - angle_Target_Node;
+  		int angle = angle_Target_Node - angle_PastNode_Node  ;
   		
   		if (angle < 0) {
 			angle += 360;
@@ -394,8 +401,8 @@ public class DijkstraAlgorithm  {//implements Runnable
         
         if (d == null) {
         	
-                //return Integer.MAX_VALUE;
-        	return 100;
+              return Integer.MAX_VALUE;
+        	//return 100;
         	
         } else {
                 return d;
