@@ -221,8 +221,8 @@ public class CostMap {
 	private boolean isContractedNode(Vector point) {
 		
 		if(map[point.getX()][point.getY()] == 2){
-			System.out.println("neighbor is contracted \n");
-				return true;
+
+			return true;
 			
 		}
 		else{

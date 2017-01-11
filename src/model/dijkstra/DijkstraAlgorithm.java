@@ -44,34 +44,7 @@ public class DijkstraAlgorithm  {//implements Runnable
         
     }
      
-     /*public void execute() {
-     	
-         System.out.println("execute \n");
-
-             settledNodes = new HashSet<Node>();
-             unSettledNodes = new HashSet<Node>();
-             distance = new HashMap<Node, Integer>();
-             predecessors = new HashMap<Node, Node>();
-             turning = new HashMap<Node,Integer>();
-             turning.put(source, 0);
-             distance.put(source, 0);
-             unSettledNodes.add(source);
-             
-             while (unSettledNodes.size() > 0) {
          
-         		
-             		Node node = getMinimumNode(unSettledNodes,source);
-             		
-                    settledNodes.add(node);
-
-                    unSettledNodes.remove(node);
-                     
-                    findMinimalDistances(node,source);
-                     
-             }
- 	
-     }*/
-    
     public void execute() {
      	
         System.out.println("execute \n");
@@ -87,7 +60,6 @@ public class DijkstraAlgorithm  {//implements Runnable
             
             while (unSettledNodes.size() > 0) {
         
-        		
             	   Node node = getMinimumNode(unSettledNodes,source);
             		
                    settledNodes.add(node);
@@ -111,9 +83,6 @@ public class DijkstraAlgorithm  {//implements Runnable
          
          Node step = goal;
          
-         System.out.println("number of Path turning : " +turning.get(goal)+ "\n");
-         System.out.println("goal pointX : " +goal.getPosition().getX() + "\n");
-         System.out.println("goal pointY : " +goal.getPosition().getY() + "\n");
          
          // check if a path exists
          if (predecessors.get(step) == null) {
@@ -151,11 +120,11 @@ public class DijkstraAlgorithm  {//implements Runnable
   	                   
   	                     if(predecessors.get(node) == null){
   	                    
-  	                    	 turning.put(node, 0.0);
-  	                    	System.out.println("nodeX only start : "+ node.getPosition().getX() +"\n");
-  	                		System.out.println("nodeY only start : "+ node.getPosition().getY() +"\n");
-  	                    	turning.put(target, 0.0);  	                     	 
+  	                    	turning.put(node, 0.0);
+  	                    	turning.put(target, 0.0);
+  	                    	
   	                     }else{
+  	                    	 
   	                    	 Node pastNode = predecessors.get(node);
   	                     	 setNumberTurningPath(pastNode,node,target);
   	                    	 
@@ -174,15 +143,10 @@ public class DijkstraAlgorithm  {//implements Runnable
                   
                   if(turningNumberTarget >= turningNodeToTarget){
                 	  
-                	  predecessors.put(target, node);
-                	  
-                	  //System.out.println("turningNodeToTarget : " + turningNodeToTarget + "\n");
-                	  
+                	  predecessors.put(target, node);                	  
                 	  turning.put(target,turningNodeToTarget);
                 	  distance.put(target, getShortestDistance(node)
       	                      + getDistance(node, target));
-                	  
-                	  //System.out.println("turning value of target : " + turning.get(target) + "\n");
                   } 
   	         	   
   	           }
@@ -193,15 +157,6 @@ public class DijkstraAlgorithm  {//implements Runnable
   	
   	private double getNumberOfTurning(Node node,Node pastNode, Node target){
   		
-  		System.out.println("pastX : "+ pastNode.getPosition().getX() +"\n");
-  		System.out.println("pastY : "+ pastNode.getPosition().getY() +"\n");
-  		
-  		System.out.println("nodeX : "+ node.getPosition().getX() +"\n");
-  		System.out.println("nodeY : "+ node.getPosition().getY() +"\n");
-  		
-  		System.out.println("targetX : "+ target.getPosition().getX() +"\n");
-  		System.out.println("targetY : "+ target.getPosition().getY() +"\n");
-  		
   		int angle_PastNode_Node = getAngle(node,pastNode);
   		int angle_Target_Node = getAngle(target,node);
   		
@@ -210,14 +165,7 @@ public class DijkstraAlgorithm  {//implements Runnable
   		if (angle < 0) {
 			angle += 360;
 		}
-  		
-  		System.out.println("turning node : "+ turning.get(node) +"\n");
-  		
-  		
-  		System.out.println("angle : "+ angle +"\n");
-  		
-  		System.out.println("\n");
-
+  	
   		double turningNode = turning.get(node);
   		double turningToTarget = 0;
   		
@@ -231,7 +179,7 @@ public class DijkstraAlgorithm  {//implements Runnable
 		  			turningToTarget = (0.5 + turningNode);
 		  			break;
 		  		case 90 :
-		  			turningToTarget =  (1.0 + turningNode);
+		  			turningToTarget = (1.0 + turningNode);
 		  			break;
 		  		case 135 :
 		  			turningToTarget = (0.5 + turningNode);
@@ -253,71 +201,21 @@ public class DijkstraAlgorithm  {//implements Runnable
 		  			break;
 		  			
 	  	}
-	  		System.out.println("turningToTarget : "+ turningToTarget +"\n");
 
 	  		return turningToTarget;
 			
 			
   	}
-    
-
-/*  	private void findMinimalDistances(Node node,Node goal) {
- 	
-     List<Node> adjacentNodes = getNeighbors(node);
-     
-     for (Node target : adjacentNodes) {
-    	 
-    	
-    	 
-     	
-             if (getShortestDistance(target) > getShortestDistance(node)
-                             + getDistance(node, target)) { 
-                     distance.put(target, getShortestDistance(node)+getDistance(node, target));
-                     predecessors.put(target, node);
-                     unSettledNodes.add(target);
-                   
-                     if(predecessors.get(node).equals(null)){
-                    	 Node past = node;
-                    	 turning.put(past, 0.0);
-                     	 setNumberTurningPath(past, target);
-                     }
-                     
-             }
-          
-          else if(getShortestDistance(target) == getShortestDistance(node)
-                             + getDistance(node, target)) {
-         	   
-         	   Node prevNode = predecessors.get(target);
-         	   Node minimum = MathHelper.shortestDistanceBetweenGoal(node,prevNode,goal);
-         	  // predecessors.remove(target,prevNode);
-         	   //predecessors.remove(target);
-         	   predecessors.put(target, minimum); 
-         	   distance.put(target, getShortestDistance(node)
-                                     + getDistance(node, target));
-         	   
-         	  distance.put(target, getShortestDistance(minimum)
-                      + getDistance(minimum, target));
-         	  
-         	  System.out.println("target2 x " + target.getPosition().getX() + "\n");
-       		  System.out.println("target2 y " + target.getPosition().getY()  + "\n");
-         	   
-            }
-     }
-        
-  	}*/
+ 
   	
   	private int getAngle(Node node, Node target){
   		
   		double nodeX = node.getPosition().getX();
   		double nodeY = node.getPosition().getY();
   		
-
-  		
   		double targetX = target.getPosition().getX();
   		double targetY = target.getPosition().getY();
-  		
-  		
-  		
+  				
   		double theta =Math.atan2((targetY - nodeY),(targetX - nodeX));
   		
   		theta += Math.PI / 2.0;
@@ -391,7 +289,6 @@ public class DijkstraAlgorithm  {//implements Runnable
         if (d == null) {
         	
               return Integer.MAX_VALUE;
-        	//return 100;
         	
         } else {
                 return d;
@@ -440,15 +337,6 @@ public class DijkstraAlgorithm  {//implements Runnable
 		int obsYpos = (int)obstacle.yProperty().get();
 		int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()));
 		
-		/*System.out.println("obsXpos :  "+ obsXpos + "\n");
-		System.out.println("obsXposWidth :  "+ obsXposWidth + "\n");
-		
-		System.out.println("obsYpos :  "+ obsYpos + "\n");
-		System.out.println("obsYposWidth :  "+ obsYposWidth + "\n");
-		
-		System.out.println("edgeGoalX :  "+ edgeGoalX + "\n");
-		System.out.println("edgeGoalY :  "+ edgeGoalY + "\n");*/
-		
 		if( (obsXpos <= edgeGoalX ) && ( edgeGoalX <= obsXposWidth)){ 
 			
 			if(( obsYpos <= edgeGoalY) && ( edgeGoalY <= obsYposWidth)){
@@ -466,28 +354,7 @@ public class DijkstraAlgorithm  {//implements Runnable
 		}
 		
 	}
-	
-	/*private Node getMinimumNode(Set<Node> vertexes,Node goal) {
-    	Node minimum = null;
-        for (Node vertex : vertexes) {
-                if (minimum == null) {
-                        minimum = vertex;
-                } else {
-                        if (getShortestDistance(vertex) < getShortestDistance(minimum)) {
-                                minimum = vertex;
-                        }
-                        else if(getShortestDistance(vertex) == getShortestDistance(minimum)){
-                        	
-                        	minimum = MathHelper.shortestDistanceBetweenGoal(vertex,minimum,goal);
-                        }
-                }
-        }
-        System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
-        System.out.print("Minimu y : " +minimum.getPosition().getY() + "\n");
-        System.out.print( "\n");
 
-        return minimum;
-    }*/
 	private Node getMinimumNode(Set<Node> vertexes,Node goal) {
     	Node minimum = null;
         for (Node vertex : vertexes) {
@@ -499,7 +366,6 @@ public class DijkstraAlgorithm  {//implements Runnable
                         }
                         else if(getShortestDistance(vertex) == getShortestDistance(minimum)){
                         	
-                        	//minimum = MathHelper.shortestDistanceBetweenGoal(vertex,minimum,goal);
                         	if(turning.get(vertex) <= turning.get(minimum)){
                         		
                         		minimum =  vertex;
@@ -510,10 +376,7 @@ public class DijkstraAlgorithm  {//implements Runnable
                         }
                 }
         }
-       /* System.out.print("Minimu x : " +minimum.getPosition().getX() + "\n");
-        System.out.print("Minimu y : " +minimum.getPosition().getY() + "\n");
-        System.out.print( "\n");*/
-
+       
         return minimum;
     }
 	
@@ -540,14 +403,6 @@ public class DijkstraAlgorithm  {//implements Runnable
     public void setThread(Thread thread) {
 		this.thread = thread;
 	}
-    
-    /*public void start() {
-		if (getThread() == null) {
-			setThread(new Thread(this));
-			getThread().start();
-		}
-	}*/
-        
    
 
 }

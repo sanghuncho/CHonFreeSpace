@@ -64,16 +64,13 @@ public class LobbyPresenter {
 		numberObs = CHmodel.getObstacle();
 		obstacles = lobbyView.getObstacleList();
 		
-		
-		
 		for(int i = 0; i < numberObs; i++){
 						
 			obstacles.get(i).setOnMousePressed(obstacleOnMousePressedEventHandler);
 			obstacles.get(i).setOnMouseDragged(obstacleOnMouseDraggedEventHandler);
 			//obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
 		}
-		
-		//setNodeObstacleProperty(nodeMap);
+
 		
 		lobbyView.contractButton.setOnMouseClicked(event -> {
 			
@@ -83,20 +80,7 @@ public class LobbyPresenter {
 						
 			
 			this.map = new int[size.getX()][size.getY()];
-			
-			/*for (Node node : nodeMap.getNodes()) {
-
-				if (node.isObstacle()) {
-				
-					setCost(node.getPosition(), -1);
-					
-				} else {
-					
-					setCost(node.getPosition(),0);
-
-				}
-			}*/
-			
+						
 			for (Node node : nodeMap.getNodes()) {
 
 				if (node.isObstacle()) {
@@ -104,8 +88,7 @@ public class LobbyPresenter {
 					setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
 					
 				}else if(node.isStart() || node.isGoal()){
-					
-					//System.out.println("node is start or goal \n");
+			
 					setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
 				} 
 				
@@ -117,19 +100,17 @@ public class LobbyPresenter {
 				}
 			}
 			
-			/*map[startPointNode.getX()][startPointNode.getY()] = 0;*/
-			
 			loop_map=0;
 			
-			while(loop_map < 20){//CHmodel.getNumberContracted() , numberObs
-				
+			while(loop_map < 100){//CHmodel.getNumberContracted() , numberObs
+		
 				//lobbyView.createViaNodePoint(size,map);
 				lobbyView.generateContractedPoint(size,map);
 				loop_map++;
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 3 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < lobbyView.getViaNodeSize() ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -147,14 +128,6 @@ public class LobbyPresenter {
 				nodeMap, obstacles , map);
 		Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
 		
-		
-		//try to new implementation
-		/*DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
-				nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
-		
-		DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
-				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); */
-		
 		DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
 				nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
 		
@@ -169,7 +142,7 @@ public class LobbyPresenter {
 		
 		
 		
-		while( loop < 3 ){  //CHmodel.getNumberContracted()
+		/*while( loop < 10 ){  //CHmodel.getNumberContracted()
 		
 			
 			dijkstra_head.setPath(nodeMap
@@ -184,31 +157,30 @@ public class LobbyPresenter {
 			
 	        loop++;
 			
-			/*DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
-					nodeMap
-					.get(startPointNode.getX(),startPointNode.getY()),nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()),lobbyView); 
+		}*/
+		
+		while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
+		
+		
+				dijkstra_head.setPath(nodeMap
+						.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
+				
+				lobbyView.createLane(dijkstra_head.getPath());
+		            
+				dijkstra_tail.setPath(nodeMap
+						.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
+				
+				lobbyView.createLane(dijkstra_tail.getPath());
 			
 			
-			dijkstra_head.start();
+	        loop++;
 			
-			
-			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
-					nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY())
-					,nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
-			
-			dijkstra_tail.start();
-	            
-	        loop++;*/
-           
 		}
 		
-            
-            //System.out.println("algorithm is the end \n");
-            
-		});
+		System.out.println("Algo is end \n");
+
 		
+		});
 		
 	}
 	
@@ -245,11 +217,6 @@ public class LobbyPresenter {
 		
 			for(Node node : nodeMap.getNodes()){
 
-				/*System.out.println("node vectorX :" + node.getNodeVector().getX() +"\n");
-		        System.out.println("node vectorY :" + node.getNodeVector().getY() +"\n");
-		        System.out.println("start vextorX :" + CHmodel.getStartVector2D().getX() +"\n");
-		        System.out.println("start vextorY :" + CHmodel.getStartVector2D().getY() +"\n");*/
-						
 				if(node.getNodeVector().equals(CHmodel.getStartVector2D())){
 			
 							node.setProperty(Property.START);
@@ -280,13 +247,6 @@ public class LobbyPresenter {
 		
 		int obsXpos = (int)obstacle.xProperty().get();
 		int obsXposWidth = (int)(obsXpos + (obstacle.getWidth()));
-		
-		
-		/*System.out.println("nodeGoalX" + nodeGoalX+ "\n");
-        System.out.println("nodeGoalY" + nodeGoalX + "\n");*/
-        
-        /*System.out.println("obstacleX " + obsXpos +"\n");
-        System.out.println("obstacleY " + obsXposWidth +"\n");*/
 		
 		int obsYpos = (int)obstacle.yProperty().get();
 		int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()));
@@ -342,19 +302,13 @@ public class LobbyPresenter {
 	            double newTranslateX = orgTranslateX;// + offsetX;
 	            double newTranslateY = orgTranslateY;// + offsetY;
 
-	           
-		        System.out.println("orgTranslateX   : " +  orgTranslateX  + "\n");
-		        System.out.println("orgTranslateY   : " +  orgTranslateY  + "\n");
-
-     
 	            ((Obstacle)(t.getSource())).setTranslateX(newTranslateX);
 	            ((Obstacle)(t.getSource())).setTranslateY(newTranslateY);
 	            
 	            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX()-75);
 	            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY()-50);
 	            
-	          System.out.println("XProperty" + xPosProperty +"\n");
-	          System.out.println("YProperty" + yPosProperty +"\n");  
+	         
 	           
 		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );
 		        ((Obstacle)(t.getSource())).yProperty().bind(yPosProperty );
