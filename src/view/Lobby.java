@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.CHmodel;
@@ -54,6 +55,8 @@ public class Lobby extends BorderPane{
 	private int numberObs;
 	private ArrayList<Point> viaNodes = new ArrayList<Point>();
 	private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
+	
+	private Polygon polygon;
 	
 	public Lobby(Stage stage){
 		
@@ -322,6 +325,25 @@ public class Lobby extends BorderPane{
 	/*public Vector2D getViaNodeScreen(){
 		return new Vector2D( viaNode.getCenterX(),viaNode.getCenterY());
 	}*/
+	
+	public void generatePolygon(){
+		
+		polygon = new Polygon();
+	    polygon.getPoints().addAll(new Double[]{
+	        0.0, 0.0,
+	        200.0, 0.0,
+	        200.0, 200.0,
+	        0.0,200.0});
+	    
+	    polygon.setFill(Color.TRANSPARENT);
+	    
+	    center.getChildren().add(polygon);
+	    
+	    
+	}
+	public Polygon getPolygon(){
+		return polygon;
+	}
 	
 	
 

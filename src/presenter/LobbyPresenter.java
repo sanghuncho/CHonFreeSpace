@@ -102,7 +102,7 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			
-			while(loop_map < 100){//CHmodel.getNumberContracted() , numberObs
+			while(loop_map < 10){//CHmodel.getNumberContracted() , numberObs
 		
 				//lobbyView.createViaNodePoint(size,map);
 				lobbyView.generateContractedPoint(size,map);
@@ -110,7 +110,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < lobbyView.getViaNodeSize() ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < 2 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -177,6 +177,10 @@ public class LobbyPresenter {
 			
 		}
 		
+		
+		lobbyView.generatePolygon();
+		
+		System.out.println("contain : " + lobbyView.getPolygon().contains(100.0, 100.0) + "\n");
 		System.out.println("Algo is end \n");
 
 		
