@@ -110,6 +110,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
+			
 			while(loop_viaNode < 2 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
@@ -134,30 +135,9 @@ public class LobbyPresenter {
 		DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
 		
-		 
-		
 		dijkstra_head.execute();
 		
 		dijkstra_tail.execute();
-		
-		
-		
-		/*while( loop < 10 ){  //CHmodel.getNumberContracted()
-		
-			
-			dijkstra_head.setPath(nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
-			
-			lobbyView.createLane(dijkstra_head.getPath());
-	            
-			dijkstra_tail.setPath(nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
-			
-			lobbyView.createLane(dijkstra_tail.getPath());
-			
-	        loop++;
-			
-		}*/
 		
 		while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
 		
@@ -178,7 +158,7 @@ public class LobbyPresenter {
 		}
 		
 		
-		lobbyView.generatePolygon();
+		lobbyView.generatePolygon(dijkstra_head.getPath(), dijkstra_tail.getPath());
 		
 		System.out.println("contain : " + lobbyView.getPolygon().contains(100.0, 100.0) + "\n");
 		System.out.println("Algo is end \n");

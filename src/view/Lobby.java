@@ -57,6 +57,7 @@ public class Lobby extends BorderPane{
 	private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
 	
 	private Polygon polygon;
+	private LinkedList<Node> body;
 	
 	public Lobby(Stage stage){
 		
@@ -83,7 +84,7 @@ public class Lobby extends BorderPane{
 			Obstacle obs = (Obstacle)itr.next();
 			center.getChildren().add(obs);
 		}
-		
+		https://github.com/sanghuncho/CHonFreeSpace.git
 		/*create the staring - and end points*/
 		startPoint= new Point();
 		endPoint= new Point();
@@ -95,7 +96,7 @@ public class Lobby extends BorderPane{
 		endPoint.setCenterX(CHmodel.getGoalX());
 		endPoint.setCenterY(CHmodel.getGoalY());
 		endPoint.setFill(Color.RED);
-		
+		https://github.com/sanghuncho/CHonFreeSpace.git
 		/*create search button for CH algorithm*/
 		contractButton.setId("contractButtonLabel");
 		
@@ -177,14 +178,12 @@ public class Lobby extends BorderPane{
 		
 		for(int i = 0 ; i < k-1 ; i ++){
 			
-			
-	        //System.out.print("path i : " + i + "\n");
-
 			Vector start = path.get(i).getPosition();
 			Vector goal = path.get(i+1).getPosition();
 			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
 					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
 			center.getChildren().add(lane);
+			
 		}
 		
 	}
@@ -326,18 +325,41 @@ public class Lobby extends BorderPane{
 		return new Vector2D( viaNode.getCenterX(),viaNode.getCenterY());
 	}*/
 	
-	public void generatePolygon(){
+	public void generatePolygon(LinkedList<Node> head, LinkedList<Node> tail){
 		
+		
+		head.addAll(tail);
+		int k = head.size();
 		polygon = new Polygon();
-	    polygon.getPoints().addAll(new Double[]{
-	        0.0, 0.0,
-	        200.0, 0.0,
-	        200.0, 200.0,
-	        0.0,200.0});
+		
+		for(int i = 0 ; i < k-1 ; i ++){
+			
+			double pointX = head.get(i).getPosition().getX();
+			double pointY = head.get(i).getPosition().getY();
+			
+			polygon.getPoints().add(pointX*10 +5);
+			polygon.getPoints().add(pointY*10 +5);
+				
+		}
+		
 	    
-	    polygon.setFill(Color.TRANSPARENT);
+	    polygon.setFill(Color.CADETBLUE);
 	    
 	    center.getChildren().add(polygon);
+	    
+	    
+//	    int k = path.size();
+//		
+//		for(int i = 0 ; i < k-1 ; i ++){
+//			
+//			Vector start = path.get(i).getPosition();
+//			Vector goal = path.get(i+1).getPosition();
+//			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
+//					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
+//			center.getChildren().add(lane);
+//			
+//		}
+		
 	    
 	    
 	}
