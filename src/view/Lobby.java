@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.CHmodel;
 import model.DrawingEdge;
@@ -89,7 +91,7 @@ public class Lobby extends BorderPane{
 			Obstacle obs = (Obstacle)itr.next();
 			center.getChildren().add(obs);
 		}
-		https://github.com/sanghuncho/CHonFreeSpace.git
+		
 		/*create the staring - and end points*/
 		startPoint= new Point();
 		endPoint= new Point();
@@ -123,14 +125,34 @@ public class Lobby extends BorderPane{
 		center.setMaxSize(1000,1000);
 		center.getChildren().addAll(startPoint,endPoint);
 		
-		VBox vBox = new VBox();
+		/*VBox vBox = new VBox();
 		vBox.setSpacing(10);
-		vBox.getChildren().addAll(viaNodeButton,contractButton,searchButton,refreshButton);
+		vBox.getChildren().addAll(viaNodeButton,contractButton,searchButton,refreshButton);*/
 		
 		
-		right.getChildren().add(vBox);
-		right.setMinWidth(50);
+		final Pane leftSpacer = new Pane();
+		leftSpacer.setMinWidth(150);
+		HBox hBox = new HBox();
+		hBox.setSpacing(10);
+		hBox.getChildren().addAll(leftSpacer,viaNodeButton,contractButton,searchButton,refreshButton);
 		
+		
+		final Pane leftSpacer_text = new Pane();
+		leftSpacer_text.setMinWidth(150);
+		HBox hBox_text = new HBox();
+		hBox_text.setSpacing(10);
+		Text text = new Text("the number node ");
+		hBox_text.getChildren().addAll(leftSpacer_text,text);
+		
+		VBox vBox = new VBox();
+		vBox.setSpacing(1);
+		vBox.getChildren().addAll(hBox,hBox_text);
+		
+		
+		
+		//bottom.getChildren().addAll(hBox,hBox_text);
+		bottom.getChildren().add(vBox);
+		bottom.setMinWidth(50);
 			
 		left.setMinWidth(50);
 		
@@ -141,9 +163,9 @@ public class Lobby extends BorderPane{
 
 		scene = new Scene(this);
 		stage.setHeight(CHmodel.getMapX()+100);
-		//stage.setWidth(CHmodel.getMapY()+100);
-		/*this change can affect the routing,without test*/ 
-		stage.setWidth(CHmodel.getMapY()+200);
+		stage.setWidth(CHmodel.getMapY()+100);
+		 
+		
 		
 		
 		//this.scene.getStylesheets().add("/view/style.css");

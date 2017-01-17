@@ -157,13 +157,8 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-<<<<<<< HEAD
 			while(loop_viaNode < 4 ){//CHmodel.getNumberContracted() , numberObs
-=======
-			
-			while(loop_viaNode < 2 ){//CHmodel.getNumberContracted() , numberObs
->>>>>>> branch 'master' of https://github.com/sanghuncho/CHonFreeSpace.git
-				
+
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
 			}
@@ -186,13 +181,10 @@ public class LobbyPresenter {
 		DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
 		
-<<<<<<< HEAD
+
 		
 		//lobbyView.drawingEdges(costmap.getEdges());
 
-		 
-=======
->>>>>>> branch 'master' of https://github.com/sanghuncho/CHonFreeSpace.git
 		dijkstra_head.execute();
 		
 		dijkstra_tail.execute();
@@ -216,11 +208,8 @@ public class LobbyPresenter {
 		}
 		
 		
-<<<<<<< HEAD
 		//lobbyView.generatePolygon();
-=======
-		lobbyView.generatePolygon(dijkstra_head.getPath(), dijkstra_tail.getPath());
->>>>>>> branch 'master' of https://github.com/sanghuncho/CHonFreeSpace.git
+		//lobbyView.generatePolygon(dijkstra_head.getPath(), dijkstra_tail.getPath());
 		
 		
 		System.out.println("Algo is end \n");
