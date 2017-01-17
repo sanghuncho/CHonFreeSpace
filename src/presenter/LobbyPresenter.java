@@ -157,7 +157,12 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
+<<<<<<< HEAD
 			while(loop_viaNode < 4 ){//CHmodel.getNumberContracted() , numberObs
+=======
+			
+			while(loop_viaNode < 2 ){//CHmodel.getNumberContracted() , numberObs
+>>>>>>> branch 'master' of https://github.com/sanghuncho/CHonFreeSpace.git
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -181,32 +186,16 @@ public class LobbyPresenter {
 		DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
 		
+<<<<<<< HEAD
 		
 		//lobbyView.drawingEdges(costmap.getEdges());
 
 		 
+=======
+>>>>>>> branch 'master' of https://github.com/sanghuncho/CHonFreeSpace.git
 		dijkstra_head.execute();
 		
 		dijkstra_tail.execute();
-		
-		
-		
-		/*while( loop < 10 ){  //CHmodel.getNumberContracted()
-		
-			
-			dijkstra_head.setPath(nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
-			
-			lobbyView.createLane(dijkstra_head.getPath());
-	            
-			dijkstra_tail.setPath(nodeMap
-					.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
-			
-			lobbyView.createLane(dijkstra_tail.getPath());
-			
-	        loop++;
-			
-		}*/
 		
 		while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
 		
@@ -227,7 +216,11 @@ public class LobbyPresenter {
 		}
 		
 		
+<<<<<<< HEAD
 		//lobbyView.generatePolygon();
+=======
+		lobbyView.generatePolygon(dijkstra_head.getPath(), dijkstra_tail.getPath());
+>>>>>>> branch 'master' of https://github.com/sanghuncho/CHonFreeSpace.git
 		
 		
 		System.out.println("Algo is end \n");

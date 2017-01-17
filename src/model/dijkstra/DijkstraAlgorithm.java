@@ -101,7 +101,9 @@ public class DijkstraAlgorithm  {
      }
      
     public LinkedList<Node> getPath(){
+    	
     	return path;
+    	
     }
     
   	private void findMinimalDistances(Node node,Node goal) {
