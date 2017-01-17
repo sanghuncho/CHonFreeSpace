@@ -41,7 +41,6 @@ public class CostMap {
 		
 		this.size = size;
 		this.startPoint = start;
-		//this.goalPoint = goal;
 		this.nodes = nodeMap.getNodes();
 		this.nodeSize = nodeMap.getNodes().size();
 		this.nodeMap = nodeMap;
@@ -67,10 +66,81 @@ public class CostMap {
 		return nodes;
 	}
 	
-	private void createSurroundingEdges(List<Node> nodes) {
+	/*private void createSurroundingEdges(List<Node> nodes) {
 		
 		for (Node node : nodes){
 			
+			
+			
+			for (Node neighbor : node.getNeighborList()) {
+	            
+				int weight=1;
+				
+				Vector neighborVector = neighbor.getPosition();
+				Directions neighborDirection = null;
+				
+				if(isContractedNode(neighborVector)){
+					
+					neighborDirection = node.getDirectionOfNeighbor(neighbor);
+					//System.out.println("direction : "+ neighborDirection +"\n");
+
+				}
+				
+				while(isContractedNode(neighborVector)){
+					 	
+					System.out.println("node positionX : "+ node.getPosition().getX() +"\n");
+					System.out.println("node positionY : "+ node.getPosition().getY() +"\n");
+					
+					System.out.println("neighbor positionX : "+ neighbor.getPosition().getX() +"\n");
+					System.out.println("neighbor positionY : "+ neighbor.getPosition().getY() +"\n");
+					
+					node.getNotContractedNeighbor methode becomes only the direction and per position of the node
+					get the neighbor
+					
+					Node freshNeighbor = getFreshNeighbor(node,neighborDirection,weight+1); 
+					
+					
+					System.out.println("fresh positionX : "+ freshNeighbor.getPosition().getX() +"\n");
+					System.out.println("fresh positionY : "+ freshNeighbor.getPosition().getY() +"\n");
+					
+					neighborVector = freshNeighbor.getPosition();
+					weight++;
+					
+				}
+				
+				neighbor = nodeMap.get(neighborVector.getX(), neighborVector.getY());
+				
+				isObstacle mathode check the map-value
+				if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){ 
+					
+					if (!(checkForNode(visitedNodes, node))) {
+						 
+						
+
+						createEdge(node,neighbor,weight);//added to cost for node
+						
+						System.out.println("edgeNode positionX : "+ node.getPosition().getX() +"\n");
+						System.out.println("edgeNode positionY : "+ node.getPosition().getY() +"\n");
+						System.out.println("edgeGoal positionX : "+ neighbor.getPosition().getX() +"\n");
+						System.out.println("edgeGoal positionY : "+ neighbor.getPosition().getY() +"\n");
+						System.out.println("weight: "+ weight +"\n");
+						
+					}
+					
+				}
+			}
+			visitedNodes.add(node);
+		}
+
+	}
+*/	
+	
+	
+private void createSurroundingEdges(List<Node> nodes) {
+		
+		for (Node node : nodes){
+			
+		 if( !isContractedNode(node.getPosition()) ){
 			
 			
 			for (Node neighbor : node.getNeighborList()) {
@@ -132,9 +202,10 @@ public class CostMap {
 			}
 			visitedNodes.add(node);
 		}
+	 }
 
 	}
-	
+
 	private Node getFreshNeighbor(Node node, Directions direction, int weight){
 		
 		int nodePosX = node.getPosition().getX();
@@ -212,7 +283,9 @@ public class CostMap {
 		edgeId++;	
 	}
 	
-	public ArrayList<Edge> getEdges(){return edges;}
+	public ArrayList<Edge> getEdges(){
+		return edges;
+	}
 	
 	private boolean isObstacle(Vector point) {
 		return map[point.getX()][point.getY()] == -1;

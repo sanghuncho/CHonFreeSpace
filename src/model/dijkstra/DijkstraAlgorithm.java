@@ -18,7 +18,7 @@ import util.math.MathHelper;
 import util.math.Vector;
 import view.Lobby;
 
-public class DijkstraAlgorithm  {//implements Runnable
+public class DijkstraAlgorithm  {
 	
 	private Thread thread;
 	private List<Node> nodes;

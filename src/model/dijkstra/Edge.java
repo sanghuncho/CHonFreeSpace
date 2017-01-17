@@ -1,9 +1,8 @@
 package model.dijkstra;
 
 import model.node.Node;
-import util.math.Vector;
 
-public class Edge{
+public class Edge {
 	
 	private final int id;
     private final Node source;

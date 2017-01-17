@@ -18,9 +18,11 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.CHmodel;
+import model.DrawingEdge;
 import model.Lane;
 import model.Obstacle;
 import model.Point;
+import model.dijkstra.Edge;
 import model.node.Node;
 import model.node.NodeCircle;
 import model.node.NodeMap;
@@ -29,9 +31,11 @@ import util.math.Vector2D;
 
 public class Lobby extends BorderPane{
 	
-	public Button contractButton = new Button("Contracting");
-	public Button searchButton = new Button("Searching");
-
+	public Button viaNodeButton = new Button("only via-node");
+	public Button contractButton = new Button("via-node + CH");
+	public Button searchButton = new Button("search");
+	public Button refreshButton = new Button("refresh");
+	
 	public Obstacle obs;
 	public ArrayList<Obstacle>  obstacles;
 	public Point startPoint;
@@ -55,6 +59,7 @@ public class Lobby extends BorderPane{
 	private int numberObs;
 	private ArrayList<Point> viaNodes = new ArrayList<Point>();
 	private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
+	ArrayList<Edge> variousEdges = new ArrayList<Edge>(); 
 	
 	private Polygon polygon;
 	
@@ -119,13 +124,13 @@ public class Lobby extends BorderPane{
 		
 		VBox vBox = new VBox();
 		vBox.setSpacing(10);
-		vBox.getChildren().addAll(contractButton,searchButton);
+		vBox.getChildren().addAll(viaNodeButton,contractButton,searchButton,refreshButton);
 		
 		
 		right.getChildren().add(vBox);
 		right.setMinWidth(50);
 		
-		
+			
 		left.setMinWidth(50);
 		
 		top.setMinHeight(25);
@@ -135,7 +140,10 @@ public class Lobby extends BorderPane{
 
 		scene = new Scene(this);
 		stage.setHeight(CHmodel.getMapX()+100);
-		stage.setWidth(CHmodel.getMapY()+100);
+		//stage.setWidth(CHmodel.getMapY()+100);
+		/*this change can affect the routing,without test*/ 
+		stage.setWidth(CHmodel.getMapY()+200);
+		
 		
 		//this.scene.getStylesheets().add("/view/style.css");
 		stage.setScene(scene);
@@ -177,15 +185,69 @@ public class Lobby extends BorderPane{
 		
 		for(int i = 0 ; i < k-1 ; i ++){
 			
-			
-	        //System.out.print("path i : " + i + "\n");
-
 			Vector start = path.get(i).getPosition();
 			Vector goal = path.get(i+1).getPosition();
 			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
 					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
 			center.getChildren().add(lane);
 		}
+		
+	}
+	
+	public void drawingEdges(ArrayList<Edge> edges){
+		
+		int size = edges.size();
+				
+		for(int i=0; i < size; i++){
+			
+			Vector start = edges.get(i).getSource().getPosition();
+			Vector goal = edges.get(i).getDestination().getPosition();
+			
+			if( !checkHomoEdge(edges.get(i)) ){
+				
+				DrawingEdge drawEdge = new DrawingEdge(10*(double)start.getX()+5,10*(double)start.getY() +5,
+						10*(double)goal.getX()+5,10*(double)goal.getY()+5);
+				
+				variousEdges.add(edges.get(i));
+				
+				center.getChildren().add(drawEdge);
+			}
+			
+		}
+		
+		System.out.println("size : " + variousEdges.size() + "\n");
+
+		
+		
+	}
+	
+	private boolean checkHomoEdge(Edge edge){
+		
+		int sizeOfVarious = variousEdges.size();
+		
+		if(variousEdges == null){
+			return false;
+		}
+		else{
+			for(int i = 0; i < sizeOfVarious; i++){
+				
+				if( (variousEdges.get(i).getSource().equals(edge.getSource()) 
+						&& variousEdges.get(i).getDestination().equals(edge.getDestination()))
+							|| (variousEdges.get(i).getSource().equals(edge.getDestination())
+								&& variousEdges.get(i).getDestination().equals(edge.getSource()))){
+					return true;
+				}
+				else{
+					
+				}
+			
+			}
+			return false;
+	
+		}
+		
+		
+		
 		
 	}
 	
@@ -223,7 +285,7 @@ public class Lobby extends BorderPane{
 			contractedNode = new Point();
 			contractedNode.setCenterX(randomNumX*10+5);
 			contractedNode.setCenterY(randomNumY*10+5);
-			contractedNode.setFill(Color.DARKMAGENTA);
+			contractedNode.setFill(Color.WHITE);
 			center.getChildren().add(contractedNode);
 			contractedPoints.add(contractedNode);
 			map[randomNumX][randomNumY] = CHmodel.VALUE_MAP_CONTRACTING;

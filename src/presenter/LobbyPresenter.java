@@ -70,6 +70,53 @@ public class LobbyPresenter {
 			obstacles.get(i).setOnMouseDragged(obstacleOnMouseDraggedEventHandler);
 			//obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
 		}
+		
+		lobbyView.viaNodeButton.setOnMouseClicked(event -> {
+			
+			setNodeObstacleProperty(nodeMap);
+			setNodeStartProperty(nodeMap);
+			setNodeGoalProperty(nodeMap);
+						
+			
+			this.map = new int[size.getX()][size.getY()];
+						
+			for (Node node : nodeMap.getNodes()) {
+
+				if (node.isObstacle()) {
+				
+					setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
+					
+				}else if(node.isStart() || node.isGoal()){
+			
+					setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
+				} 
+				
+				
+				else {
+					
+					setCost(node.getPosition(),CHmodel.VALUE_MAP_POINT);
+
+				}
+			}
+			
+			loop_map=0;
+			
+			while(loop_map < 0){//CHmodel.getNumberContracted() , numberObs
+		
+				//lobbyView.createViaNodePoint(size,map);
+				lobbyView.generateContractedPoint(size,map);
+				loop_map++;
+			}
+			
+			loop_viaNode=0;
+			while(loop_viaNode < 4 ){//CHmodel.getNumberContracted() , numberObs
+				
+				lobbyView.createViaNodePoint(size,map);
+				loop_viaNode++;
+			}
+			
+
+		});
 
 		
 		lobbyView.contractButton.setOnMouseClicked(event -> {
@@ -102,7 +149,7 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			
-			while(loop_map < 10){//CHmodel.getNumberContracted() , numberObs
+			while(loop_map < 400){//CHmodel.getNumberContracted() , numberObs
 		
 				//lobbyView.createViaNodePoint(size,map);
 				lobbyView.generateContractedPoint(size,map);
@@ -110,7 +157,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 2 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < 4 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -134,8 +181,10 @@ public class LobbyPresenter {
 		DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
 		
-		 
 		
+		//lobbyView.drawingEdges(costmap.getEdges());
+
+		 
 		dijkstra_head.execute();
 		
 		dijkstra_tail.execute();
@@ -178,9 +227,9 @@ public class LobbyPresenter {
 		}
 		
 		
-		lobbyView.generatePolygon();
+		//lobbyView.generatePolygon();
 		
-		System.out.println("contain : " + lobbyView.getPolygon().contains(100.0, 100.0) + "\n");
+		
 		System.out.println("Algo is end \n");
 
 		

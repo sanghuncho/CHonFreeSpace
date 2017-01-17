@@ -6,7 +6,7 @@ import javafx.scene.shape.Circle;
 public class Point extends Circle{
 	
 	public Point(){	
-		this.setRadius(6);
+		this.setRadius(4);
 		
 	}
 
