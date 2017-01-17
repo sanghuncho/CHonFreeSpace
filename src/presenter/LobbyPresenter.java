@@ -149,7 +149,7 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			
-			while(loop_map < 400){//CHmodel.getNumberContracted() , numberObs
+			while(loop_map < CHmodel.getNumberContracted()){//CHmodel.getNumberContracted() , numberObs
 		
 				//lobbyView.createViaNodePoint(size,map);
 				lobbyView.generateContractedPoint(size,map);
@@ -207,9 +207,8 @@ public class LobbyPresenter {
 			
 		}
 		
+		lobbyView.setText();
 		
-		//lobbyView.generatePolygon();
-		//lobbyView.generatePolygon(dijkstra_head.getPath(), dijkstra_tail.getPath());
 		
 		
 		System.out.println("Algo is end \n");

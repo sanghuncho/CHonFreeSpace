@@ -48,6 +48,8 @@ public class Lobby extends BorderPane{
 	public Pane right = new Pane();
 	public Pane left = new Pane();
 	public Pane top = new Pane();
+	public Text text;
+	public int sizeOfEdges;
 	
 	private Point viaNode;
 	private Point contractedNode;
@@ -138,14 +140,14 @@ public class Lobby extends BorderPane{
 		
 		
 		final Pane leftSpacer_text = new Pane();
-		leftSpacer_text.setMinWidth(150);
+		leftSpacer_text.setMinWidth(100);
 		HBox hBox_text = new HBox();
 		hBox_text.setSpacing(10);
-		Text text = new Text("the number node ");
+		text = new Text("");
 		hBox_text.getChildren().addAll(leftSpacer_text,text);
 		
 		VBox vBox = new VBox();
-		vBox.setSpacing(1);
+		vBox.setSpacing(4);
 		vBox.getChildren().addAll(hBox,hBox_text);
 		
 		
@@ -247,13 +249,13 @@ public class Lobby extends BorderPane{
 	
 	private boolean checkHomoEdge(Edge edge){
 		
-		int sizeOfVarious = variousEdges.size();
+		sizeOfEdges = variousEdges.size();
 		
 		if(variousEdges == null){
 			return false;
 		}
 		else{
-			for(int i = 0; i < sizeOfVarious; i++){
+			for(int i = 0; i < sizeOfEdges; i++){
 				
 				if( (variousEdges.get(i).getSource().equals(edge.getSource()) 
 						&& variousEdges.get(i).getDestination().equals(edge.getDestination()))
@@ -452,6 +454,20 @@ public class Lobby extends BorderPane{
 	}
 	public Polygon getPolygon(){
 		return polygon;
+	}
+	
+	public void setText(){
+		
+		int numberOfNode = nodemap.getSizeNode();
+		int numberContracted = CHmodel.getNumberContracted();
+		String liveNumberNode = Integer.toString(numberOfNode-numberContracted);
+		
+		//int variousEdge = variousEdges.size();
+		String variousEdges = Integer.toString(sizeOfEdges);
+				
+		text.setText("the number of nodes : " + liveNumberNode
+				+ ", the number of edges : " + variousEdges);
+		
 	}
 	
 	
