@@ -50,6 +50,7 @@ public class Lobby extends BorderPane{
 	public Pane top = new Pane();
 	public Text text;
 	public int sizeOfEdges;
+	public int diverseEdges;
 	
 	private Point viaNode;
 	private Point contractedNode;
@@ -105,7 +106,7 @@ public class Lobby extends BorderPane{
 		endPoint.setCenterX(CHmodel.getGoalX());
 		endPoint.setCenterY(CHmodel.getGoalY());
 		endPoint.setFill(Color.RED);
-		https://github.com/sanghuncho/CHonFreeSpace.git
+		
 		/*create search button for CH algorithm*/
 		contractButton.setId("contractButtonLabel");
 		
@@ -140,7 +141,7 @@ public class Lobby extends BorderPane{
 		
 		
 		final Pane leftSpacer_text = new Pane();
-		leftSpacer_text.setMinWidth(100);
+		leftSpacer_text.setMinWidth(150);
 		HBox hBox_text = new HBox();
 		hBox_text.setSpacing(10);
 		text = new Text("");
@@ -229,7 +230,9 @@ public class Lobby extends BorderPane{
 			Vector start = edges.get(i).getSource().getPosition();
 			Vector goal = edges.get(i).getDestination().getPosition();
 			
-			if( !checkHomoEdge(edges.get(i)) ){
+			if(checkLengthEdge(edges.get(i))){
+				
+				if( !checkHomoEdge(edges.get(i)) ){
 				
 				DrawingEdge drawEdge = new DrawingEdge(10*(double)start.getX()+5,10*(double)start.getY() +5,
 						10*(double)goal.getX()+5,10*(double)goal.getY()+5);
@@ -237,13 +240,33 @@ public class Lobby extends BorderPane{
 				variousEdges.add(edges.get(i));
 				
 				center.getChildren().add(drawEdge);
+				}
 			}
 			
 		}
 		
-		System.out.println("size : " + variousEdges.size() + "\n");
+		//System.out.println("size : " + variousEdges.size() + "\n");
 
 		
+		
+	}
+	private boolean checkLengthEdge(Edge edge){
+		
+		int startX = edge.getSource().getPosition().getX();
+		int startY = edge.getSource().getPosition().getY();
+		int goalX = edge.getDestination().getPosition().getX();
+		int goalY = edge.getDestination().getPosition().getY();
+		double lengthX = (startX - goalX)*(startX - goalX);
+		double lengthY = (startY - goalY)*(startY - goalY);
+		
+		double length = Math.sqrt(lengthX + lengthY);
+		
+		if(length > Math.sqrt(2.0)){
+			return true;
+		}
+		else{
+			return false;
+		}
 		
 	}
 	
@@ -277,6 +300,34 @@ public class Lobby extends BorderPane{
 		
 	}
 	
+	/*public void checkHomoEdge(ArrayList<Edge> edges){
+		
+		int sizeOfEdges = edges.size();
+		
+		variousEdges.add(edges.get(0));
+		
+		diverseEdges = 1;
+		
+		for(int i = 1; i < edges.size(); i++){
+				
+			for(int j = 0; j< variousEdges.size(); j++ ){
+				
+				if( (edges.get(i).getSource().equals(variousEdges.get(j).getSource()) 
+						&& edges.get(i).getDestination().equals(variousEdges.get(j).getDestination()))
+							|| (edges.get(i).getSource().equals(variousEdges.get(j).getDestination())
+								&& edges.get(i).getDestination().equals(variousEdges.get(j).getSource()))){
+					
+				}
+				else{
+					
+				}
+			
+			}
+	
+		}
+	}*/
+	
+	
 	
 	public void generateContractedPoint(Vector2D size, int[][] map){
 		
@@ -298,15 +349,14 @@ public class Lobby extends BorderPane{
 				randY = new Random();
 				randomNumY = randY.nextInt( size.getY());
 				
-				System.out.println("new random x " + randomNumX + "\n");
+				/*System.out.println("new random x " + randomNumX + "\n");
 				System.out.println("new random y " + randomNumY + "\n");
-				System.out.println("\n");
+				System.out.println("\n");*/
 			
 			}
 		
 		if( !insideObstacle(randomNumX,randomNumY,map)){
 			
-			//System.out.println("created viaNode \n");
 
 			contractedNode = new Point();
 			contractedNode.setCenterX(randomNumX*10+5);
@@ -349,9 +399,9 @@ public class Lobby extends BorderPane{
 				randY = new Random();
 				randomNumY = randY.nextInt( size.getY());
 				
-				System.out.println("new random x " + randomNumX + "\n");
+				/*System.out.println("new random x " + randomNumX + "\n");
 				System.out.println("new random y " + randomNumY + "\n");
-				System.out.println("\n");
+				System.out.println("\n");*/
 			
 			}
 		
@@ -370,7 +420,11 @@ public class Lobby extends BorderPane{
 	private boolean insideObstacle(int randomX, int randomY, int[][] map){
 		
 		if( (map[randomX][randomY]) == -1 || (map[randomX][randomY]) == 0){
-		
+			
+			if((map[randomX][randomY]) == 0){
+				
+				System.out.println("map = 0 \n");
+			}
 			return true;
 			
 		}
@@ -456,17 +510,17 @@ public class Lobby extends BorderPane{
 		return polygon;
 	}
 	
-	public void setText(){
+	public void setText(int sizeOfEdges){
 		
 		int numberOfNode = nodemap.getSizeNode();
 		int numberContracted = CHmodel.getNumberContracted();
 		String liveNumberNode = Integer.toString(numberOfNode-numberContracted);
 		
 		//int variousEdge = variousEdges.size();
-		String variousEdges = Integer.toString(sizeOfEdges);
+		int variousEdges = sizeOfEdges/2;
 				
 		text.setText("the number of nodes : " + liveNumberNode
-				+ ", the number of edges : " + variousEdges);
+				+ ",  the number of edges : " + variousEdges);
 		
 	}
 	

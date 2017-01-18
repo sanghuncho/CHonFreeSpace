@@ -135,7 +135,7 @@ public class LobbyPresenter {
 					setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
 					
 				}else if(node.isStart() || node.isGoal()){
-			
+								
 					setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
 				} 
 				
@@ -151,7 +151,6 @@ public class LobbyPresenter {
 			
 			while(loop_map < CHmodel.getNumberContracted()){//CHmodel.getNumberContracted() , numberObs
 		
-				//lobbyView.createViaNodePoint(size,map);
 				lobbyView.generateContractedPoint(size,map);
 				loop_map++;
 			}
@@ -182,8 +181,6 @@ public class LobbyPresenter {
 				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
 		
 
-		
-		//lobbyView.drawingEdges(costmap.getEdges());
 
 		dijkstra_head.execute();
 		
@@ -207,9 +204,10 @@ public class LobbyPresenter {
 			
 		}
 		
-		lobbyView.setText();
 		
+		lobbyView.drawingEdges(costmap.getEdges());
 		
+		lobbyView.setText(costmap.getEdges().size());
 		
 		System.out.println("Algo is end \n");
 
@@ -252,7 +250,7 @@ public class LobbyPresenter {
 			for(Node node : nodeMap.getNodes()){
 
 				if(node.getNodeVector().equals(CHmodel.getStartVector2D())){
-			
+				
 							node.setProperty(Property.START);
 						}	
 				}
@@ -265,8 +263,9 @@ public class LobbyPresenter {
 		
 		for(Node node : nodeMap.getNodes()){
 			
-			if(node.getNodeVector().equals(CHmodel.getStartVector2D())){
-			
+			if(node.getNodeVector().equals(CHmodel.getGoalVector2D())){
+				
+				
 						node.setProperty(Property.GOAL);
 					}	
 			}
@@ -310,15 +309,14 @@ public class LobbyPresenter {
 	        @Override
 	        public void handle(MouseEvent t) {
 	        	
-	            orgSceneX = t.getSceneX()-50;
-	            orgSceneY = t.getSceneY()-25;
+	            orgSceneX = t.getSceneX()-50;//50
+	            orgSceneY = t.getSceneY()-25;//25
 	            
-		        System.out.println("orgSceneX : " + orgSceneX +"\n");	           
-		        System.out.println("orgSceneY : " + orgSceneY +"\n");
+		        /*System.out.println("orgSceneX : " + orgSceneX +"\n");	           
+		        System.out.println("orgSceneY : " + orgSceneY +"\n");*/
 	            
 	            orgTranslateX = ((Obstacle)(t.getSource())).getTranslateX();
 	            orgTranslateY = ((Obstacle)(t.getSource())).getTranslateY();
-	            
 	        	
 	        }       
 	    };
@@ -342,8 +340,7 @@ public class LobbyPresenter {
 	            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX()-75);
 	            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY()-50);
 	            
-	         
-	           
+	    
 		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );
 		        ((Obstacle)(t.getSource())).yProperty().bind(yPosProperty );
 		        		  
@@ -351,7 +348,7 @@ public class LobbyPresenter {
 	        
 	    };
 	    
-	   /* EventHandler<MouseEvent> obstacleOnMouseRelesedEventHandler = 
+	   EventHandler<MouseEvent> obstacleOnMouseRelesedEventHandler = 
 		        new EventHandler<MouseEvent>() {
 		 
 		        @Override
@@ -367,7 +364,7 @@ public class LobbyPresenter {
 		        
 		        }
 		        
-		    };*/
+		    };
 	  
 	    /*EventHandler<MouseEvent> obstacleOnMouseRelesedEventHandler = 
 		        new EventHandler<MouseEvent>() {

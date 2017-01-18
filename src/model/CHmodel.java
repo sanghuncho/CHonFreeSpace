@@ -135,9 +135,9 @@ public class CHmodel {
 		switch (CHmodel.percentage){
 			case "10%" : result = 10;
 						 break;
-			case "15%" : result = 15;
-			 			 break;
 			case "20%" : result = 20;
+			 			 break;
+			case "30%" : result = 20;
 			 			 break;
 
 		}

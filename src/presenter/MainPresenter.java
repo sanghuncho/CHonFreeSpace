@@ -47,7 +47,7 @@ public class MainPresenter {
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
-			System.out.println("pushed");
+			System.out.println("pushed \n");
 		});
 	}
 	
