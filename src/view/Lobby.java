@@ -58,6 +58,8 @@ public class Lobby extends BorderPane{
 	private Random randY;
 	private int randomNumX;	
 	private int randomNumY;
+	
+	private int numberLane=0;
 
 	
 	private Scene scene;
@@ -65,6 +67,8 @@ public class Lobby extends BorderPane{
 	private ArrayList<Point> viaNodes = new ArrayList<Point>();
 	private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
 	ArrayList<Edge> variousEdges = new ArrayList<Edge>(); 
+	private ArrayList<Lane> laneList = new ArrayList<Lane>();	
+
 	
 	private Polygon polygon;
 	private LinkedList<Node> body;
@@ -152,7 +156,6 @@ public class Lobby extends BorderPane{
 		vBox.getChildren().addAll(hBox,hBox_text);
 		
 		
-		
 		//bottom.getChildren().addAll(hBox,hBox_text);
 		bottom.getChildren().add(vBox);
 		bottom.setMinWidth(50);
@@ -205,7 +208,7 @@ public class Lobby extends BorderPane{
 		return obstacles;
 	}
 	
-	public void createLane(LinkedList<Node> path){
+	/*public void createLane(LinkedList<Node> path){
 		
 		int k = path.size();
 		
@@ -218,6 +221,56 @@ public class Lobby extends BorderPane{
 			center.getChildren().add(lane);
 			
 		}
+		
+	}*/
+	
+	/*for removeLane*/
+	public void createLane(LinkedList<Node> path){
+		
+		int k = path.size();
+		
+		for(int i = 0 ; i < k-1 ; i ++){
+			
+			Vector start = path.get(i).getPosition();
+			Vector goal = path.get(i+1).getPosition();
+			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
+					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
+			center.getChildren().add(lane);
+			laneList.add(lane);
+			
+		}
+		
+	}
+	
+	private int getSizeOfCenterObj(){
+		
+		return center.getChildren().size();
+	}
+	
+	public void removeLane(){
+		
+		int sizeObj = getSizeOfCenterObj();
+		System.out.println("sizeObj : " + sizeObj + "\n" );
+		int sizeLane = laneList.size();
+		System.out.println("laneSize : " + sizeLane + "\n" );
+		int k=0;
+		
+		//for(int i=0; i< sizeObj; i++){
+			
+			for(int j=0; j< sizeLane; j++){
+			
+			
+				//if(center.getChildren().get(i).equals(laneList.get(j))){
+				
+					center.getChildren().remove(laneList.get(j));
+			
+				//}
+			}
+			//k++;
+		//}
+		
+		//System.out.println("K : " + k + "\n" );
+
 		
 	}
 	
@@ -245,8 +298,6 @@ public class Lobby extends BorderPane{
 			
 		}
 		
-		//System.out.println("size : " + variousEdges.size() + "\n");
-
 		
 		
 	}
@@ -510,10 +561,16 @@ public class Lobby extends BorderPane{
 		return polygon;
 	}
 	
-	public void setText(int sizeOfEdges){
+	public void setText(int sizeOfEdges, boolean applyCH){
 		
 		int numberOfNode = nodemap.getSizeNode();
-		int numberContracted = CHmodel.getNumberContracted();
+		int numberContracted = 0;
+		
+		if(applyCH == true){
+			numberContracted = CHmodel.getNumberContracted();
+		}
+		else{
+		}
 		String liveNumberNode = Integer.toString(numberOfNode-numberContracted);
 		
 		//int variousEdge = variousEdges.size();

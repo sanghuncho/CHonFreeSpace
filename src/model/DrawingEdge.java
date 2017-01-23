@@ -11,7 +11,7 @@ public class DrawingEdge extends Line{
 		this.setStartY(startY);
 		this.setEndX(goalX);
 		this.setEndY(goalY);
-		this.setStroke(Color.OLIVEDRAB);
+		this.setStroke(Color.GREENYELLOW);
 	}
 
 }

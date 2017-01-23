@@ -37,7 +37,7 @@ public class LobbyPresenter {
 	private int numberObs;
 	private ArrayList<Obstacle> obstacles;
 	private Vector2D size;	
-	private static NodeMapHandler nodeMapHandler;
+	//private static NodeMapHandler nodeMapHandler;
 	private Vector startPointNode;
 	private Vector goalPointNode;
 	private int loop;
@@ -45,7 +45,8 @@ public class LobbyPresenter {
 	private int loop_viaNode;
 	private int[][] map;
 	private NodeMap nodeMap;
-    private DijkstraAlgorithm dijkstra;
+    //private DijkstraAlgorithm dijkstra;
+	private boolean applyCH;
 
 	
 	public LobbyPresenter(Lobby lobbyView){
@@ -76,6 +77,8 @@ public class LobbyPresenter {
 			setNodeObstacleProperty(nodeMap);
 			setNodeStartProperty(nodeMap);
 			setNodeGoalProperty(nodeMap);
+			
+			this.applyCH = false;
 						
 			
 			this.map = new int[size.getX()][size.getY()];
@@ -117,13 +120,17 @@ public class LobbyPresenter {
 			
 
 		});
-
+		
 		
 		lobbyView.contractButton.setOnMouseClicked(event -> {
+			
 			
 			setNodeObstacleProperty(nodeMap);
 			setNodeStartProperty(nodeMap);
 			setNodeGoalProperty(nodeMap);
+			
+			
+			this.applyCH = true;
 						
 			
 			this.map = new int[size.getX()][size.getY()];
@@ -168,50 +175,60 @@ public class LobbyPresenter {
 		
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 		
-		loop=0;
-		
-		CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
-				nodeMap, obstacles , map);
-		Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
-		
-		DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
-				nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
-		
-		DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
-				nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
-		
-
-
-		dijkstra_head.execute();
-		
-		dijkstra_tail.execute();
-		
-		while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
-		
-		
-				dijkstra_head.setPath(nodeMap
-						.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
+			loop=0;
+			
+			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
+					nodeMap, obstacles , map);
+			
+			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
+			
+			DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
+					nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
+			
+			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
+					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+			
+	
+	
+			dijkstra_head.execute();
+			
+			dijkstra_tail.execute();
+			
+			while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
+			
+			
+					dijkstra_head.setPath(nodeMap
+							.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
+					
+					lobbyView.createLane(dijkstra_head.getPath());
+			            
+					dijkstra_tail.setPath(nodeMap
+							.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
+					
+					lobbyView.createLane(dijkstra_tail.getPath());
 				
-				lobbyView.createLane(dijkstra_head.getPath());
-		            
-				dijkstra_tail.setPath(nodeMap
-						.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
 				
-				lobbyView.createLane(dijkstra_tail.getPath());
+		        loop++;
+				
+			}
 			
 			
-	        loop++;
+			lobbyView.drawingEdges(costmap.getEdges());
 			
-		}
+			lobbyView.setText(costmap.getEdges().size(),applyCH);
+			
+			System.out.println("Algo is end \n");
+	
+			
+		});
 		
 		
-		lobbyView.drawingEdges(costmap.getEdges());
-		
-		lobbyView.setText(costmap.getEdges().size());
-		
-		System.out.println("Algo is end \n");
-
-		
+		lobbyView.refreshButton.setOnMouseClicked(event -> {
+			
+			
+			lobbyView.removeLane();
+			
+			
 		});
 		
 	}
@@ -309,8 +326,8 @@ public class LobbyPresenter {
 	        @Override
 	        public void handle(MouseEvent t) {
 	        	
-	            orgSceneX = t.getSceneX()-50;//50
-	            orgSceneY = t.getSceneY()-25;//25
+	            orgSceneX = t.getSceneX()-60;//50
+	            orgSceneY = t.getSceneY()-35;//25
 	            
 		        /*System.out.println("orgSceneX : " + orgSceneX +"\n");	           
 		        System.out.println("orgSceneY : " + orgSceneY +"\n");*/
