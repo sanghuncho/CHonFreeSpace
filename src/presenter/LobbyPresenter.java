@@ -37,7 +37,6 @@ public class LobbyPresenter {
 	private int numberObs;
 	private ArrayList<Obstacle> obstacles;
 	private Vector2D size;	
-	//private static NodeMapHandler nodeMapHandler;
 	private Vector startPointNode;
 	private Vector goalPointNode;
 	private int loop;
@@ -45,7 +44,6 @@ public class LobbyPresenter {
 	private int loop_viaNode;
 	private int[][] map;
 	private NodeMap nodeMap;
-    //private DijkstraAlgorithm dijkstra;
 	private boolean applyCH;
 
 	
@@ -212,8 +210,17 @@ public class LobbyPresenter {
 				
 			}
 			
+			/*it is determined according to mode,
+			whether only the shortcut are exhibited or all edges are exhibited*/  
+			if(applyCH){
+				
+				lobbyView.drawingShortcutEdges(costmap.getEdges());
+			}
+			else{
 			
-			lobbyView.drawingEdges(costmap.getEdges());
+				lobbyView.drawingEdges(costmap.getEdges());
+			}
+			
 			
 			lobbyView.setText(costmap.getEdges().size(),applyCH);
 			
@@ -223,13 +230,13 @@ public class LobbyPresenter {
 		});
 		
 		
-		lobbyView.refreshButton.setOnMouseClicked(event -> {
+		/*lobbyView.refreshButton.setOnMouseClicked(event -> {
 			
 			
 			lobbyView.removeLane();
 			
 			
-		});
+		});*/
 		
 	}
 	

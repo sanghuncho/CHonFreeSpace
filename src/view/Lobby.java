@@ -58,20 +58,15 @@ public class Lobby extends BorderPane{
 	private Random randY;
 	private int randomNumX;	
 	private int randomNumY;
-	
-	private int numberLane=0;
-
-	
+		
 	private Scene scene;
 	private int numberObs;
 	private ArrayList<Point> viaNodes = new ArrayList<Point>();
 	private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
-	ArrayList<Edge> variousEdges = new ArrayList<Edge>(); 
+	private ArrayList<Edge> variousEdges = new ArrayList<Edge>(); 
 	private ArrayList<Lane> laneList = new ArrayList<Lane>();	
 
-	
 	private Polygon polygon;
-	private LinkedList<Node> body;
 	
 	public Lobby(Stage stage){
 		
@@ -138,10 +133,10 @@ public class Lobby extends BorderPane{
 		
 		
 		final Pane leftSpacer = new Pane();
-		leftSpacer.setMinWidth(150);
+		leftSpacer.setMinWidth(200);
 		HBox hBox = new HBox();
 		hBox.setSpacing(10);
-		hBox.getChildren().addAll(leftSpacer,viaNodeButton,contractButton,searchButton,refreshButton);
+		hBox.getChildren().addAll(leftSpacer,viaNodeButton,contractButton,searchButton);//,refreshButton
 		
 		
 		final Pane leftSpacer_text = new Pane();
@@ -224,7 +219,6 @@ public class Lobby extends BorderPane{
 		
 	}*/
 	
-	/*for removeLane*/
 	public void createLane(LinkedList<Node> path){
 		
 		int k = path.size();
@@ -242,39 +236,18 @@ public class Lobby extends BorderPane{
 		
 	}
 	
-	private int getSizeOfCenterObj(){
-		
-		return center.getChildren().size();
-	}
-	
 	public void removeLane(){
 		
-		int sizeObj = getSizeOfCenterObj();
-		System.out.println("sizeObj : " + sizeObj + "\n" );
 		int sizeLane = laneList.size();
-		System.out.println("laneSize : " + sizeLane + "\n" );
-		int k=0;
-		
-		//for(int i=0; i< sizeObj; i++){
 			
 			for(int j=0; j< sizeLane; j++){
-			
-			
-				//if(center.getChildren().get(i).equals(laneList.get(j))){
 				
 					center.getChildren().remove(laneList.get(j));
-			
-				//}
 			}
-			//k++;
-		//}
-		
-		//System.out.println("K : " + k + "\n" );
-
 		
 	}
 	
-	public void drawingEdges(ArrayList<Edge> edges){
+	public void drawingShortcutEdges(ArrayList<Edge> edges){
 		
 		int size = edges.size();
 				
@@ -297,7 +270,28 @@ public class Lobby extends BorderPane{
 			}
 			
 		}
-		
+	}
+	public void drawingEdges(ArrayList<Edge> edges){
+			
+			int size = edges.size();
+					
+			for(int i=0; i < size; i++){
+				
+				Vector start = edges.get(i).getSource().getPosition();
+				Vector goal = edges.get(i).getDestination().getPosition();
+									
+					if( !checkHomoEdge(edges.get(i)) ){
+					
+					DrawingEdge drawEdge = new DrawingEdge(10*(double)start.getX()+5,10*(double)start.getY() +5,
+							10*(double)goal.getX()+5,10*(double)goal.getY()+5);
+					
+					variousEdges.add(edges.get(i));
+					
+					center.getChildren().add(drawEdge);
+					}
+				
+				
+			}
 		
 		
 	}
