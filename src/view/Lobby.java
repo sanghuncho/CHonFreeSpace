@@ -52,6 +52,11 @@ public class Lobby extends BorderPane{
 	public int sizeOfEdges;
 	public int diverseEdges;
 	
+	public ArrayList<LinkedList<Node>> listOfPath = new ArrayList<LinkedList<Node>>();
+	public ArrayList<LinkedList<Node>> listOfPathHead = new ArrayList<LinkedList<Node>>();
+	public ArrayList<LinkedList<Node>> listOfPathTail = new ArrayList<LinkedList<Node>>();
+	public ArrayList<String> listOfPathCategory = new ArrayList<String>();
+	
 	private Point viaNode;
 	private Point contractedNode;
 	private Random randX;
@@ -80,9 +85,17 @@ public class Lobby extends BorderPane{
 		numberObs = CHmodel.getObstacle();
 		obstacles = new ArrayList<Obstacle>();
 					
-		for(int i = 0; i < numberObs; i++){
+		/*for(int i = 0; i < numberObs; i++){
 			
 			obs = new Obstacle();
+			
+			obstacles.add(obs);
+		}*/
+		
+		for(int i = 0; i < numberObs; i++){
+			
+			int id =i;
+			obs = new Obstacle(i);
 			
 			obstacles.add(obs);
 		}
@@ -172,6 +185,68 @@ public class Lobby extends BorderPane{
 		//this.scene.getStylesheets().add("/view/style.css");
 		stage.setScene(scene);
 			
+	}
+	private ArrayList<Vector> getVertexOfObstalce(int number){
+		
+		Vector2D leftOver,leftBelow,rightOver,rightBelow;
+		Obstacle obstacle = obstacles.get(number);
+		int width = (int)obstacle.getWidth();
+		int height = (int)obstacle.getHeight();
+		
+		ArrayList<Vector> vertexOfObstacle = new ArrayList<Vector>();
+		
+		leftOver = new Vector2D(obstacle.getXPoperty().get(),
+				obstacle.getYPoperty().get());
+		
+		vertexOfObstacle.add(leftOver);
+		
+		rightOver = new Vector2D(obstacle.getXPoperty().get() + width,
+				obstacle.getYPoperty().get());
+		
+		vertexOfObstacle.add(rightOver);
+		
+		rightBelow = new Vector2D(obstacle.getXPoperty().get() + width,
+				obstacle.getYPoperty().get()+height);
+		
+		vertexOfObstacle.add(rightBelow);
+		
+		leftBelow = new Vector2D(obstacle.getXPoperty().get(),
+				obstacle.getYPoperty().get()+height);
+		
+		vertexOfObstacle.add(leftBelow);
+		
+		
+		return vertexOfObstacle;
+
+		
+		
+	}
+	
+	
+	public ArrayList<Integer> getListPathID(Polygon polygon){
+		
+		int fourVertex = 4;
+		ArrayList<Integer> listOfPathID = new ArrayList<Integer>();
+		
+		for(int id = 0; id< numberObs; id++){
+
+			ArrayList<Vector> vertexOfObstacle = getVertexOfObstalce(id);
+			
+			for(int k = 0; k < fourVertex; k++){
+				
+				int xPosVertex = vertexOfObstacle.get(k).getX();
+				int yPosVertex = vertexOfObstacle.get(k).getY();
+				
+				if(polygon.contains(xPosVertex,yPosVertex)){
+					
+					listOfPathID.add(id);
+					
+				}
+			}
+		}
+			
+		return listOfPathID;
+					
 	}
 	
 	private void createNodeMap(){
@@ -513,43 +588,28 @@ public class Lobby extends BorderPane{
 		return new Vector2D( viaNode.getCenterX(),viaNode.getCenterY());
 	}*/
 	
-	public void generatePolygon(LinkedList<Node> head, LinkedList<Node> tail){
+	public Polygon generatePolygon(LinkedList<Node> head_first, LinkedList<Node> tail_first
+			,LinkedList<Node> head_second,LinkedList<Node> tail_second){
 		
 		
-		head.addAll(tail);
-		int k = head.size();
+		head_first.addAll(tail_first);
+		head_first.addAll(head_second);
+		head_first.addAll(tail_second);
+		
+		int k = head_first.size();
 		polygon = new Polygon();
 		
 		for(int i = 0 ; i < k-1 ; i ++){
 			
-			double pointX = head.get(i).getPosition().getX();
-			double pointY = head.get(i).getPosition().getY();
+			double pointX = head_first.get(i).getPosition().getX();
+			double pointY = head_first.get(i).getPosition().getY();
 			
 			polygon.getPoints().add(pointX*10 +5);
 			polygon.getPoints().add(pointY*10 +5);
 				
 		}
 		
-	    
-	    polygon.setFill(Color.CADETBLUE);
-	    
-	    center.getChildren().add(polygon);
-	    
-	    
-//	    int k = path.size();
-//		
-//		for(int i = 0 ; i < k-1 ; i ++){
-//			
-//			Vector start = path.get(i).getPosition();
-//			Vector goal = path.get(i+1).getPosition();
-//			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
-//					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
-//			center.getChildren().add(lane);
-//			
-//		}
-		
-	    
-	    
+		return polygon;
 	}
 	public Polygon getPolygon(){
 		return polygon;
@@ -575,6 +635,43 @@ public class Lobby extends BorderPane{
 		
 	}
 	
+	public ArrayList<LinkedList<Node>> getListOfPathHead(){
+		
+		return listOfPathHead;
+		
+	}
 	
+	public ArrayList<LinkedList<Node>> getListOfPathTail(){
+		
+		return listOfPathTail;
+		
+	}
+	public ArrayList<LinkedList<Node>> getListPath(){
+		return listOfPath;
+	}
+	
+	public ArrayList<String> getPathCategory(){
+		
+		return listOfPathCategory;
+	}
+	public void setPathCategory(String pathId, LinkedList<Node> path){
+		
+		int length = listOfPathCategory.size();
+		
+		for(int i = 0; i< length; i++){
+			
+			String stringIdPath = listOfPathCategory.get(i);
+			
+			if(stringIdPath.compareTo(pathId) != 0){
+				
+				listOfPathCategory.add(pathId);
+				listOfPath.add(path);
+				
+			}
+			
+			
+		}
+		
+	}
 
 }

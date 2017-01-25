@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.CHmodel;
@@ -173,7 +174,8 @@ public class LobbyPresenter {
 		
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 		
-			loop=0;
+			//loop=0;
+			loop=1;
 			
 			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
 					nodeMap, obstacles , map);
@@ -192,13 +194,67 @@ public class LobbyPresenter {
 			
 			dijkstra_tail.execute();
 			
-			while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
+			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
+			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
+			
+			dijkstra_head.setPath(nodeMap
+					.get(firstViaNodeX,firstViaNodeY));
+			
+			lobbyView.getListOfPathHead().add(dijkstra_head.getPath());
+			
+			
+			
+			dijkstra_tail.setPath(nodeMap
+					.get(firstViaNodeX,firstViaNodeY));
+			
+			lobbyView.getListOfPathTail().add(dijkstra_tail.getPath());
+			
+			lobbyView.getListOfPathHead().get(0).addAll(lobbyView.getListOfPathTail().get(0));
+			
+			lobbyView.getListPath().add(lobbyView.getListOfPathHead().get(0));
+			
+			lobbyView.getPathCategory().add("null");
+			
+			
+			/*polygons are made by this methode*/
+			
+			while( loop < lobbyView.getViaNodeSize() ){
+				
+				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
+				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
+				
+				dijkstra_head.setPath(nodeMap
+						.get(nextViaNodeX,nextViaNodeY));
+				
+				dijkstra_tail.setPath(nodeMap
+						.get(nextViaNodeX,nextViaNodeY));
+				
+				Polygon polygon = lobbyView.generatePolygon(lobbyView.getListOfPathHead().get(0),
+						lobbyView.getListOfPathTail().get(0),
+						dijkstra_head.getPath(),dijkstra_tail.getPath());
+				
+				dijkstra_head.getPath().addAll(dijkstra_tail.getPath());
+				
+				ArrayList<Integer> pathIdList = lobbyView.getListPathID(polygon);
+				
+				String pathIdString = pathIdToString(pathIdList);
+				
+				lobbyView.setPathCategory(pathIdString,dijkstra_head.getPath());
+				
+			}
+			
+			
+			
+			
+			
+			
+			/*while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
 			
 			
 					dijkstra_head.setPath(nodeMap
 							.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
 					
-					lobbyView.createLane(dijkstra_head.getPath());
+					lobbyView.createLane(dijkstra_head.getPath());//LinkedList<Node>
 			            
 					dijkstra_tail.setPath(nodeMap
 							.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
@@ -208,7 +264,7 @@ public class LobbyPresenter {
 				
 		        loop++;
 				
-			}
+			}*/
 			
 			/*it is determined according to mode,
 			whether only the shortcut are exhibited or all edges are exhibited*/  
@@ -222,7 +278,16 @@ public class LobbyPresenter {
 			}
 			
 			
+			
+			
+			
+			
+			
+			/*it shows the number of edges and nodes*/
 			lobbyView.setText(costmap.getEdges().size(),applyCH);
+			
+			
+			
 			
 			System.out.println("Algo is end \n");
 	
@@ -237,6 +302,20 @@ public class LobbyPresenter {
 			
 			
 		});*/
+		
+	}
+	
+	private String pathIdToString(ArrayList<Integer> idList){
+		
+		if(idList.size() == 0){
+			
+			return "null";
+			
+		}else{
+			
+			return idList.toString();
+			
+		}
 		
 	}
 	
@@ -308,9 +387,9 @@ public class LobbyPresenter {
 		int obsYpos = (int)obstacle.yProperty().get();
 		int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()));
 		
-		if( (obsXpos <= nodeGoalX ) && ( nodeGoalX <= obsXposWidth)){ 
+		if( (obsXpos-10 <= nodeGoalX ) && ( nodeGoalX <= obsXposWidth)){ 
 			
-			if(( obsYpos <= nodeGoalY) && ( nodeGoalY <= obsYposWidth)){
+			if(( obsYpos-10 <= nodeGoalY) && ( nodeGoalY <= obsYposWidth)){
 				
 				return true;
 				

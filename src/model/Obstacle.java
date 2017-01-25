@@ -13,14 +13,14 @@ public class Obstacle extends Rectangle {
 	int yPos;
 	int width;
 	int height;
+	int id;
 	
 	private DoubleProperty XPosProperty;
     private DoubleProperty yPosProperty;
 
-	
-	public Obstacle(){
+    public Obstacle(int id){
 		
-	
+    	
 		/*this.xProperty().set(getRandomX());
 		this.yProperty().set(getRandomY());*/
 		
@@ -31,8 +31,24 @@ public class Obstacle extends Rectangle {
 		this.setHeight(50);
 		this.setFill(Color.BLUE);
 
+		this.id = id;
+	}	
+    
+	/*public Obstacle(){
 		
-	}
+	
+		this.xProperty().set(getRandomX());
+		this.yProperty().set(getRandomY());
+		
+		this.xProperty().set(100);
+		this.yProperty().set(100);
+		
+		this.setWidth(50);
+		this.setHeight(50);
+		this.setFill(Color.BLUE);
+
+		
+	}*/
 	
 	private int getRandomX(){
 		Random rand = new Random();
@@ -43,6 +59,11 @@ public class Obstacle extends Rectangle {
 		Random rand = new Random();
 		int randomNumY = rand.nextInt( CHmodel.getMapY());
 		return randomNumY;
+	}
+	
+	public int getID(){
+		
+		return id;
 	}
 	
 	public DoubleProperty getXPoperty(){
@@ -64,14 +85,5 @@ public class Obstacle extends Rectangle {
 		
 		this.yProperty().set(y);
 	}
-	/*public int getXpos(){
-		
-		return xPos;
-	}
-	
-	public int intgetYpos(){
-		
-		return yPos;
-	}*/
 
 }

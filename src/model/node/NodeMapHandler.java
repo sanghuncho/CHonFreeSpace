@@ -9,17 +9,6 @@ public class NodeMapHandler {
 	NodeMap nodeMap;
 	Vector size;
 	
-	/*public NodeMapHandler(NodeMap nodeMap){
-		
-		this.nodeMap = nodeMap;
-		
-		defineNeighboringNodes();
-		
-		 apply obstacle values to the node map 
-		nodeMap = new ObstacleGenerator(nodeMap)
-
-	}*/
-	
 	public NodeMapHandler(Vector size){
 		
 		
