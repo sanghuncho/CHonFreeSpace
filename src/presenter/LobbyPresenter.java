@@ -111,7 +111,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 100 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < 3 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -162,7 +162,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode <4 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < 100 ){//CHmodel.getNumberContracted() , numberObs
 
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
