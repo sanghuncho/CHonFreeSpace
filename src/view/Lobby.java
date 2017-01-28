@@ -51,10 +51,11 @@ public class Lobby extends BorderPane{
 	public Text text;
 	public int sizeOfEdges;
 	public int diverseEdges;
-	
+	/*path list of homotopy category*/
 	public ArrayList<LinkedList<Node>> listOfPath = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> listOfPathHead = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> listOfPathTail = new ArrayList<LinkedList<Node>>();
+	/*id list of homotopy category*/
 	public ArrayList<String> listOfPathCategory = new ArrayList<String>();
 	
 	private Point viaNode;
@@ -228,21 +229,33 @@ public class Lobby extends BorderPane{
 		int fourVertex = 4;
 		ArrayList<Integer> listOfPathID = new ArrayList<Integer>();
 		
-		for(int id = 0; id< numberObs; id++){
+		
+		/*id is considered as obstacle*/
+		for(int id = 0; id < numberObs; id++){
 
+			/*vertexObobstacle include the four position of obstacle*/
 			ArrayList<Vector> vertexOfObstacle = getVertexOfObstalce(id);
 			
+			int coveredPoint = 0;
+			/*check whether the polygon include the four verteces of obstacle*/
 			for(int k = 0; k < fourVertex; k++){
 				
 				int xPosVertex = vertexOfObstacle.get(k).getX();
 				int yPosVertex = vertexOfObstacle.get(k).getY();
 				
+				
+				System.out.println("xPosVertex : " + xPosVertex+ "\n");
+				System.out.println("yPosVertex : " + yPosVertex+ "\n");
+				
 				if(polygon.contains(xPosVertex,yPosVertex)){
-					
-					listOfPathID.add(id);
-					
+					coveredPoint++;
 				}
 			}
+			
+			if(coveredPoint >= 3){
+				listOfPathID.add(id);
+			}
+			
 		}
 			
 		return listOfPathID;
@@ -278,23 +291,11 @@ public class Lobby extends BorderPane{
 		return obstacles;
 	}
 	
-	/*public void createLane(LinkedList<Node> path){
-		
-		int k = path.size();
-		
-		for(int i = 0 ; i < k-1 ; i ++){
-			
-			Vector start = path.get(i).getPosition();
-			Vector goal = path.get(i+1).getPosition();
-			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
-					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
-			center.getChildren().add(lane);
-			
-		}
-		
-	}*/
 	
-	public void createLane(LinkedList<Node> path){
+	
+	
+	/*this methode is made for removing the lane*/
+	/*public void createLane(LinkedList<Node> path){
 		
 		int k = path.size();
 		
@@ -320,7 +321,10 @@ public class Lobby extends BorderPane{
 					center.getChildren().remove(laneList.get(j));
 			}
 		
-	}
+	}*/
+	
+	
+	
 	
 	public void drawingShortcutEdges(ArrayList<Edge> edges){
 		
@@ -592,14 +596,22 @@ public class Lobby extends BorderPane{
 			,LinkedList<Node> head_second,LinkedList<Node> tail_second){
 		
 		
-		head_first.addAll(tail_first);
-		head_first.addAll(head_second);
-		head_first.addAll(tail_second);
 		
-		int k = head_first.size();
+		/*head_first.addAll(tail_first);
+		head_first.addAll(head_second);
+		head_first.addAll(tail_second);*/
+		
 		polygon = new Polygon();
 		
-		for(int i = 0 ; i < k-1 ; i ++){
+		int k = head_first.size();
+		int l = tail_first.size();
+		int m = head_second.size();
+		int n = tail_second.size();
+		
+		double finalX=head_first.get(k-1).getPosition().getX();
+		double finalY=head_first.get(k-1).getPosition().getY();
+		
+		for(int i = 0 ; i < k ; i ++){
 			
 			double pointX = head_first.get(i).getPosition().getX();
 			double pointY = head_first.get(i).getPosition().getY();
@@ -609,8 +621,54 @@ public class Lobby extends BorderPane{
 				
 		}
 		
+		
+		for(int i = 0 ; i < m ; i ++){
+			
+			double pointX = head_second.get(i).getPosition().getX();
+			double pointY = head_second.get(i).getPosition().getY();
+			
+			polygon.getPoints().add(pointX*10 +5);
+			polygon.getPoints().add(pointY*10 +5);
+				
+		}
+		polygon.getPoints().add(finalX*10 +5);
+		polygon.getPoints().add(finalY*10 +5);
+		
+		
+		
+		double finalX_tail=tail_first.get(l-1).getPosition().getX();
+		double finalY_tail=tail_first.get(l-1).getPosition().getY();
+		for(int i = 0 ; i < l ; i ++){
+				
+				double pointX = tail_first.get(i).getPosition().getX();
+				double pointY = tail_first.get(i).getPosition().getY();
+				
+				polygon.getPoints().add(pointX*10 +5);
+				polygon.getPoints().add(pointY*10 +5);
+					
+			}
+
+		
+		
+
+		for(int i = 0 ; i < n ; i++){
+			
+			double pointX = tail_second.get(i).getPosition().getX();
+			double pointY = tail_second.get(i).getPosition().getY();
+			
+			polygon.getPoints().add(pointX*10 +5);
+			polygon.getPoints().add(pointY*10 +5);
+				
+		}
+		
+		polygon.getPoints().add(finalX_tail*10 +5);
+		polygon.getPoints().add(finalY_tail*10 +5);
+		
+		
+		
 		return polygon;
 	}
+	
 	public Polygon getPolygon(){
 		return polygon;
 	}
@@ -654,24 +712,86 @@ public class Lobby extends BorderPane{
 		
 		return listOfPathCategory;
 	}
-	public void setPathCategory(String pathId, LinkedList<Node> path){
+	public void setPathCategory(String pathId, LinkedList<Node> head_path,LinkedList<Node> tail_path){
 		
 		int length = listOfPathCategory.size();
+		boolean homotopy = false;
 		
-		for(int i = 0; i< length; i++){
+		
+		/*find the homotopy category*/
+		for(int i = 0; i < length; i++){
 			
+			/*category length*/
 			String stringIdPath = listOfPathCategory.get(i);
 			
-			if(stringIdPath.compareTo(pathId) != 0){
-				
-				listOfPathCategory.add(pathId);
-				listOfPath.add(path);
+			
+			System.out.println("StringIdPath : " + stringIdPath + "\n");
+
+			System.out.println("pathId : " + pathId + "\n");
+			
+			System.out.println("compare the string : " + stringIdPath.equals(pathId) + "\n");
+			
+			if(stringIdPath.equals(pathId)){
+
+				homotopy = true;
+			}
+						
+		}
+		
+		if(!homotopy){
+			
+			System.out.println("add path \n");
+
+			listOfPathCategory.add(pathId);
+			//listOfPath.add(path);
+			//listOfPathHead.add(head_path);
+			listOfPathHead.add(length,head_path);
+			listOfPathTail.add(length,tail_path);
+		}
+	}
+	
+	public void createHomotopyLane(){
+		
+		//int size = listOfPath.size();
+		int head_size = listOfPathHead.size();
+		//int tail_size = listOfPathTail.size();
+		
+		System.out.println("head_size of listOfPath : " + head_size+ "\n");
+		
+		for(int i=0; i< head_size; i++){
+			
+			createLane(listOfPathHead.get(i));	
+			createLane(listOfPathTail.get(i));
 				
 			}
+		
+		/*createLane(listOfPathHead.get(1));	
+		createLane(listOfPathTail.get(1));*/
+	}
+	
+	public void createLane(LinkedList<Node> path){
+		
+		int k = path.size();
+		
+		for(int i = 0 ; i < k-1 ; i ++){
 			
+			Vector start = path.get(i).getPosition();
+			Vector goal = path.get(i+1).getPosition();
+			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
+					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
+			center.getChildren().add(lane);
 			
 		}
 		
 	}
+	public void drawPolygon(Polygon polygon){
+		
+		polygon.setFill(Color.ANTIQUEWHITE);
+		center.getChildren().add(polygon);
+		
+		
+		
+	}
+	
 
 }

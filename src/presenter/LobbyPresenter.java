@@ -111,7 +111,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 4 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < 100 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -162,7 +162,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 4 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode <4 ){//CHmodel.getNumberContracted() , numberObs
 
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -175,7 +175,7 @@ public class LobbyPresenter {
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 		
 			//loop=0;
-			loop=1;
+			
 			
 			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
 					nodeMap, obstacles , map);
@@ -197,31 +197,39 @@ public class LobbyPresenter {
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
 			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
 			
+			System.out.println("firstViaNodeX : " + firstViaNodeX+ "\n");
+			System.out.println("firstViaNodeY : " + firstViaNodeY+ "\n");
+
+			
 			dijkstra_head.setPath(nodeMap
 					.get(firstViaNodeX,firstViaNodeY));
 			
-			lobbyView.getListOfPathHead().add(dijkstra_head.getPath());
-			
-			
+			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());
 			
 			dijkstra_tail.setPath(nodeMap
 					.get(firstViaNodeX,firstViaNodeY));
 			
-			lobbyView.getListOfPathTail().add(dijkstra_tail.getPath());
+			lobbyView.getListOfPathTail().add(0,dijkstra_tail.getPath());
 			
+		/*	
+			the head path is concatenated by the tail path
 			lobbyView.getListOfPathHead().get(0).addAll(lobbyView.getListOfPathTail().get(0));
-			
+			first complete path is added at the listpath
 			lobbyView.getListPath().add(lobbyView.getListOfPathHead().get(0));
+		*/
 			
-			lobbyView.getPathCategory().add("null");
+			lobbyView.getPathCategory().add("start");
 			
 			
 			/*polygons are made by this methode*/
-			
+			loop=1;
 			while( loop < lobbyView.getViaNodeSize() ){
 				
 				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
 				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
+				
+				System.out.println("nextViaNodeX : " + nextViaNodeX+ "\n");
+				System.out.println("nextViaNodeY : " + nextViaNodeY+ "\n");
 				
 				dijkstra_head.setPath(nodeMap
 						.get(nextViaNodeX,nextViaNodeY));
@@ -229,23 +237,51 @@ public class LobbyPresenter {
 				dijkstra_tail.setPath(nodeMap
 						.get(nextViaNodeX,nextViaNodeY));
 				
+				/*lobbyView.getListOfPathHead().add(1,dijkstra_head.getPath());
+				lobbyView.getListOfPathTail().add(1,dijkstra_tail.getPath());*/
+				
+				
 				Polygon polygon = lobbyView.generatePolygon(lobbyView.getListOfPathHead().get(0),
 						lobbyView.getListOfPathTail().get(0),
 						dijkstra_head.getPath(),dijkstra_tail.getPath());
 				
-				dijkstra_head.getPath().addAll(dijkstra_tail.getPath());
+				System.out.println("generated the polygon!!\n");
 				
+				//dijkstra_head.getPath().addAll(dijkstra_tail.getPath());
+				
+				/*pathidList contain the list of obstacle-id,
+				which are in the polygon covered */
 				ArrayList<Integer> pathIdList = lobbyView.getListPathID(polygon);
 				
-				String pathIdString = pathIdToString(pathIdList);
+				//lobbyView.drawPolygon(polygon);
 				
-				lobbyView.setPathCategory(pathIdString,dijkstra_head.getPath());
+				
+				String pathIdString;
+				if(pathIdList.size() == 0){
+					
+					pathIdString = "start";
+					
+				}
+				else{
+					pathIdString = pathIdToString(pathIdList);
+				}
+				
+				
+				System.out.println("pathIdString : " + pathIdString + "\n");
+				
+				/*set the homotopy categoriy*/
+				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(), dijkstra_tail.getPath());
+				
+				System.out.println("set the path category \n");
+				
+				
+				loop++;
 				
 			}
 			
 			
-			
-			
+			/*draw the homotopy path*/
+			lobbyView.createHomotopyLane();
 			
 			
 			/*while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
@@ -265,6 +301,7 @@ public class LobbyPresenter {
 		        loop++;
 				
 			}*/
+			
 			
 			/*it is determined according to mode,
 			whether only the shortcut are exhibited or all edges are exhibited*/  
@@ -307,16 +344,15 @@ public class LobbyPresenter {
 	
 	private String pathIdToString(ArrayList<Integer> idList){
 		
-		if(idList.size() == 0){
+		
+		String idString="";
+		for(int i=0; i < idList.size(); i++){
 			
-			return "null";
-			
-		}else{
-			
-			return idList.toString();
-			
+			idString = idString + idList.get(i).toString();
+				
 		}
 		
+		return idString;
 	}
 	
 	private boolean isObstacle(Vector point) {
