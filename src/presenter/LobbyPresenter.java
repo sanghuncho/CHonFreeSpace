@@ -71,6 +71,9 @@ public class LobbyPresenter {
 			//obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
 		}
 		
+		
+		
+		/*if only via-node butten is clicked*/
 		lobbyView.viaNodeButton.setOnMouseClicked(event -> {
 			
 			setNodeObstacleProperty(nodeMap);
@@ -111,7 +114,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 3 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < 100 ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -120,7 +123,7 @@ public class LobbyPresenter {
 
 		});
 		
-		
+		/*if via-node + CH butten is clicked*/
 		lobbyView.contractButton.setOnMouseClicked(event -> {
 			
 			
@@ -197,10 +200,6 @@ public class LobbyPresenter {
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
 			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
 			
-			System.out.println("firstViaNodeX : " + firstViaNodeX+ "\n");
-			System.out.println("firstViaNodeY : " + firstViaNodeY+ "\n");
-
-			
 			dijkstra_head.setPath(nodeMap
 					.get(firstViaNodeX,firstViaNodeY));
 			
@@ -228,8 +227,6 @@ public class LobbyPresenter {
 				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
 				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
 				
-				System.out.println("nextViaNodeX : " + nextViaNodeX+ "\n");
-				System.out.println("nextViaNodeY : " + nextViaNodeY+ "\n");
 				
 				dijkstra_head.setPath(nodeMap
 						.get(nextViaNodeX,nextViaNodeY));
@@ -244,10 +241,7 @@ public class LobbyPresenter {
 				Polygon polygon = lobbyView.generatePolygon(lobbyView.getListOfPathHead().get(0),
 						lobbyView.getListOfPathTail().get(0),
 						dijkstra_head.getPath(),dijkstra_tail.getPath());
-				
-				System.out.println("generated the polygon!!\n");
-				
-				//dijkstra_head.getPath().addAll(dijkstra_tail.getPath());
+		
 				
 				/*pathidList contain the list of obstacle-id,
 				which are in the polygon covered */
@@ -265,22 +259,17 @@ public class LobbyPresenter {
 				else{
 					pathIdString = pathIdToString(pathIdList);
 				}
-				
-				
-				System.out.println("pathIdString : " + pathIdString + "\n");
+		
 				
 				/*set the homotopy categoriy*/
 				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(), dijkstra_tail.getPath());
-				
-				System.out.println("set the path category \n");
-				
 				
 				loop++;
 				
 			}
 			
 			
-			/*draw the homotopy path*/
+			/*drawing the path,which the homotopy relation is applied*/
 			lobbyView.createHomotopyLane();
 			
 			
@@ -307,24 +296,19 @@ public class LobbyPresenter {
 			whether only the shortcut are exhibited or all edges are exhibited*/  
 			if(applyCH){
 				
+				/*if the mode has selected by via node + CH button,
+				 * then show the only the shortcut*/
 				lobbyView.drawingShortcutEdges(costmap.getEdges());
 			}
 			else{
-			
-				lobbyView.drawingEdges(costmap.getEdges());
+				/*if the mode is selected by via node button,
+				 * then show the all the edges*/ 
+				//lobbyView.drawingEdges(costmap.getEdges());
 			}
 			
 			
-			
-			
-			
-			
-			
-			/*it shows the number of edges and nodes*/
+			/*it shows the number of edges and nodes on the lobby*/
 			lobbyView.setText(costmap.getEdges().size(),applyCH);
-			
-			
-			
 			
 			System.out.println("Algo is end \n");
 	
@@ -448,8 +432,8 @@ public class LobbyPresenter {
 	        @Override
 	        public void handle(MouseEvent t) {
 	        	
-	            orgSceneX = t.getSceneX()-60;//50
-	            orgSceneY = t.getSceneY()-35;//25
+	            orgSceneX = t.getSceneX()-50;//50
+	            orgSceneY = t.getSceneY()-25;//25
 	            
 		        /*System.out.println("orgSceneX : " + orgSceneX +"\n");	           
 		        System.out.println("orgSceneY : " + orgSceneY +"\n");*/

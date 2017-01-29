@@ -85,13 +85,7 @@ public class Lobby extends BorderPane{
 		/*create the multiple obstacles*/
 		numberObs = CHmodel.getObstacle();
 		obstacles = new ArrayList<Obstacle>();
-					
-		/*for(int i = 0; i < numberObs; i++){
-			
-			obs = new Obstacle();
-			
-			obstacles.add(obs);
-		}*/
+
 		
 		for(int i = 0; i < numberObs; i++){
 			
@@ -148,6 +142,7 @@ public class Lobby extends BorderPane{
 		
 		final Pane leftSpacer = new Pane();
 		leftSpacer.setMinWidth(200);
+		
 		HBox hBox = new HBox();
 		hBox.setSpacing(10);
 		hBox.getChildren().addAll(leftSpacer,viaNodeButton,contractButton,searchButton);//,refreshButton
@@ -166,19 +161,24 @@ public class Lobby extends BorderPane{
 		
 		
 		//bottom.getChildren().addAll(hBox,hBox_text);
+		//bottom.setMaxHeight(100);
 		bottom.getChildren().add(vBox);
 		bottom.setMinWidth(50);
 			
 		left.setMinWidth(50);
+		left.setMaxWidth(50);
+		right.setMinWidth(50);
+		right.setMaxWidth(50);
 		
 		top.setMinHeight(25);
 		
+		//bottom.setMinHeight(25);
 		bottom.setMinHeight(25);
-		
 
 		scene = new Scene(this);
-		stage.setHeight(CHmodel.getMapX()+100);
-		stage.setWidth(CHmodel.getMapY()+100);
+		//stage.setHeight(CHmodel.getMapX()+100);
+		stage.setHeight(CHmodel.getMapY()+100);
+		stage.setWidth(CHmodel.getMapX()+100);
 		 
 		
 		
@@ -242,10 +242,6 @@ public class Lobby extends BorderPane{
 				
 				int xPosVertex = vertexOfObstacle.get(k).getX();
 				int yPosVertex = vertexOfObstacle.get(k).getY();
-				
-				
-				System.out.println("xPosVertex : " + xPosVertex+ "\n");
-				System.out.println("yPosVertex : " + yPosVertex+ "\n");
 				
 				if(polygon.contains(xPosVertex,yPosVertex)){
 					coveredPoint++;
@@ -594,13 +590,7 @@ public class Lobby extends BorderPane{
 	
 	public Polygon generatePolygon(LinkedList<Node> head_first, LinkedList<Node> tail_first
 			,LinkedList<Node> head_second,LinkedList<Node> tail_second){
-		
-		
-		
-		/*head_first.addAll(tail_first);
-		head_first.addAll(head_second);
-		head_first.addAll(tail_second);*/
-		
+	
 		polygon = new Polygon();
 		
 		int k = head_first.size();
@@ -724,13 +714,6 @@ public class Lobby extends BorderPane{
 			/*category length*/
 			String stringIdPath = listOfPathCategory.get(i);
 			
-			
-			System.out.println("StringIdPath : " + stringIdPath + "\n");
-
-			System.out.println("pathId : " + pathId + "\n");
-			
-			System.out.println("compare the string : " + stringIdPath.equals(pathId) + "\n");
-			
 			if(stringIdPath.equals(pathId)){
 
 				homotopy = true;
@@ -740,11 +723,7 @@ public class Lobby extends BorderPane{
 		
 		if(!homotopy){
 			
-			System.out.println("add path \n");
-
 			listOfPathCategory.add(pathId);
-			//listOfPath.add(path);
-			//listOfPathHead.add(head_path);
 			listOfPathHead.add(length,head_path);
 			listOfPathTail.add(length,tail_path);
 		}
@@ -752,21 +731,14 @@ public class Lobby extends BorderPane{
 	
 	public void createHomotopyLane(){
 		
-		//int size = listOfPath.size();
 		int head_size = listOfPathHead.size();
-		//int tail_size = listOfPathTail.size();
-		
-		System.out.println("head_size of listOfPath : " + head_size+ "\n");
-		
+				
 		for(int i=0; i< head_size; i++){
 			
 			createLane(listOfPathHead.get(i));	
 			createLane(listOfPathTail.get(i));
 				
 			}
-		
-		/*createLane(listOfPathHead.get(1));	
-		createLane(listOfPathTail.get(1));*/
 	}
 	
 	public void createLane(LinkedList<Node> path){

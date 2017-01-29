@@ -30,7 +30,6 @@ public class NodeMap {
 			}
 		}
 		
-		System.out.println("NodeMap complete!!  \n");
 	}
 	
 	public List<Node> getNodes() {
