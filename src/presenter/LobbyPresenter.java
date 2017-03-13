@@ -170,7 +170,7 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			
-			while(loop_map < CHmodel.getNumberContracted()){//CHmodel.getNumberContracted() , numberObs
+			while(loop_map < CHmodel.getNumberContractedCustom()){//CHmodel.getNumberContracted() , numberObs
 		
 				lobbyView.generateContractedPoint(size,map);
 				loop_map++;
@@ -404,13 +404,15 @@ public class LobbyPresenter {
                 
 			lobbyView.createHomotopyLane();
 			 
-			if(applyCH){
+			
+			/*draw shortcut edge on lobby*/
+			/*if(applyCH){
 				
 				lobbyView.drawingShortcutEdges(costmap.getEdges());
 			}
 			else{
 				
-			}
+			}*/
 				
 			lobbyView.setText(costmap.getEdges().size(),applyCH);
 	

@@ -67,6 +67,8 @@ public class MainPresenter {
 		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		
 		CHmodel.setPercentage(mainView.getPercentage());
+
+		CHmodel.setContractingPercent(Integer.parseInt(mainView.getPercentageCustom().getText()));
 		
 		System.out.println("percent : " + mainView.getPercentage()+"\n");
 		

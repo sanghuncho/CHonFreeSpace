@@ -34,7 +34,9 @@ public class MainView extends Pane{
 	public TextField endPointX;
 	public TextField endPointY;
 	public TextField numberOfObstacle;
+	public TextField percentOfContract;
 	public String percentage;
+	public String percentageCustom;
 	
 	public MainView(Stage stage){
 		
@@ -59,6 +61,12 @@ public class MainView extends Pane{
 		
 		Label obstacleLabel = new Label();
 		obstacleLabel.setText("Obstacles :");
+		
+		Label contractingLabel = new Label();
+		contractingLabel.setText("percent of contracting :");
+		
+		Label percentageLabel = new Label();
+		percentageLabel.setText("%");
 		
 		/*textfield initialization map */
 		
@@ -133,6 +141,19 @@ public class MainView extends Pane{
 		obstacleHbox.setLayoutY(480);
 		obstacleHbox.setId("obstacleHbox");
 		
+		
+		percentOfContract = new TextField();
+		percentOfContract.setMinHeight(70);
+		percentOfContract.setId("");
+		percentOfContract.setFocusTraversable(false);
+		percentOfContract.setPromptText("the percentage");
+		
+		HBox contractingPercentBox = new HBox();
+		contractingPercentBox.setMaxWidth(600);
+		contractingPercentBox.setLayoutY(200);
+		
+		
+		
 		ObservableList<String> options = 
 			    FXCollections.observableArrayList(
 			        "10%",
@@ -159,8 +180,10 @@ public class MainView extends Pane{
 
 		obstacleHbox.getChildren().addAll(obstacleLabel,numberOfObstacle);
 		
+		contractingPercentBox.getChildren().addAll(contractingLabel,percentOfContract,percentageLabel);
 		
-		vbox.getChildren().addAll(mapHbox,startHbox,endHbox,obstacleHbox,comboBox,createMap);
+		
+		vbox.getChildren().addAll(mapHbox,startHbox,endHbox,obstacleHbox,comboBox,contractingPercentBox,createMap);
 		
 		//vbox.getChildren().addAll(mapHbox,createMap);
 		this.getChildren().addAll(vbox);
@@ -175,6 +198,8 @@ public class MainView extends Pane{
 	}
 		
 	public String getPercentage(){ return percentage;}
+	
+	public TextField getPercentageCustom(){ return percentOfContract;}
 	
 	public TextField getMapX(){
 		

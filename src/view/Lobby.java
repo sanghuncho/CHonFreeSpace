@@ -653,7 +653,8 @@ public class Lobby extends BorderPane{
 		int numberContracted = 0;
 		
 		if(applyCH == true){
-			numberContracted = CHmodel.getNumberContracted();
+			//numberContracted = CHmodel.getNumberContracted();
+			numberContracted = CHmodel.getNumberContractedCustom();
 		}
 		else{
 		}

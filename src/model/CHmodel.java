@@ -23,6 +23,8 @@ public class CHmodel {
 	
 	public static int obstacle;
 	
+	public static int percentageCustom;
+	
 	public static Vector2D sizeVector;
 	
 	public static NodeMap nodeMap;
@@ -128,6 +130,11 @@ public class CHmodel {
 		CHmodel.obstacle = obstacle;
 	}
 	
+	public static void setContractingPercent(int percentage) {
+		CHmodel.percentageCustom = percentage;
+	}
+	
+	/*comboBox*/
 	public static int getNumberContracted() {
 				
 		int result = 0;
@@ -141,6 +148,15 @@ public class CHmodel {
 			 			 break;
 
 		}
+		
+		int nodes = (mapX*mapY)/100;
+	
+		return  (nodes*result)/100;
+	}
+	public static int getNumberContractedCustom() {
+		
+		
+		int result = CHmodel.percentageCustom;
 		
 		int nodes = (mapX*mapY)/100;
 	
