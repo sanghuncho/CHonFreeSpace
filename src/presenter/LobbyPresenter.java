@@ -1,20 +1,30 @@
 package presenter;
 
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.CHmodel;
 import model.Obstacle;
+import model.ProgressForm;
 import model.dijkstra.CostMap;
 import model.dijkstra.DijkstraAlgorithm;
 import model.dijkstra.Edge;
@@ -46,6 +56,8 @@ public class LobbyPresenter {
 	private int[][] map;
 	private NodeMap nodeMap;
 	private boolean applyCH;
+	private Thread thread;
+	private CostMap costmap;
 
 	
 	public LobbyPresenter(Lobby lobbyView){
@@ -173,15 +185,53 @@ public class LobbyPresenter {
 			
 
 		});
-		
-		
+	
+		/*try to implement the threads*/
 		lobbyView.searchButton.setOnMouseClicked(event -> {
-		
-			//loop=0;
 			
+        
 			
-			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
-					nodeMap, obstacles , map);
+			/*ProgressForm pForm = new ProgressForm();
+			
+			Task<Void> task3 = new Task<Void>() {
+                @Override
+                public Void call() throws InterruptedException {
+                	for (int i = 0; i < 10; i++) {
+                        updateProgress(i, 10);
+                        pForm.getDialogStage().show();
+                        Thread.sleep(2000);
+                    }
+                    updateProgress(10, 10);
+                    return null ;
+                }
+			 };
+			 
+			 pForm.activateProgressBar(task3);
+	         pForm.getDialogStage().show();
+	        
+
+			 Thread thread3 = new Thread(task3);
+			 thread3.setDaemon(true);
+	         thread3.start();*/
+	         
+	        /* try {
+				thread3.join();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}*/
+			 
+	 
+	    /* Task<Void> task4 = new Task<Void>() {
+	        @Override
+	        public Void call() throws InterruptedException { */
+	                	
+	         
+            costmap = new CostMap(size, CHmodel.getStartVector2D(),
+        					nodeMap, obstacles , map);
+            
+			/*CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
+					nodeMap, obstacles , map);*/
 			
 			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
 			
@@ -191,12 +241,64 @@ public class LobbyPresenter {
 			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
 			
-	
-	
-			dijkstra_head.execute();
+			    
+			/*dijkstra_head.execute();
+			System.out.println("Execute1 end \n");
+			dijkstra_tail.execute();			
+			System.out.println("Execute2 end \n");*/
 			
-			dijkstra_tail.execute();
+
+	        
 			
+			
+			Task<Void> task1 = new Task<Void>() {
+                @Override
+                public Void call() throws InterruptedException {
+                	dijkstra_head.execute();
+        			System.out.println("Execute1 end \n");
+
+                    return null ;
+                }
+			 };
+			
+			 
+
+	         Thread thread1 = new Thread(task1);
+	         thread1.setDaemon(true);
+	         thread1.start();
+	         
+	        Task<Void> task2 = new Task<Void>() {
+	                @Override
+	                public Void call() throws InterruptedException {
+	                	dijkstra_tail.execute();
+	        			System.out.println("Execute2 end \n");
+
+	                    return null ;
+	                }
+				 };
+				
+
+		    Thread thread2 = new Thread(task2);
+		    thread2.setDaemon(true);
+		    thread2.start();
+			
+		    
+				try {
+					thread1.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+				try {
+					thread2.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+		    
+		    
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
 			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
 			
@@ -222,7 +324,11 @@ public class LobbyPresenter {
 			
 			/*polygons are made by this methode*/
 			loop=1;
-			while( loop < lobbyView.getViaNodeSize() ){
+			int totalLoop = lobbyView.getViaNodeSize();
+			
+			while( loop < totalLoop ){
+				
+				//bar.setProgress(loop / totalLoop);
 				
 				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
 				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
@@ -266,14 +372,191 @@ public class LobbyPresenter {
 				
 				loop++;
 				
+			
+				//createHomotopy(lobbyView, costmap);
+			}
+			
+			/* return null ;
+	                }
+				 };
+				 
+			Thread thread4 = new Thread(task4);
+		    thread4.start();*/
+				 
+				 
+		        /* try {
+					thread4.join();
+					createHomotopy(lobbyView, costmap);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+		        createHomotopy(lobbyView, costmap);
+		          
+		});
+		
+		 
+		
+	}
+	private void createHomotopy(Lobby lobbyView,CostMap costmap){
+		
+		
+                
+			lobbyView.createHomotopyLane();
+			 
+			if(applyCH){
+				
+				lobbyView.drawingShortcutEdges(costmap.getEdges());
+			}
+			else{
+				
+			}
+				
+			lobbyView.setText(costmap.getEdges().size(),applyCH);
+	
+	}
+
+		
+		
+		/*original version*/ 
+		/*lobbyView.searchButton.setOnMouseClicked(event -> {
+		
+			//loop=0;
+			
+			
+			ProgressForm pForm = new ProgressForm();
+			
+			Task<Void> task = new Task<Void>() {
+                @Override
+                public Void call() throws InterruptedException {
+                    for (int i = 0; i < 10; i++) {
+                        updateProgress(i, 10);
+                        Thread.sleep(200);
+                    }
+                    updateProgress(10, 10);
+                    return null ;
+                }
+            };
+            
+            pForm.activateProgressBar(task);
+  
+            pForm.getDialogStage().show();
+
+            Thread thread = new Thread(task);
+            thread.start();
+            
+            
+			
+			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
+					nodeMap, obstacles , map);
+			
+			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
+			
+			DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
+					nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
+			
+			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
+					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+			
+	
+	
+			dijkstra_head.execute();
+			System.out.println("Execute1 end \n");
+			dijkstra_tail.execute();			
+			System.out.println("Execute2 end \n");
+			
+			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
+			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
+			
+			dijkstra_head.setPath(nodeMap
+					.get(firstViaNodeX,firstViaNodeY));
+			
+			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());
+			
+			dijkstra_tail.setPath(nodeMap
+					.get(firstViaNodeX,firstViaNodeY));
+			
+			lobbyView.getListOfPathTail().add(0,dijkstra_tail.getPath());
+			
+			
+			the head path is concatenated by the tail path
+			lobbyView.getListOfPathHead().get(0).addAll(lobbyView.getListOfPathTail().get(0));
+			first complete path is added at the listpath
+			lobbyView.getListPath().add(lobbyView.getListOfPathHead().get(0));
+		
+			
+			lobbyView.getPathCategory().add("start");
+			
+			
+			polygons are made by this methode
+			loop=1;
+			int totalLoop = lobbyView.getViaNodeSize();
+			while( loop < totalLoop ){
+				
+				//bar.setProgress(loop / totalLoop);
+				
+				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
+				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
+				
+				
+				dijkstra_head.setPath(nodeMap
+						.get(nextViaNodeX,nextViaNodeY));
+				
+				dijkstra_tail.setPath(nodeMap
+						.get(nextViaNodeX,nextViaNodeY));
+				
+				lobbyView.getListOfPathHead().add(1,dijkstra_head.getPath());
+				lobbyView.getListOfPathTail().add(1,dijkstra_tail.getPath());
+				
+				
+				Polygon polygon = lobbyView.generatePolygon(lobbyView.getListOfPathHead().get(0),
+						lobbyView.getListOfPathTail().get(0),
+						dijkstra_head.getPath(),dijkstra_tail.getPath());
+		
+				
+				pathidList contain the list of obstacle-id,
+				which are in the polygon covered 
+				ArrayList<Integer> pathIdList = lobbyView.getListPathID(polygon);
+				
+				//lobbyView.drawPolygon(polygon);
+				
+				
+				String pathIdString;
+				if(pathIdList.size() == 0){
+					
+					pathIdString = "start";
+					
+				}
+				else{
+					pathIdString = pathIdToString(pathIdList);
+				}
+		
+				
+				set the homotopy categoriy
+				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(), dijkstra_tail.getPath());
+				
+				loop++;
+				
 			}
 			
 			
-			/*drawing the path,which the homotopy relation is applied*/
+			drawing at once all the path,which the homotopy relation is applied
 			lobbyView.createHomotopyLane();
 			
+			public void createHomotopyLane(){
+				
+				int head_size = listOfPathHead.size();
+						
+				for(int i=0; i< head_size; i++){
+					
+					createLane(listOfPathHead.get(i));	
+					createLane(listOfPathTail.get(i));
+						
+					}
+			}
 			
-			/*while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
+			
+			while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
 			
 			
 					dijkstra_head.setPath(nodeMap
@@ -289,43 +572,47 @@ public class LobbyPresenter {
 				
 		        loop++;
 				
-			}*/
+			}
 			
 			
-			/*it is determined according to mode,
-			whether only the shortcut are exhibited or all edges are exhibited*/  
+			it is determined according to mode,
+			whether only the shortcut are exhibited or all edges are exhibited  
 			if(applyCH){
 				
-				/*if the mode has selected by via node + CH button,
-				 * then show the only the shortcut*/
+				if the mode has selected by via node + CH button,
+				 * then show the only the shortcut
 				lobbyView.drawingShortcutEdges(costmap.getEdges());
 			}
 			else{
-				/*if the mode is selected by via node button,
-				 * then show the all the edges*/ 
+				if the mode is selected by via node button,
+				 * then show the all the edges 
 				//lobbyView.drawingEdges(costmap.getEdges());
 			}
 			
 			
-			/*it shows the number of edges and nodes on the lobby*/
+			it shows the number of edges and nodes on the lobby
 			lobbyView.setText(costmap.getEdges().size(),applyCH);
 			
 			System.out.println("Algo is end \n");
-	
+			
+			
+			
 			
 		});
 		
 		
-		/*lobbyView.refreshButton.setOnMouseClicked(event -> {
+		lobbyView.refreshButton.setOnMouseClicked(event -> {
 			
 			
 			lobbyView.removeLane();
 			
 			
-		});*/
+		});
+		
+		
 		
 	}
-	
+*/	
 	private String pathIdToString(ArrayList<Integer> idList){
 		
 		

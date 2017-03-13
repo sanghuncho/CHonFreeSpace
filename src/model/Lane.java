@@ -13,7 +13,7 @@ public class Lane extends Line{
 		this.setEndX(goalX);
 		this.setEndY(goalY);
 		this.setStrokeWidth(3.0f);
-		this.setStroke(Color.RED);
+		//this.setStroke(Color.RED);
 		
 	}
 

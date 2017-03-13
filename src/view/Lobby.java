@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -73,6 +74,7 @@ public class Lobby extends BorderPane{
 	private ArrayList<Lane> laneList = new ArrayList<Lane>();	
 
 	private Polygon polygon;
+	private int colorNumber = 0;
 	
 	public Lobby(Stage stage){
 		
@@ -86,7 +88,7 @@ public class Lobby extends BorderPane{
 		numberObs = CHmodel.getObstacle();
 		obstacles = new ArrayList<Obstacle>();
 
-		
+		/*TODO : obstacleFactory*/
 		for(int i = 0; i < numberObs; i++){
 			
 			int id =i;
@@ -140,6 +142,10 @@ public class Lobby extends BorderPane{
 		vBox.getChildren().addAll(viaNodeButton,contractButton,searchButton,refreshButton);*/
 		
 		
+		ProgressBar bar = new ProgressBar(0.0);
+		top.getChildren().add(bar);
+		
+		
 		final Pane leftSpacer = new Pane();
 		leftSpacer.setMinWidth(200);
 		
@@ -187,6 +193,8 @@ public class Lobby extends BorderPane{
 		stage.setScene(scene);
 			
 	}
+	
+	/*move to obstacleFactory*/
 	private ArrayList<Vector> getVertexOfObstalce(int number){
 		
 		Vector2D leftOver,leftBelow,rightOver,rightBelow;
@@ -223,7 +231,7 @@ public class Lobby extends BorderPane{
 		
 	}
 	
-	
+	/*homotopy*/
 	public ArrayList<Integer> getListPathID(Polygon polygon){
 		
 		int fourVertex = 4;
@@ -346,6 +354,7 @@ public class Lobby extends BorderPane{
 			
 		}
 	}
+	
 	public void drawingEdges(ArrayList<Edge> edges){
 			
 			int size = edges.size();
@@ -370,6 +379,7 @@ public class Lobby extends BorderPane{
 		
 		
 	}
+	
 	private boolean checkLengthEdge(Edge edge){
 		
 		int startX = edge.getSource().getPosition().getX();
@@ -419,35 +429,6 @@ public class Lobby extends BorderPane{
 		
 		
 	}
-	
-	/*public void checkHomoEdge(ArrayList<Edge> edges){
-		
-		int sizeOfEdges = edges.size();
-		
-		variousEdges.add(edges.get(0));
-		
-		diverseEdges = 1;
-		
-		for(int i = 1; i < edges.size(); i++){
-				
-			for(int j = 0; j< variousEdges.size(); j++ ){
-				
-				if( (edges.get(i).getSource().equals(variousEdges.get(j).getSource()) 
-						&& edges.get(i).getDestination().equals(variousEdges.get(j).getDestination()))
-							|| (edges.get(i).getSource().equals(variousEdges.get(j).getDestination())
-								&& edges.get(i).getDestination().equals(variousEdges.get(j).getSource()))){
-					
-				}
-				else{
-					
-				}
-			
-			}
-	
-		}
-	}*/
-	
-	
 	
 	public void generateContractedPoint(Vector2D size, int[][] map){
 		
@@ -553,6 +534,7 @@ public class Lobby extends BorderPane{
 		}
 		
 	}
+	
 	private boolean isContractedNode(int randomX, int randomY, int[][] map){		
 		
 		if( (map[randomX][randomY]) == 2){
@@ -588,6 +570,8 @@ public class Lobby extends BorderPane{
 		return new Vector2D( viaNode.getCenterX(),viaNode.getCenterY());
 	}*/
 	
+	
+	/*for test*/
 	public Polygon generatePolygon(LinkedList<Node> head_first, LinkedList<Node> tail_first
 			,LinkedList<Node> head_second,LinkedList<Node> tail_second){
 	
@@ -731,17 +715,24 @@ public class Lobby extends BorderPane{
 	
 	public void createHomotopyLane(){
 		
+		System.out.println("Start drawing");
+		
 		int head_size = listOfPathHead.size();
 				
 		for(int i=0; i< head_size; i++){
-			
+			System.out.println("before createLane");
+
 			createLane(listOfPathHead.get(i));	
 			createLane(listOfPathTail.get(i));
+			/*new Thread(new HomotopyLane(listOfPathHead.get(i),center)).start();
+			new Thread(new HomotopyLane(listOfPathTail.get(i),center)).start();*/
 				
 			}
+		
+		System.out.println("end drawing");
 	}
 	
-	public void createLane(LinkedList<Node> path){
+	/*public void createLane(LinkedList<Node> path){
 		
 		int k = path.size();
 		
@@ -755,7 +746,43 @@ public class Lobby extends BorderPane{
 			
 		}
 		
+	}*/
+	
+	public void createLane(LinkedList<Node> path){
+	
+		int k = path.size();
+		
+		for(int i = 0 ; i < k-1 ; i ++){
+			
+			Vector start = path.get(i).getPosition();
+			
+			
+			Vector goal = path.get(i+1).getPosition();
+			
+			//System.out.println("lane create");
+			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
+					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
+			//System.out.println("lane stroke");
+
+			lane.setStroke(getLaneColor(colorNumber));
+			
+			if(center == null){
+				System.out.println("center is null");
+			}
+			if(center.getChildren() == null){
+				System.out.println("centerchildren is null");
+			}
+			center.getChildren().add(lane);
+			
+			
+			//System.out.println("created!");
+
+			
+		}
+		colorNumber++;
+		
 	}
+	
 	public void drawPolygon(Polygon polygon){
 		
 		polygon.setFill(Color.ANTIQUEWHITE);
@@ -764,6 +791,67 @@ public class Lobby extends BorderPane{
 		
 		
 	}
+	private Color getLaneColor(int numberLane){
+		
+		
+		int number = numberLane;
+		Color laneColor = null;
+		
+		switch(number) {
+			
+			case 0 : laneColor = Color.AQUA;
+			break;
+			
+			case 1 : laneColor = Color.AQUA;
+			break;
+			
+			case 2 : laneColor = Color.BROWN;
+			break;
+			
+			case 3 : laneColor = Color.BROWN;
+			break;
+			
+			case 4 : laneColor = Color.DARKGREEN;
+			break;
+			
+			case 5 : laneColor = Color.DARKGREEN;
+			break;
+			
+			case 6 : laneColor = Color.GREY;
+			break;
+			
+			case 7 : laneColor = Color.GREY;
+			break;
+			
+			case 8 : laneColor = Color.CHARTREUSE;
+			break;
+			
+			case 9 : laneColor = Color.CHARTREUSE;
+			break;
+			
+			case 10 : laneColor = Color.PURPLE;
+			break;
+			
+			case 11 : laneColor = Color.PURPLE;
+			break;
+			
+			case 12 : laneColor = Color.PINK;
+			break;
+			
+			case 13 : laneColor = Color.PINK;
+			break;
+			
+		}
+		
+		return laneColor;
+	}
 	
+	public void setProgessBar(double value){
+		
+		/*final ProgressBar bar = new ProgressBar();
+		bar.setProgress(value);
+		.getChildren().add(bar);*/
+	}
 
+	
 }

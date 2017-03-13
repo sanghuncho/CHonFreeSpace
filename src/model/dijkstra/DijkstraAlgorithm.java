@@ -18,7 +18,7 @@ import util.math.MathHelper;
 import util.math.Vector;
 import view.Lobby;
 
-public class DijkstraAlgorithm  {
+public class DijkstraAlgorithm{//implements Runnable 
 	
 	private Thread thread;
 	private List<Node> nodes;
@@ -43,8 +43,40 @@ public class DijkstraAlgorithm  {
         this.lobbyView = lobbyView;
         
     }
-     
+    
+
+	/*@Override
+	public void run() {
+		
+		 System.out.println("execute \n");
+
+         settledNodes = new HashSet<Node>();
+         unSettledNodes = new HashSet<Node>();
+         distance = new HashMap<Node, Integer>();
+         predecessors = new HashMap<Node, Node>();
+         turning = new HashMap<Node,Double>();
+         turning.put(source, 0.0);
+         distance.put(source, 0);
+         unSettledNodes.add(source);
          
+         while (unSettledNodes.size() > 0) {
+     
+         	   Node node = getMinimumNode(unSettledNodes,source);
+         		
+                settledNodes.add(node);
+
+                unSettledNodes.remove(node);
+                 
+                findMinimalDistances(node,source);
+                System.out.println("find minimal \n");
+         }
+         
+    }
+       
+	
+   
+     
+*/         
     public void execute() {
      	
         System.out.println("execute \n");
@@ -70,7 +102,7 @@ public class DijkstraAlgorithm  {
                     
             }
 	
-    } 
+    }
  
      public void setPath(Node goal) {
   	   
@@ -405,6 +437,7 @@ public class DijkstraAlgorithm  {
     public void setThread(Thread thread) {
 		this.thread = thread;
 	}
-   
+
+
 
 }
