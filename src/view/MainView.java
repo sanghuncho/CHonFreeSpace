@@ -183,7 +183,8 @@ public class MainView extends Pane{
 		contractingPercentBox.getChildren().addAll(contractingLabel,percentOfContract,percentageLabel);
 		
 		
-		vbox.getChildren().addAll(mapHbox,startHbox,endHbox,obstacleHbox,comboBox,contractingPercentBox,createMap);
+		vbox.getChildren().addAll(mapHbox,startHbox,endHbox,obstacleHbox,
+				contractingPercentBox,createMap);//comboBox,
 		
 		//vbox.getChildren().addAll(mapHbox,createMap);
 		this.getChildren().addAll(vbox);

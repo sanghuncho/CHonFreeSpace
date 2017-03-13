@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -75,6 +76,7 @@ public class Lobby extends BorderPane{
 
 	private Polygon polygon;
 	private int colorNumber = 0;
+	public TextField numberOfViaNode;
 	
 	public Lobby(Stage stage){
 		
@@ -142,16 +144,20 @@ public class Lobby extends BorderPane{
 		vBox.getChildren().addAll(viaNodeButton,contractButton,searchButton,refreshButton);*/
 		
 		
-		ProgressBar bar = new ProgressBar(0.0);
-		top.getChildren().add(bar);
+		/*ProgressBar bar = new ProgressBar(0.0);
+		top.getChildren().add(bar);*/
 		
 		
 		final Pane leftSpacer = new Pane();
-		leftSpacer.setMinWidth(200);
+		leftSpacer.setMinWidth(100);
+		
+		numberOfViaNode = new TextField();
+		numberOfViaNode.setPromptText("Via Node");
 		
 		HBox hBox = new HBox();
 		hBox.setSpacing(10);
-		hBox.getChildren().addAll(leftSpacer,viaNodeButton,contractButton,searchButton);//,refreshButton
+		hBox.getChildren().addAll(leftSpacer,viaNodeButton,numberOfViaNode,
+				contractButton,searchButton);//,refreshButton
 		
 		
 		final Pane leftSpacer_text = new Pane();
@@ -845,6 +851,12 @@ public class Lobby extends BorderPane{
 		}
 		
 		return laneColor;
+	}
+	
+	public int getnumberOfViaNode(){
+		
+		return Integer.parseInt(numberOfViaNode.getText());
+		
 	}
 	
 	public void setProgessBar(double value){
