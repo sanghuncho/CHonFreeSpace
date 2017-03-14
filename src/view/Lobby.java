@@ -6,10 +6,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -20,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.CHmodel;
 import model.DrawingEdge;
@@ -59,7 +64,9 @@ public class Lobby extends BorderPane{
 	public ArrayList<LinkedList<Node>> listOfPathTail = new ArrayList<LinkedList<Node>>();
 	/*id list of homotopy category*/
 	public ArrayList<String> listOfPathCategory = new ArrayList<String>();
-	
+	/*the list of all paths*/
+	public ArrayList<LinkedList<Node>> allOfPathHead = new ArrayList<LinkedList<Node>>();
+	public ArrayList<LinkedList<Node>> allOfPathTail = new ArrayList<LinkedList<Node>>();
 	private Point viaNode;
 	private Point contractedNode;
 	private Random randX;
@@ -77,6 +84,8 @@ public class Lobby extends BorderPane{
 	private Polygon polygon;
 	private int colorNumber = 0;
 	public TextField numberOfViaNode;
+	private CheckBox cbAll;
+	private CheckBox cbShort;
 	
 	public Lobby(Stage stage){
 		
@@ -149,14 +158,19 @@ public class Lobby extends BorderPane{
 		
 		
 		final Pane leftSpacer = new Pane();
-		leftSpacer.setMinWidth(100);
+		leftSpacer.setMinWidth(40);
 		
 		numberOfViaNode = new TextField();
+		numberOfViaNode.setMaxWidth(80);
 		numberOfViaNode.setPromptText("Via Node");
+		
+		cbAll = new CheckBox("all paths");
+		cbShort = new CheckBox("representative");
+		
 		
 		HBox hBox = new HBox();
 		hBox.setSpacing(10);
-		hBox.getChildren().addAll(leftSpacer,viaNodeButton,numberOfViaNode,
+		hBox.getChildren().addAll(leftSpacer,viaNodeButton,numberOfViaNode,cbAll,cbShort,
 				contractButton,searchButton);//,refreshButton
 		
 		
@@ -517,7 +531,7 @@ public class Lobby extends BorderPane{
 			viaNode = new Point();
 			viaNode.setCenterX(randomNumX*10+5);
 			viaNode.setCenterY(randomNumY*10+5);
-			viaNode.setFill(Color.DARKGOLDENROD);
+			viaNode.setFill(Color.YELLOW);
 			center.getChildren().add(viaNode);
 			viaNodes.add(viaNode);
 		}
@@ -697,8 +711,7 @@ public class Lobby extends BorderPane{
 		
 		int length = listOfPathCategory.size();
 		boolean homotopy = false;
-		
-		
+			
 		/*find the homotopy category*/
 		for(int i = 0; i < length; i++){
 			
@@ -719,11 +732,15 @@ public class Lobby extends BorderPane{
 			listOfPathTail.add(length,tail_path);
 		}
 	}
+	public void setAllPaths(LinkedList<Node> head_path,LinkedList<Node> tail_path){
+			
+		allOfPathHead.add(head_path);
+		allOfPathTail.add(tail_path);
+		
+	}
 	
 	public void createHomotopyLane(){
-		
-		System.out.println("Start drawing");
-		
+				
 		int head_size = listOfPathHead.size();
 				
 		for(int i=0; i< head_size; i++){
@@ -736,9 +753,19 @@ public class Lobby extends BorderPane{
 				
 			}
 		
-		System.out.println("end drawing");
 	}
-	
+	public void createAllLane(){
+		
+		int head_size = allOfPathHead.size();
+				
+		for(int i=0; i< head_size; i++){
+
+			createLane(allOfPathHead.get(i));	
+			createLane(allOfPathTail.get(i));
+				
+			}
+		
+	}	
 	/*public void createLane(LinkedList<Node> path){
 		
 		int k = path.size();
@@ -786,7 +813,11 @@ public class Lobby extends BorderPane{
 
 			
 		}
+		/*if first/shortest on lobby is checked,
+		 * then various color is applied*/
+		if(cbShort.isSelected()){
 		colorNumber++;
+		}
 		
 	}
 	
@@ -806,10 +837,10 @@ public class Lobby extends BorderPane{
 		
 		switch(number) {
 			
-			case 0 : laneColor = Color.AQUA;
+			case 0 : laneColor = Color.CORAL;
 			break;
 			
-			case 1 : laneColor = Color.AQUA;
+			case 1 : laneColor = Color.CORAL;
 			break;
 			
 			case 2 : laneColor = Color.BROWN;
@@ -865,6 +896,13 @@ public class Lobby extends BorderPane{
 		bar.setProgress(value);
 		.getChildren().add(bar);*/
 	}
-
+	public CheckBox getCheckBoxAll(){
+		
+		return cbAll;
+	}
+	public CheckBox getCheckBoxShort(){
+		
+		return cbShort;
+	}
 	
 }

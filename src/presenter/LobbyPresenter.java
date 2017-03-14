@@ -14,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
@@ -58,6 +60,8 @@ public class LobbyPresenter {
 	private boolean applyCH;
 	private Thread thread;
 	private CostMap costmap;
+	private boolean isCheckAll;
+	private boolean isCheckShort;
 
 	
 	public LobbyPresenter(Lobby lobbyView){
@@ -126,7 +130,7 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
-			while(loop_viaNode < 100 ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){//CHmodel.getNumberContracted() , numberObs
 				
 				lobbyView.createViaNodePoint(size,map);
 				loop_viaNode++;
@@ -169,7 +173,6 @@ public class LobbyPresenter {
 			}
 			
 			loop_map=0;
-			
 			while(loop_map < CHmodel.getNumberContractedCustom()){//CHmodel.getNumberContracted() , numberObs
 		
 				lobbyView.generateContractedPoint(size,map);
@@ -221,12 +224,6 @@ public class LobbyPresenter {
 				e1.printStackTrace();
 			}*/
 			 
-	 
-	    /* Task<Void> task4 = new Task<Void>() {
-	        @Override
-	        public Void call() throws InterruptedException { */
-	                	
-	         
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
         					nodeMap, obstacles , map);
             
@@ -297,8 +294,14 @@ public class LobbyPresenter {
 					e.printStackTrace();
 				}
 			
-		    
-		    
+		 /*here through the checkBox decided whether 
+		     * all paths are showed or the representative paths showed*/ 
+		 isCheckAll = lobbyView.getCheckBoxAll().isSelected();
+		 isCheckShort = lobbyView.getCheckBoxShort().isSelected();
+			
+		 /*the representative paths of homotopy class are displayed */
+		 if((isCheckShort) && (!isCheckAll)){ 
+			 
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
 			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
 			
@@ -311,25 +314,14 @@ public class LobbyPresenter {
 					.get(firstViaNodeX,firstViaNodeY));
 			
 			lobbyView.getListOfPathTail().add(0,dijkstra_tail.getPath());
-			
-		/*	
-			the head path is concatenated by the tail path
-			lobbyView.getListOfPathHead().get(0).addAll(lobbyView.getListOfPathTail().get(0));
-			first complete path is added at the listpath
-			lobbyView.getListPath().add(lobbyView.getListOfPathHead().get(0));
-		*/
-			
 			lobbyView.getPathCategory().add("start");
-			
-			
+				
 			/*polygons are made by this methode*/
 			loop=1;
 			int totalLoop = lobbyView.getViaNodeSize();
 			
 			while( loop < totalLoop ){
-				
-				//bar.setProgress(loop / totalLoop);
-				
+								
 				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
 				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
 				
@@ -340,62 +332,75 @@ public class LobbyPresenter {
 				dijkstra_tail.setPath(nodeMap
 						.get(nextViaNodeX,nextViaNodeY));
 				
-				/*lobbyView.getListOfPathHead().add(1,dijkstra_head.getPath());
-				lobbyView.getListOfPathTail().add(1,dijkstra_tail.getPath());*/
-				
-				
 				Polygon polygon = lobbyView.generatePolygon(lobbyView.getListOfPathHead().get(0),
 						lobbyView.getListOfPathTail().get(0),
 						dijkstra_head.getPath(),dijkstra_tail.getPath());
 		
 				
-				/*pathidList contain the list of obstacle-id,
+				/*pathidList contains the list of obstacle-id,
 				which are in the polygon covered */
 				ArrayList<Integer> pathIdList = lobbyView.getListPathID(polygon);
 				
 				//lobbyView.drawPolygon(polygon);
-				
-				
+					
 				String pathIdString;
 				if(pathIdList.size() == 0){
 					
+					/*first homotopy class is named as "start"*/
 					pathIdString = "start";
 					
 				}
 				else{
+					/*the other homotopy class after start homotopy class 
+					 * is named as "start123..."*/ 
 					pathIdString = pathIdToString(pathIdList);
 				}
 		
 				
-				/*set the homotopy categoriy*/
-				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(), dijkstra_tail.getPath());
+				/*set the homotopy category*/
+				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(),
+						dijkstra_tail.getPath());
 				
 				loop++;
 				
-			
-				//createHomotopy(lobbyView, costmap);
 			}
+		    createHomotopy(lobbyView, costmap);
+		 }//checkBoxShort is selected
+		 
+		 /*all the paths class are displayed */
+		 if((!isCheckShort) && (isCheckAll)){
+			 
+				loop=0;
+				int totalLoop = lobbyView.getViaNodeSize();
+				
+				while( loop < totalLoop ){
+									
+					int viaNodeX = lobbyView.getViaNode2D(loop).getX();
+					int viaNodeY = lobbyView.getViaNode2D(loop).getY();
+					
+					dijkstra_head.setPath(nodeMap
+							.get(viaNodeX,viaNodeY));
+					
+					dijkstra_tail.setPath(nodeMap
+							.get(viaNodeX,viaNodeY));
+					
+					lobbyView.setAllPaths(dijkstra_head.getPath(),
+							dijkstra_tail.getPath());
+					
+					loop++;
+					
+				}
+				createAllPaths(lobbyView, costmap);
 			
-			/* return null ;
-	                }
-				 };
-				 
-			Thread thread4 = new Thread(task4);
-		    thread4.start();*/
-				 
-				 
-		        /* try {
-					thread4.join();
-					createHomotopy(lobbyView, costmap);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-		        createHomotopy(lobbyView, costmap);
+		 }
+		 else{
+			 	//error 
+		 }
+		 
+		
 		          
 		});
 		
-		 
 		
 	}
 	private void createHomotopy(Lobby lobbyView,CostMap costmap){
@@ -405,7 +410,7 @@ public class LobbyPresenter {
 			lobbyView.createHomotopyLane();
 			 
 			
-			/*draw shortcut edge on lobby*/
+			/*drawing shortcut edge on lobby*/
 			/*if(applyCH){
 				
 				lobbyView.drawingShortcutEdges(costmap.getEdges());
@@ -416,6 +421,13 @@ public class LobbyPresenter {
 				
 			lobbyView.setText(costmap.getEdges().size(),applyCH);
 	
+	}
+	private void createAllPaths(Lobby lobbyView,CostMap costmap){
+        
+		lobbyView.createAllLane();
+
+		lobbyView.setText(costmap.getEdges().size(),applyCH);
+
 	}
 
 		
