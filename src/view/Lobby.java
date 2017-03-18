@@ -175,7 +175,7 @@ public class Lobby extends BorderPane{
 		
 		
 		final Pane leftSpacer_text = new Pane();
-		leftSpacer_text.setMinWidth(150);
+		leftSpacer_text.setMinWidth(40);
 		HBox hBox_text = new HBox();
 		hBox_text.setSpacing(10);
 		text = new Text("");
@@ -205,6 +205,7 @@ public class Lobby extends BorderPane{
 		//stage.setHeight(CHmodel.getMapX()+100);
 		stage.setHeight(CHmodel.getMapY()+100);
 		stage.setWidth(CHmodel.getMapX()+100);
+		stage.setTitle("Alternative Routes in Indoor Free Space Using Homotopy & Contraction Hierarchies");
 		 
 		
 		
