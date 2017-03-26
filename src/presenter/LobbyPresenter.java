@@ -62,6 +62,8 @@ public class LobbyPresenter {
 	private CostMap costmap;
 	private boolean isCheckAll;
 	private boolean isCheckShort;
+	private DijkstraAlgorithm dijkstra_head;
+	private DijkstraAlgorithm dijkstra_tail;
 
 	
 	public LobbyPresenter(Lobby lobbyView){
@@ -136,6 +138,20 @@ public class LobbyPresenter {
 				loop_viaNode++;
 			}
 			
+			/*move to preprocessing*/
+            costmap = new CostMap(size, CHmodel.getStartVector2D(),
+        					nodeMap, obstacles , map);
+			
+			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
+			
+			dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
+					nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
+			
+			dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
+					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+			
+			    
+			
 
 		});
 		
@@ -186,6 +202,21 @@ public class LobbyPresenter {
 				loop_viaNode++;
 			}
 			
+			
+			/*move to preprocessing*/
+            costmap = new CostMap(size, CHmodel.getStartVector2D(),
+        					nodeMap, obstacles , map);
+			
+			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
+			
+			dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
+					nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
+			
+			dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
+					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+			
+			    
+			
 
 		});
 	
@@ -223,12 +254,14 @@ public class LobbyPresenter {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}*/
-			 
+			
+		/*	
+			costamp inclusives createSurroundingEdges(nodes),moved to preprocessing
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
         					nodeMap, obstacles , map);
             
-			/*CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
-					nodeMap, obstacles , map);*/
+			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
+					nodeMap, obstacles , map);
 			
 			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
 			
@@ -238,7 +271,7 @@ public class LobbyPresenter {
 			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
 			
-			    
+			    */
 			/*dijkstra_head.execute();
 			System.out.println("Execute1 end \n");
 			dijkstra_tail.execute();			

@@ -109,14 +109,14 @@ public class MainView extends GridPane{
 		
 		/*textfield initialization starting point */
 		
-		startPointX = new TextField("55");
+		startPointX = new TextField();
 		startPointX.setMinHeight(50);
 		startPointX.setPrefWidth(100);
 		startPointX.setId("startXTextField");
 		startPointX.setFocusTraversable(false);
 		startPointX.setPromptText("X");
 		
-		startPointY = new TextField("55");
+		startPointY = new TextField();
 		startPointY.setMinHeight(50);
 		startPointY.setPrefWidth(100);
 		startPointY.setId("startYTextField");
@@ -131,14 +131,14 @@ public class MainView extends GridPane{
 		
 		/*textfield initialization end point */
 		
-		endPointX = new TextField("555");
+		endPointX = new TextField();
 		endPointX.setMinHeight(50);
 		endPointX.setPrefWidth(100);
 		endPointX.setId("endXTextField");
 		endPointX.setFocusTraversable(false);
 		endPointX.setPromptText("X");
 		
-		endPointY = new TextField("555");
+		endPointY = new TextField();
 		endPointY.setMinHeight(50);
 		endPointY.setPrefWidth(100);
 		endPointY.setId("endYTextField");
@@ -260,7 +260,6 @@ public class MainView extends GridPane{
 	}
 	
 	public TextField getStartPointX(){
-		
 		return startPointX;
 	}
 	public TextField getStartPointY(){

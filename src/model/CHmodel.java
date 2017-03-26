@@ -95,7 +95,7 @@ public class CHmodel {
 	}
 
 	public static void setStartX(int startX) {
-		CHmodel.startX = startX;
+		CHmodel.startX = (startX-1)*10+5;
 	}
 
 	public static int getStartY() {
@@ -103,7 +103,7 @@ public class CHmodel {
 	}
 
 	public static void setStartY(int startY) {
-		CHmodel.startY = startY;
+		CHmodel.startY = (startY-1)*10+5;
 	}
 
 	public static int getGoalX() {
@@ -111,7 +111,7 @@ public class CHmodel {
 	}
 
 	public static void setGoalX(int goalX) {
-		CHmodel.goalX = goalX;
+		CHmodel.goalX = (goalX-1)*10+5;
 	}
 
 	public static int getGoalY() {
@@ -119,7 +119,7 @@ public class CHmodel {
 	}
 
 	public static void setGoalY(int goalY) {
-		CHmodel.goalY = goalY;
+		CHmodel.goalY = (goalY-1)*10+5;
 	}
 
 	public static int getObstacle() {
