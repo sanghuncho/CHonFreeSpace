@@ -91,7 +91,9 @@ public class LobbyPresenter {
 		
 		
 		
-		/*if only via-node butten is clicked*/
+		/**
+		 * this runs, if only the via-node butten is clicked
+		 */
 		lobbyView.viaNodeButton.setOnMouseClicked(event -> {
 			
 			setNodeObstacleProperty(nodeMap);
@@ -131,9 +133,10 @@ public class LobbyPresenter {
 			}*/
 			
 			loop_viaNode=0;
+			System.out.println("getNumberOfViaNode" + lobbyView.getnumberOfViaNode());
+
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 				
-				System.out.println("getNumberOfViaNode" + lobbyView.getnumberOfViaNode());
 				
 				lobbyView.createViaNodePoint(size,map,loop_viaNode);
 				loop_viaNode++;

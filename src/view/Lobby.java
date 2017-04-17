@@ -527,7 +527,7 @@ public class Lobby extends BorderPane{
 			
 		}*/
 		
-		while( insideObstacle(randomNumX,randomNumY,map) && isContractedNode(randomNumX,randomNumY,map) ){
+		while( insideObstacle(randomNumX,randomNumY,map) || isContractedNode(randomNumX,randomNumY,map) ){
 			
 			randX = new Random();
 			randomNumX = randX.nextInt(size.getX());
@@ -551,7 +551,8 @@ public class Lobby extends BorderPane{
 			viaNodes.add(viaNode);
 			System.out.println("loopViaNode : " + loop_viaNode);
 		}
-		else{
+		/*else{
+			
 			randX = new Random();
 			randomNumX = randX.nextInt(size.getX());
 			randY = new Random();
@@ -565,7 +566,7 @@ public class Lobby extends BorderPane{
 			viaNodes.add(viaNode);
 			System.out.println("new random created : " + loop_viaNode);
 			
-		}
+		}*/
 		
 	}
 	
