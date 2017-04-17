@@ -36,6 +36,8 @@ public class CostMap {
 	
 	private int lowestCost;
 	private int[][] map;
+	private long durationOfgeneratingAllShortcut;
+	private long durationOfOneShortcut;
 	
 	public CostMap(Vector size, Vector start, NodeMap nodeMap, ArrayList<Obstacle> obstacles,int[][] map) {
 		
@@ -46,6 +48,7 @@ public class CostMap {
 		this.nodeMap = nodeMap;
 		this.obstacles = obstacles;
 		this.map = map;
+		this.durationOfgeneratingAllShortcut = 0;
 		
 		createSurroundingEdges(nodes);
 	}
@@ -70,7 +73,7 @@ public class CostMap {
 	
 /**
  * @param nodes
- * this mothod creates the edges around the node regarding contracted node, the obstacle.
+ * This method creates the edges around the node regarding contracted node, the obstacle.
  * If the neighbour node is already contracted, then find the next node until thisnode is not contracetd.
  * If the next node is not the contracted node, then the edge between two nodes is constructed.
  */
@@ -91,12 +94,12 @@ private void createSurroundingEdges(List<Node> nodes) {
 				if(isContractedNode(neighborVector)){
 					
 					neighborDirection = node.getDirectionOfNeighbor(neighbor);
-					//System.out.println("direction : "+ neighborDirection +"\n");
 
 				}
-				
+				long startTime_shortcut = System.currentTimeMillis();
 				while(isContractedNode(neighborVector)){
 					 	
+					
 					/*System.out.println("node positionX : "+ node.getPosition().getX() +"\n");
 					System.out.println("node positionY : "+ node.getPosition().getY() +"\n");
 					
@@ -108,14 +111,17 @@ private void createSurroundingEdges(List<Node> nodes) {
 					
 					Node freshNeighbor = getFreshNeighbor(node,neighborDirection,weight+1); 
 					
-					
-					/*System.out.println("fresh positionX : "+ freshNeighbor.getPosition().getX() +"\n");
-					System.out.println("fresh positionY : "+ freshNeighbor.getPosition().getY() +"\n");*/
-					
 					neighborVector = freshNeighbor.getPosition();
 					weight++;
 					
+					
+					
+					
 				}
+				long endTime_shortcut = System.currentTimeMillis();
+				durationOfOneShortcut = (endTime_shortcut - startTime_shortcut);
+				durationOfgeneratingAllShortcut = durationOfgeneratingAllShortcut 
+						+ durationOfOneShortcut;
 				
 				neighbor = nodeMap.get(neighborVector.getX(), neighborVector.getY());
 				
@@ -127,13 +133,8 @@ private void createSurroundingEdges(List<Node> nodes) {
 					if (!(checkForNode(visitedNodes, node))) {
 						 
 
-						createEdge(node,neighbor,weight);//added to cost for node
+						createEdge(node,neighbor,weight);
 						
-						/*System.out.println("edgeNode positionX : "+ node.getPosition().getX() +"\n");
-						System.out.println("edgeNode positionY : "+ node.getPosition().getY() +"\n");
-						System.out.println("edgeGoal positionX : "+ neighbor.getPosition().getX() +"\n");
-						System.out.println("edgeGoal positionY : "+ neighbor.getPosition().getY() +"\n");
-						System.out.println("weight: "+ weight +"\n");*/
 						
 					}
 					
@@ -142,7 +143,8 @@ private void createSurroundingEdges(List<Node> nodes) {
 			visitedNodes.add(node);
 		}
 	 }
-
+		System.out.println("the duration of generating for all shortcuts : " 
+	 + durationOfgeneratingAllShortcut + " miliseconds");
 	}
 
 	private Node getFreshNeighbor(Node node, Directions direction, int weight){
