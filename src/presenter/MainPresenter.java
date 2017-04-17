@@ -70,7 +70,7 @@ public class MainPresenter {
 
 		CHmodel.setContractingPercent(Integer.parseInt(mainView.getPercentageCustom().getText()));
 		
-		System.out.println("percent : " + mainView.getPercentage()+"\n");
+		System.out.println("percent : " + Integer.parseInt(mainView.getPercentageCustom().getText()) + "\n");
 		
 		new NodeMapHandler(size);
 		

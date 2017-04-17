@@ -68,6 +68,12 @@ public class CostMap {
 	
 	
 	
+/**
+ * @param nodes
+ * this mothod creates the edges around the node regarding contracted node, the obstacle.
+ * If the neighbour node is already contracted, then find the next node until thisnode is not contracetd.
+ * If the next node is not the contracted node, then the edge between two nodes is constructed.
+ */
 private void createSurroundingEdges(List<Node> nodes) {
 		
 		for (Node node : nodes){
@@ -113,12 +119,13 @@ private void createSurroundingEdges(List<Node> nodes) {
 				
 				neighbor = nodeMap.get(neighborVector.getX(), neighborVector.getY());
 				
-				/*isObstacle mathode check the map-value*/
+				/**
+				 * isObstacle-mathod checks the map-value
+				 */
 				if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){ 
 					
 					if (!(checkForNode(visitedNodes, node))) {
 						 
-						
 
 						createEdge(node,neighbor,weight);//added to cost for node
 						

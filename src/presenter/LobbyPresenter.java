@@ -113,8 +113,7 @@ public class LobbyPresenter {
 			
 					setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
 				} 
-				
-				
+					
 				else {
 					
 					setCost(node.getPosition(),CHmodel.VALUE_MAP_POINT);
@@ -122,19 +121,21 @@ public class LobbyPresenter {
 				}
 			}
 			
-			loop_map=0;
+			/*loop_map=0;
 			
-			while(loop_map < 0){//CHmodel.getNumberContracted() , numberObs
+			while(loop_map < 0){
 		
 				//lobbyView.createViaNodePoint(size,map);
 				lobbyView.generateContractedPoint(size,map);
 				loop_map++;
-			}
+			}*/
 			
 			loop_viaNode=0;
-			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 				
-				lobbyView.createViaNodePoint(size,map);
+				System.out.println("getNumberOfViaNode" + lobbyView.getnumberOfViaNode());
+				
+				lobbyView.createViaNodePoint(size,map,loop_viaNode);
 				loop_viaNode++;
 			}
 			
@@ -196,9 +197,11 @@ public class LobbyPresenter {
 			}
 			
 			loop_viaNode=0;
+			System.out.println("getNumberOfViaNode " + lobbyView.getnumberOfViaNode() );
+			
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){//CHmodel.getNumberContracted() , numberObs
-
-				lobbyView.createViaNodePoint(size,map);
+				
+				lobbyView.createViaNodePoint(size,map,loop_viaNode);
 				loop_viaNode++;
 			}
 			
@@ -291,8 +294,6 @@ public class LobbyPresenter {
                 }
 			 };
 			
-			 
-
 	         Thread thread1 = new Thread(task1);
 	         thread1.setDaemon(true);
 	         thread1.start();
@@ -343,18 +344,25 @@ public class LobbyPresenter {
 			
 			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());
 			
+			//here should implement the whole distance of path and the turn value of path of the head
+			
 			dijkstra_tail.setPath(nodeMap
 					.get(firstViaNodeX,firstViaNodeY));
 			
 			lobbyView.getListOfPathTail().add(0,dijkstra_tail.getPath());
 			lobbyView.getPathCategory().add("start");
-				
+			
+			//here should implement the whole distance of path and the turn value of path of the tail
+			
 			/*polygons are made by this methode*/
 			loop=1;
 			int totalLoop = lobbyView.getViaNodeSize();
 			
+			System.out.println("total : " + totalLoop);
+			
 			while( loop < totalLoop ){
-								
+				
+				int numberViaNode = loop+1;
 				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
 				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
 				
@@ -384,15 +392,19 @@ public class LobbyPresenter {
 					
 				}
 				else{
-					/*the other homotopy class after start homotopy class 
-					 * is named as "start123..."*/ 
+					/**
+					 * the other homotopy class after start homotopy class 
+					 * is named as "start123..."
+					 */ 
 					pathIdString = pathIdToString(pathIdList);
 				}
 		
 				
-				/*set the homotopy category*/
+				/**
+				 * The path is classified into the homotopy class.
+				 */
 				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(),
-						dijkstra_tail.getPath());
+						dijkstra_tail.getPath(),numberViaNode,nextViaNodeX,nextViaNodeY);
 				
 				loop++;
 				
@@ -437,9 +449,7 @@ public class LobbyPresenter {
 		
 	}
 	private void createHomotopy(Lobby lobbyView,CostMap costmap){
-		
-		
-                
+		        
 			lobbyView.createHomotopyLane();
 			 
 			

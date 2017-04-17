@@ -43,8 +43,8 @@ public class MainView extends GridPane{
 	public MainView(Stage stage){
 		
 		
-		stage.setTitle("Alternative Routes in Indoor Free Space "
-				+ "Using Homotopy & Contraction Hierarchies");
+		stage.setTitle("Candidate Sets for Alternative Routes "
+				+ "in Constrained Free Space Scenarios");
 		stage.setHeight(700);
 		stage.setWidth(700);
 		

@@ -205,7 +205,7 @@ public class Lobby extends BorderPane{
 		//stage.setHeight(CHmodel.getMapX()+100);
 		stage.setHeight(CHmodel.getMapY()+100);
 		stage.setWidth(CHmodel.getMapX()+100);
-		stage.setTitle("Alternative Routes in Indoor Free Space Using Homotopy & Contraction Hierarchies");
+		stage.setTitle("Candidate Sets For Alternative Routes in Constrained Free Space Scenarios");
 		 
 		
 		
@@ -506,7 +506,7 @@ public class Lobby extends BorderPane{
 		
 	}
 	
-	public void createViaNodePoint(Vector2D size, int[][] map){
+	public void createViaNodePoint(Vector2D size, int[][] map,int loop_viaNode){
 		
 		randX = new Random();
 		randomNumX = randX.nextInt( size.getX());
@@ -514,18 +514,32 @@ public class Lobby extends BorderPane{
 		randomNumY = randY.nextInt( size.getY());
 
 	
-		while(insideObstacle(randomNumX,randomNumY,map)){
+		/*while( insideObstacle(randomNumX,randomNumY,map)  ){
 			
 				randX = new Random();
 				randomNumX = randX.nextInt( size.getX());
 				randY = new Random();
 				randomNumY = randY.nextInt( size.getY());
 				
-				/*System.out.println("new random x " + randomNumX + "\n");
+				System.out.println("new random x " + randomNumX + "\n");
 				System.out.println("new random y " + randomNumY + "\n");
-				System.out.println("\n");*/
+				System.out.println("\n");
 			
-			}
+		}*/
+		
+		while( insideObstacle(randomNumX,randomNumY,map) && isContractedNode(randomNumX,randomNumY,map) ){
+			
+			randX = new Random();
+			randomNumX = randX.nextInt(size.getX());
+			randY = new Random();
+			randomNumY = randY.nextInt(size.getY());
+			
+			//System.out.println("new random x " + randomNumX + "\n");
+			//System.out.println("new random y " + randomNumY + "\n");
+			System.out.println("new random");
+			System.out.println("\n");
+		
+		}
 		
 		if( !insideObstacle(randomNumX,randomNumY,map) && !isContractedNode(randomNumX,randomNumY,map)){
 			
@@ -535,6 +549,22 @@ public class Lobby extends BorderPane{
 			viaNode.setFill(Color.YELLOW);
 			center.getChildren().add(viaNode);
 			viaNodes.add(viaNode);
+			System.out.println("loopViaNode : " + loop_viaNode);
+		}
+		else{
+			randX = new Random();
+			randomNumX = randX.nextInt(size.getX());
+			randY = new Random();
+			randomNumY = randY.nextInt(size.getY());
+			
+			viaNode = new Point();
+			viaNode.setCenterX(randomNumX*10+5);
+			viaNode.setCenterY(randomNumY*10+5);
+			viaNode.setFill(Color.YELLOW);
+			center.getChildren().add(viaNode);
+			viaNodes.add(viaNode);
+			System.out.println("new random created : " + loop_viaNode);
+			
 		}
 		
 	}
@@ -643,9 +673,6 @@ public class Lobby extends BorderPane{
 					
 			}
 
-		
-		
-
 		for(int i = 0 ; i < n ; i++){
 			
 			double pointX = tail_second.get(i).getPosition().getX();
@@ -708,19 +735,31 @@ public class Lobby extends BorderPane{
 		
 		return listOfPathCategory;
 	}
-	public void setPathCategory(String pathId, LinkedList<Node> head_path,LinkedList<Node> tail_path){
+	/**
+	 * @param pathId
+	 * @param head_path
+	 * @param tail_path
+	 * @param numberViaNode
+	 */
+	public void setPathCategory(String pathId, LinkedList<Node> head_path,LinkedList<Node> tail_path,int numberViaNode,int nextViaNodeX,int nextViaNodeY){
 		
 		int length = listOfPathCategory.size();
 		boolean homotopy = false;
 			
-		/*find the homotopy category*/
+		/**
+		 * find the homotopy category
+		 */
 		for(int i = 0; i < length; i++){
 			
-			/*category length*/
+			/**
+			 * length of category 
+			 * */
 			String stringIdPath = listOfPathCategory.get(i);
 			
 			if(stringIdPath.equals(pathId)){
-
+				
+				//here implement the method of compare with cost and turn value between two homotopy path
+				
 				homotopy = true;
 			}
 						
@@ -732,6 +771,20 @@ public class Lobby extends BorderPane{
 			listOfPathHead.add(length,head_path);
 			listOfPathTail.add(length,tail_path);
 		}
+		evaluation_1(listOfPathCategory.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
+		
+	  
+	}
+	
+	/**
+	 * @param lengthOfCategory
+	 * @param numberViaNode
+	 */
+	private void evaluation_1(int lengthOfCategory,int numberViaNode,int nextViaNodeX,int nextViaNodeY){
+		
+		System.out.println("the number of homotopy class : " + lengthOfCategory 
+				+ " the numebr of via-node : " + numberViaNode + " [ X : " + nextViaNodeX + " Y : " + nextViaNodeY + " ]");
+		
 	}
 	public void setAllPaths(LinkedList<Node> head_path,LinkedList<Node> tail_path){
 			
@@ -790,8 +843,7 @@ public class Lobby extends BorderPane{
 		for(int i = 0 ; i < k-1 ; i ++){
 			
 			Vector start = path.get(i).getPosition();
-			
-			
+				
 			Vector goal = path.get(i+1).getPosition();
 			
 			//System.out.println("lane create");

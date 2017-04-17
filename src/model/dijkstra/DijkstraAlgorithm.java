@@ -72,10 +72,7 @@ public class DijkstraAlgorithm{//implements Runnable
          }
          
     }
-       
-	
-   
-     
+    
 */         
     public void execute() {
      	
@@ -114,8 +111,7 @@ public class DijkstraAlgorithm{//implements Runnable
          }
          
          Node step = goal;
-         
-         
+            
          // check if a path exists
          if (predecessors.get(step) == null) {
         
