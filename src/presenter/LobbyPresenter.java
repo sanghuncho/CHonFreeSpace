@@ -133,11 +133,8 @@ public class LobbyPresenter {
 			}*/
 			
 			loop_viaNode=0;
-			System.out.println("getNumberOfViaNode" + lobbyView.getnumberOfViaNode());
-
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
-				
-				
+			
 				lobbyView.createViaNodePoint(size,map,loop_viaNode);
 				loop_viaNode++;
 			}
@@ -159,7 +156,9 @@ public class LobbyPresenter {
 
 		});
 		
-		/*if via-node + CH butten is clicked*/
+		/**
+		 * this works, if (via-node + CH) button is clicked.
+		 */
 		lobbyView.contractButton.setOnMouseClicked(event -> {
 			
 			
@@ -193,16 +192,20 @@ public class LobbyPresenter {
 			}
 			
 			loop_map=0;
-			while(loop_map < CHmodel.getNumberContractedCustom()){//CHmodel.getNumberContracted() , numberObs
+			long  startTime_contracted = System.currentTimeMillis();
+			while(loop_map < CHmodel.getNumberContractedCustom()){
 		
 				lobbyView.generateContractedPoint(size,map);
 				loop_map++;
 			}
+			long endTime_contracted = System.currentTimeMillis();
+			long duration_allContracted = (endTime_contracted - startTime_contracted);
+			System.out.println("the duration of the contracting : " + duration_allContracted + " miliseconds");
+			
 			
 			loop_viaNode=0;
-			System.out.println("getNumberOfViaNode " + lobbyView.getnumberOfViaNode() );
 			
-			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){//CHmodel.getNumberContracted() , numberObs
+			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 				
 				lobbyView.createViaNodePoint(size,map,loop_viaNode);
 				loop_viaNode++;
@@ -228,7 +231,8 @@ public class LobbyPresenter {
 	
 		/*try to implement the threads*/
 		lobbyView.searchButton.setOnMouseClicked(event -> {
-			
+		
+			long  startTime_searching = System.currentTimeMillis();
         
 			
 			/*ProgressForm pForm = new ProgressForm();
@@ -359,10 +363,7 @@ public class LobbyPresenter {
 			
 			/*polygons are made by this methode*/
 			loop=1;
-			int totalLoop = lobbyView.getViaNodeSize();
-			
-			System.out.println("total : " + totalLoop);
-			
+			int totalLoop = lobbyView.getViaNodeSize();			
 			while( loop < totalLoop ){
 				
 				int numberViaNode = loop+1;
@@ -405,6 +406,7 @@ public class LobbyPresenter {
 				
 				/**
 				 * The path is classified into the homotopy class.
+				 * the evaluation_1st is here implemented.
 				 */
 				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(),
 						dijkstra_tail.getPath(),numberViaNode,nextViaNodeX,nextViaNodeY);
@@ -412,6 +414,16 @@ public class LobbyPresenter {
 				loop++;
 				
 			}
+			
+			/**
+			 *the evaluation_3st is implemented.
+			 *this shows the durationn of from the running of two dijkstra's algorithm to the homotopy test. 
+			 */
+			long endTime_searching = System.currentTimeMillis();
+			long duration_searching = (endTime_searching - startTime_searching);
+			System.out.println("the duration of the searching and the homotopy test : " + duration_searching + " miliseconds");
+			
+			
 		    createHomotopy(lobbyView, costmap);
 		 }//checkBoxShort is selected
 		 

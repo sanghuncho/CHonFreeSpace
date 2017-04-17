@@ -513,19 +513,6 @@ public class Lobby extends BorderPane{
 		randY = new Random();
 		randomNumY = randY.nextInt( size.getY());
 
-	
-		/*while( insideObstacle(randomNumX,randomNumY,map)  ){
-			
-				randX = new Random();
-				randomNumX = randX.nextInt( size.getX());
-				randY = new Random();
-				randomNumY = randY.nextInt( size.getY());
-				
-				System.out.println("new random x " + randomNumX + "\n");
-				System.out.println("new random y " + randomNumY + "\n");
-				System.out.println("\n");
-			
-		}*/
 		
 		while( insideObstacle(randomNumX,randomNumY,map) || isContractedNode(randomNumX,randomNumY,map) ){
 			
@@ -534,10 +521,7 @@ public class Lobby extends BorderPane{
 			randY = new Random();
 			randomNumY = randY.nextInt(size.getY());
 			
-			//System.out.println("new random x " + randomNumX + "\n");
-			//System.out.println("new random y " + randomNumY + "\n");
-			System.out.println("new random");
-			System.out.println("\n");
+			//System.out.println("new random");
 		
 		}
 		
@@ -549,24 +533,7 @@ public class Lobby extends BorderPane{
 			viaNode.setFill(Color.YELLOW);
 			center.getChildren().add(viaNode);
 			viaNodes.add(viaNode);
-			System.out.println("loopViaNode : " + loop_viaNode);
 		}
-		/*else{
-			
-			randX = new Random();
-			randomNumX = randX.nextInt(size.getX());
-			randY = new Random();
-			randomNumY = randY.nextInt(size.getY());
-			
-			viaNode = new Point();
-			viaNode.setCenterX(randomNumX*10+5);
-			viaNode.setCenterY(randomNumY*10+5);
-			viaNode.setFill(Color.YELLOW);
-			center.getChildren().add(viaNode);
-			viaNodes.add(viaNode);
-			System.out.println("new random created : " + loop_viaNode);
-			
-		}*/
 		
 	}
 	
@@ -772,7 +739,7 @@ public class Lobby extends BorderPane{
 			listOfPathHead.add(length,head_path);
 			listOfPathTail.add(length,tail_path);
 		}
-		evaluation_1(listOfPathCategory.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
+		//evaluation_1(listOfPathCategory.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
 		
 	  
 	}
@@ -780,6 +747,7 @@ public class Lobby extends BorderPane{
 	/**
 	 * @param lengthOfCategory
 	 * @param numberViaNode
+	 * test for the relation between the homotopy clss and the number of the via-node. 
 	 */
 	private void evaluation_1(int lengthOfCategory,int numberViaNode,int nextViaNodeX,int nextViaNodeY){
 		
