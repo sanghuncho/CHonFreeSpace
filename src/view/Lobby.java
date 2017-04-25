@@ -79,6 +79,7 @@ public class Lobby extends BorderPane{
 	private ArrayList<Point> viaNodes = new ArrayList<Point>();
 	private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
 	private ArrayList<Edge> variousEdges = new ArrayList<Edge>(); 
+	private ArrayList<Edge> shortcuts = new ArrayList<Edge>(); 
 	private ArrayList<Lane> laneList = new ArrayList<Lane>();	
 
 	private Polygon polygon;
@@ -739,7 +740,7 @@ public class Lobby extends BorderPane{
 			listOfPathHead.add(length,head_path);
 			listOfPathTail.add(length,tail_path);
 		}
-		//evaluation_1(listOfPathCategory.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
+		evaluation_1(listOfPathCategory.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
 		
 	  
 	}

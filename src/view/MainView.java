@@ -86,7 +86,7 @@ public class MainView extends GridPane{
 		
 		/*textfield initialization map */
 		
-		mapXField = new TextField("600");
+		mapXField = new TextField("1000");
 		mapXField.setMinHeight(50);
 		mapXField.setPrefWidth(100);
 		mapXField.setId("mapXTextField");
@@ -109,14 +109,14 @@ public class MainView extends GridPane{
 		
 		/*textfield initialization starting point */
 		
-		startPointX = new TextField();
+		startPointX = new TextField("2");
 		startPointX.setMinHeight(50);
 		startPointX.setPrefWidth(100);
 		startPointX.setId("startXTextField");
 		startPointX.setFocusTraversable(false);
 		startPointX.setPromptText("X");
 		
-		startPointY = new TextField();
+		startPointY = new TextField("2");
 		startPointY.setMinHeight(50);
 		startPointY.setPrefWidth(100);
 		startPointY.setId("startYTextField");
@@ -131,14 +131,14 @@ public class MainView extends GridPane{
 		
 		/*textfield initialization end point */
 		
-		endPointX = new TextField();
+		endPointX = new TextField("99");
 		endPointX.setMinHeight(50);
 		endPointX.setPrefWidth(100);
 		endPointX.setId("endXTextField");
 		endPointX.setFocusTraversable(false);
 		endPointX.setPromptText("X");
 		
-		endPointY = new TextField();
+		endPointY = new TextField("59");
 		endPointY.setMinHeight(50);
 		endPointY.setPrefWidth(100);
 		endPointY.setId("endYTextField");
@@ -152,7 +152,7 @@ public class MainView extends GridPane{
 		
 		/*textfield initialization obstacle */
 		
-		numberOfObstacle = new TextField("1");
+		numberOfObstacle = new TextField("4");
 		numberOfObstacle.setMinHeight(50);
 		numberOfObstacle.setPrefWidth(100);
 		numberOfObstacle.setId("numeberTextField");
@@ -165,7 +165,7 @@ public class MainView extends GridPane{
 		obstacleHbox.setId("obstacleHbox");
 		
 		
-		percentOfContract = new TextField();
+		percentOfContract = new TextField("10");
 		percentOfContract.setMinHeight(50);
 		percentOfContract.setPrefWidth(100);
 		percentOfContract.setId("");
