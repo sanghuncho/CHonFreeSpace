@@ -97,17 +97,8 @@ private void createSurroundingEdges(List<Node> nodes) {
 
 				}
 				long startTime_shortcut = System.currentTimeMillis();
+				
 				while(isContractedNode(neighborVector)){
-					 	
-					
-					/*System.out.println("node positionX : "+ node.getPosition().getX() +"\n");
-					System.out.println("node positionY : "+ node.getPosition().getY() +"\n");
-					
-					System.out.println("neighbor positionX : "+ neighbor.getPosition().getX() +"\n");
-					System.out.println("neighbor positionY : "+ neighbor.getPosition().getY() +"\n");*/
-					
-					/*node.getNotContractedNeighbor methode becomes only the direction and per position of the node
-					get the neighbor*/
 					
 					Node freshNeighbor = getFreshNeighbor(node,neighborDirection,weight+1); 
 					

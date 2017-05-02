@@ -10,18 +10,23 @@ import util.math.Vector2D;
 
 public class Node implements Comparable<Node>{
 	
-	/** The previous node. */
+	/**
+	 *  The previous node. 
+	 */
 	private Node north, northEast, east, southEast, south, southWest, west,
 			northWest, previousNode;
 	
 	private int obstacleValue = 0;
 	private int costFromStart;
 	
-	/** The start list. */
+	/** 
+	 * The start list.
+	  */
 	private ArrayList<NodeProperty> startList = new ArrayList<NodeProperty>();
 	
-	/** The position. */
-	//private Vector vector;
+	/**
+	 * The position. 
+	 */
 	private Vector2D vector;
 	private Property property;
 	private NodeCircle nodeCircle;
@@ -199,70 +204,27 @@ public class Node implements Comparable<Node>{
 		
 		return neighborOfNeighbor;
 	}
-		
-		/*if(north != null && north.equals(neighbor)){
 			
-			System.out.print("neighbor 1 \n");
-
-			neighborOfNeighbor = new Vector2D(
-					neighbor.getNorth().getPosition().getX(),neighbor.getNorth().getPosition().getY());
-		
-		}
-		else if(northEast!= null && northEast.equals(neighbor)){
-			System.out.print("neighbor 2 \n");
-			neighborOfNeighbor = new Vector2D(
-					neighbor.getNorthEast().getPosition().getX(),neighbor.getNorthEast().getPosition().getY());
-		}
-		else if(east != null && east.equals(neighbor)){
-			System.out.print("neighbor 3 \n");
-			neighborOfNeighbor = new Vector2D(
-					neighbor.getEast().getPosition().getX(), neighbor.getEast().getPosition().getY());
-		}
-		else if(southEast != null && southEast.equals(neighbor)){
-			System.out.print("neighbor 4 \n");
-			neighborOfNeighbor = new Vector2D(
-					neighbor.getSouthEast().getPosition().getX(), neighbor.getSouthEast().getPosition().getY());
-		}
-		else if(south != null && south.equals(neighbor)){
-			System.out.print("neighbor 5 \n");
-			neighborOfNeighbor = new Vector2D(
-					neighbor.getSouth().getPosition().getX(), neighbor.getSouth().getPosition().getY());
-		}
-		else if(southWest != null && southWest.equals(neighbor)){
-			System.out.print("neighbor 6 \n");
-			neighborOfNeighbor = new Vector2D(
-					neighbor.getSouthWest().getPosition().getX(), neighbor.getSouthWest().getPosition().getY());
-		}
-		else if(west!= null && west.equals(neighbor)){
-			System.out.print("neighbor 7 \n");
-			neighborOfNeighbor = new Vector2D(
-					neighbor.getWest().getPosition().getX(), neighbor.getWest().getPosition().getY());
-		}
-		else if(northWest != null && northWest.equals(neighbor)){
-			System.out.print("neighbor 8 \n");
-			neighborOfNeighbor = new Vector2D(
-					neighbor.getNorthEast().getPosition().getX(), neighbor.getNorthEast().getPosition().getY());
-		}
-		else{}
-		
-		return (Vector2D) neighborOfNeighbor;
-		
-	}*/
-	
 	public synchronized int compareTo(Node otherNode) {
 		int better = -1;
 		int equal = 0;
 		int worse = 1;
 
-		/* if this node is cheaper, it is better */
+		/** 
+		 * if this node is cheaper, it is better.
+		 */
 		if (costFromStart < otherNode.costFromStart) {
 			return better;
 
-			/* if the other node is cheaper, this one is worse */
+			/**
+			 *  if the other node is cheaper, this one is worse.
+			  */
 		} else if (costFromStart > otherNode.costFromStart) {
 			return worse;
 
-			/* if they are equally expensive, check the distance */
+			/**
+			 * if they are equally expensive, check the distance.
+			 */
 		} else {
 
 			/* if this node is closer to the start, it is better 
