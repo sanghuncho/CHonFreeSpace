@@ -193,6 +193,7 @@ public class LobbyPresenter {
 			
 			loop_map=0;
 			long  startTime_contracted = System.currentTimeMillis();
+			System.out.println("contracting : " + CHmodel.getNumberContractedCustom());
 			while(loop_map < CHmodel.getNumberContractedCustom()){
 		
 				lobbyView.generateContractedPoint(size,map);
@@ -203,8 +204,7 @@ public class LobbyPresenter {
 			System.out.println("the duration of the contracting : " + duration_allContracted + " miliseconds");
 			
 			
-			loop_viaNode=0;
-			
+			loop_viaNode=0;	
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 				
 				lobbyView.createViaNodePoint(size,map,loop_viaNode);
