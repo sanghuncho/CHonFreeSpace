@@ -191,6 +191,14 @@ public class LobbyPresenter {
 				}
 			}
 			
+			
+			loop_viaNode=0;	
+			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
+				
+				lobbyView.createViaNodePoint(size,map,loop_viaNode);
+				loop_viaNode++;
+			}
+			
 			loop_map=0;
 			long  startTime_contracted = System.currentTimeMillis();
 			System.out.println("contracting : " + CHmodel.getNumberContractedCustom());
@@ -204,12 +212,7 @@ public class LobbyPresenter {
 			System.out.println("the duration of the contracting : " + duration_allContracted + " miliseconds");
 			
 			
-			loop_viaNode=0;	
-			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
-				
-				lobbyView.createViaNodePoint(size,map,loop_viaNode);
-				loop_viaNode++;
-			}
+			
 			
 			
 			/*move to preprocessing*/
@@ -761,6 +764,7 @@ public class LobbyPresenter {
 		int nodeGoalY = node.getPosition().getY()*10;
 		
 		int obsXpos = (int)obstacle.xProperty().get();
+		//System.out.println("obsXpos" + obsXpos);
 		int obsXposWidth = (int)(obsXpos + (obstacle.getWidth()));
 		
 		int obsYpos = (int)obstacle.yProperty().get();

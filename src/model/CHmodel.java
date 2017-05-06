@@ -14,6 +14,7 @@ public class CHmodel {
 	public static final int VALUE_MAP_START_GAOL = 0;
 	public static final int VALUE_MAP_POINT = 1;
 	public static final int VALUE_MAP_CONTRACTING = 2;
+	public static final int VALUE_MAP_VIA_NODE = 3;
 	
 	public static int startX;
 	public static int startY;
