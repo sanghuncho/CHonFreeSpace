@@ -92,7 +92,7 @@ public class MainView extends GridPane{
 		/**
 		 * all textfield are created.
 		 */
-		mapXField = new TextField("1000");
+		mapXField = new TextField("600");
 		mapXField.setMinHeight(50);
 		mapXField.setPrefWidth(100);
 		mapXField.setId("mapXTextField");
@@ -142,7 +142,7 @@ public class MainView extends GridPane{
 		 * the goal point is initialized by input value.
 		 */
 		
-		endPointX = new TextField("99");
+		endPointX = new TextField("59");
 		endPointX.setMinHeight(50);
 		endPointX.setPrefWidth(100);
 		endPointX.setId("endXTextField");
@@ -165,7 +165,7 @@ public class MainView extends GridPane{
 		 * the number of the obstacle is initialized by input value.
 		 */
 		
-		numberOfObstacle = new TextField("4");
+		numberOfObstacle = new TextField("1");
 		numberOfObstacle.setMinHeight(50);
 		numberOfObstacle.setPrefWidth(100);
 		numberOfObstacle.setId("numeberTextField");

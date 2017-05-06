@@ -21,8 +21,8 @@ public class Obstacle extends Rectangle {
     public Obstacle(int id){
 		
     	
-		/*this.xProperty().set(getRandomX());
-		this.yProperty().set(getRandomY());*/
+		this.xProperty().set(getRandomX());
+		this.yProperty().set(getRandomY());
 		
 		/*this.xProperty().set(100);
 		this.yProperty().set(100);*/
@@ -30,7 +30,7 @@ public class Obstacle extends Rectangle {
     	/**
     	 * For evaluation the coordinates of four obstacles are set
     	 */ 
-    	if(id == 0){
+    	/*if(id == 0){
     		this.xProperty().set(100);
     		this.yProperty().set(100);
     	}
@@ -45,7 +45,7 @@ public class Obstacle extends Rectangle {
     	else if(id == 3){
     		this.xProperty().set(800);
     		this.yProperty().set(450);
-    	}
+    	}*/
 		
 		this.setWidth(50);
 		this.setHeight(50);

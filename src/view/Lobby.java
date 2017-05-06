@@ -694,14 +694,12 @@ public class Lobby extends BorderPane{
 		int numberContracted = 0;
 		
 		if(applyCH == true){
-			//numberContracted = CHmodel.getNumberContracted();
 			numberContracted = CHmodel.getNumberContractedCustom();
 		}
 		else{
 		}
 		String liveNumberNode = Integer.toString(numberOfNode-numberContracted);
 		
-		//int variousEdge = variousEdges.size();
 		int variousEdges = sizeOfEdges/2;
 				
 		text.setText("the number of nodes : " + liveNumberNode
@@ -746,7 +744,7 @@ public class Lobby extends BorderPane{
 			
 			/**
 			 * length of category 
-			 * */
+			 */
 			String stringIdPath = listOfPathCategory.get(i);
 			
 			if(stringIdPath.equals(pathId)){
@@ -923,6 +921,23 @@ public class Lobby extends BorderPane{
 			case 13 : laneColor = Color.PINK;
 			break;
 			
+			case 14 : laneColor = Color.AQUAMARINE;
+			break;
+			
+			case 15 : laneColor = Color.AQUAMARINE;
+			break;
+			
+			case 16 : laneColor = Color.GOLDENROD;
+			break;
+			
+			case 17 : laneColor = Color.GOLDENROD;
+			break;
+			
+			case 18 : laneColor = Color.CORNFLOWERBLUE;
+			break;
+			
+			case 19 : laneColor = Color.CORNFLOWERBLUE;
+			break;
 		}
 		
 		return laneColor;

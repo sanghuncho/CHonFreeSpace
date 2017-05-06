@@ -218,6 +218,8 @@ public class LobbyPresenter {
 			/*move to preprocessing*/
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
         					nodeMap, obstacles , map);
+            
+            System.out.println("edge size : " + costmap.getEdges().size()/2);
 			
 			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
 			
@@ -769,7 +771,7 @@ public class LobbyPresenter {
 		
 		int obsYpos = (int)obstacle.yProperty().get();
 		int obsYposWidth = (int)(obsYpos + (obstacle.getHeight()));
-		
+		//obsXpos-10
 		if( (obsXpos-10 <= nodeGoalX ) && ( nodeGoalX <= obsXposWidth)){ 
 			
 			if(( obsYpos-10 <= nodeGoalY) && ( nodeGoalY <= obsYposWidth)){

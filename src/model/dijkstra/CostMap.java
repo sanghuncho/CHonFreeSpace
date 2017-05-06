@@ -105,9 +105,6 @@ private void createSurroundingEdges(List<Node> nodes) {
 					neighborVector = freshNeighbor.getPosition();
 					weight++;
 					
-					
-					
-					
 				}
 				long endTime_shortcut = System.currentTimeMillis();
 				durationOfOneShortcut = (endTime_shortcut - startTime_shortcut);
