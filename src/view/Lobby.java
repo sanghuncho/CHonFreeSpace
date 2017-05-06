@@ -551,7 +551,7 @@ public class Lobby extends BorderPane{
 			
 			if((map[randomX][randomY]) == 0){
 				
-				System.out.println("map = 0 \n");
+				//System.out.println("map = 0 \n");
 			}
 			return true;
 			
@@ -775,12 +775,9 @@ public class Lobby extends BorderPane{
 		int head_size = listOfPathHead.size();
 				
 		for(int i=0; i< head_size; i++){
-			System.out.println("before createLane");
 
 			createLane(listOfPathHead.get(i));	
 			createLane(listOfPathTail.get(i));
-			/*new Thread(new HomotopyLane(listOfPathHead.get(i),center)).start();
-			new Thread(new HomotopyLane(listOfPathTail.get(i),center)).start();*/
 				
 			}
 		
