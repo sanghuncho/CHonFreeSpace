@@ -47,8 +47,8 @@ public class Obstacle extends Rectangle {
     		this.yProperty().set(450);
     	}*/
 		
-		this.setWidth(50);
-		this.setHeight(50);
+		this.setWidth(CHmodel.VALUE_OBSTACLE_WIDTH);
+		this.setHeight(CHmodel.VALUE_OBSTACLE_HEIGHT);
 		this.setFill(Color.BLUE);
 
 		this.id = id;

@@ -15,7 +15,8 @@ public class CHmodel {
 	public static final int VALUE_MAP_POINT = 1;
 	public static final int VALUE_MAP_CONTRACTING = 2;
 	public static final int VALUE_MAP_VIA_NODE = 3;
-	
+	public static final int VALUE_OBSTACLE_WIDTH = 25;
+	public static final int VALUE_OBSTACLE_HEIGHT = 25;
 	public static int startX;
 	public static int startY;
 

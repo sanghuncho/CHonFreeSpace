@@ -825,8 +825,8 @@ public class LobbyPresenter {
 	            ((Obstacle)(t.getSource())).setTranslateX(newTranslateX);
 	            ((Obstacle)(t.getSource())).setTranslateY(newTranslateY);
 	            
-	            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX()-75);
-	            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY()-50);
+	            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX()-50-(CHmodel.VALUE_OBSTACLE_WIDTH/2));
+	            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY()-25-(CHmodel.VALUE_OBSTACLE_HEIGHT/2));
 	            
 	    
 		        ((Obstacle)(t.getSource())).xProperty().bind(xPosProperty );
