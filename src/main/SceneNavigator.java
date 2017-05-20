@@ -17,7 +17,6 @@ public class SceneNavigator {
 	public Stage primaryStage;
 	
 	
-	
 	public SceneNavigator(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
@@ -36,15 +35,6 @@ public void switchTo(AvailableScenes newScene) throws IOException, InterruptedEx
 			
 			lobbyPresenter = new LobbyPresenter(lobby = new Lobby(primaryStage)); 
 			break;
-
-			/*	case GAME :
-
-				model = new MapModel(level);
-				gameView = new GameView(model, primaryStage);
-				presenter = new GamePresenter(model, gameView,gameModel);
-				presenter.play();
-				break;*/
-
 
 		}
 	

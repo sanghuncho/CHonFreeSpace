@@ -1,7 +1,9 @@
 package presenter;
 
 import java.awt.Insets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -27,6 +29,7 @@ import javafx.util.Duration;
 import model.CHmodel;
 import model.Obstacle;
 import model.ProgressForm;
+import model.dijkstra.ConstantMap;
 import model.dijkstra.CostMap;
 import model.dijkstra.DijkstraAlgorithm;
 import model.dijkstra.Edge;
@@ -56,6 +59,7 @@ public class LobbyPresenter {
 	private int loop_map;
 	private int loop_viaNode;
 	private int[][] map;
+	
 	private NodeMap nodeMap;
 	private boolean applyCH;
 	private Thread thread;
@@ -103,8 +107,8 @@ public class LobbyPresenter {
 			this.applyCH = false;
 						
 			
-			this.map = new int[size.getX()][size.getY()];
-						
+			//this.map = new int[size.getX()][size.getY()];
+			this.map = ConstantMap.getConstantMap();			
 			for (Node node : nodeMap.getNodes()) {
 
 				if (node.isObstacle()) {
@@ -170,8 +174,8 @@ public class LobbyPresenter {
 			this.applyCH = true;
 						
 			
-			this.map = new int[size.getX()][size.getY()];
-						
+			//this.map = new int[size.getX()][size.getY()];
+			this.map = ConstantMap.getConstantMap();			
 			for (Node node : nodeMap.getNodes()) {
 
 				if (node.isObstacle()) {
@@ -238,7 +242,9 @@ public class LobbyPresenter {
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 		
 			long  startTime_searching = System.currentTimeMillis();
-        
+			SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
+			Date resultdate = new Date(startTime_searching);
+			System.out.println("start search time : " + sdf.format(resultdate));
 			
 			/*ProgressForm pForm = new ProgressForm();
 			
@@ -357,7 +363,10 @@ public class LobbyPresenter {
 			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());
 			
 			//here should implement the whole distance of path and the turn value of path of the head
-			
+			long  firstHomotopy = System.currentTimeMillis();
+			SimpleDateFormat sdf_1 = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
+			Date resultdate_1 = new Date(firstHomotopy);
+			System.out.println("first homotopy time : " + sdf_1.format(resultdate_1));
 			dijkstra_tail.setPath(nodeMap
 					.get(firstViaNodeX,firstViaNodeY));
 			

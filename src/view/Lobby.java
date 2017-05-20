@@ -1,6 +1,8 @@
 package view;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,6 +87,7 @@ public class Lobby extends BorderPane{
 	private CheckBox cbAll;
 	private CheckBox cbShort;
 	int k=0;
+	private Color laneColor;
 	
 	public Lobby(Stage stage){
 		
@@ -774,8 +777,12 @@ public class Lobby extends BorderPane{
 	 */
 	private void evaluation_1(int lengthOfCategory,int numberViaNode,int nextViaNodeX,int nextViaNodeY){
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
+		Date resultdate = new Date(System.currentTimeMillis());
 		System.out.println("the number of homotopy class : " + lengthOfCategory 
-				+ " the numebr of via-node : " + numberViaNode + " [ X : " + nextViaNodeX + " Y : " + nextViaNodeY + " ]");
+				+ " the numebr of via-node : " + numberViaNode + ", time : " 
+				+ sdf.format(resultdate));
+		
 		
 	}
 	public void setAllPaths(LinkedList<Node> head_path,LinkedList<Node> tail_path){
@@ -831,14 +838,11 @@ public class Lobby extends BorderPane{
 		
 		for(int i = 0 ; i < k-1 ; i ++){
 			
-			Vector start = path.get(i).getPosition();
-				
+			Vector start = path.get(i).getPosition();	
 			Vector goal = path.get(i+1).getPosition();
 			
-			//System.out.println("lane create");
 			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
 					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
-			//System.out.println("lane stroke");
 
 			lane.setStroke(getLaneColor(colorNumber));
 			
@@ -850,9 +854,6 @@ public class Lobby extends BorderPane{
 			}
 			center.getChildren().add(lane);
 			
-			
-			//System.out.println("created!");
-
 			
 		}
 		/*if first/shortest on lobby is checked,
@@ -937,6 +938,42 @@ public class Lobby extends BorderPane{
 			break;
 			
 			case 19 : laneColor = Color.CORNFLOWERBLUE;
+			break;
+			
+			case 20 : laneColor = Color.CHOCOLATE;
+			break;
+			
+			case 21 : laneColor = Color.CHOCOLATE;
+			break;
+			
+			case 22 : laneColor = Color.CRIMSON;
+			break;
+			
+			case 23 : laneColor = Color.CRIMSON;
+			break;
+			
+			case 24 : laneColor = Color.CADETBLUE;
+			break;
+			
+			case 25 : laneColor = Color.CADETBLUE;
+			break;
+			
+			case 26 : laneColor = Color.DARKGOLDENROD;
+			break;
+			
+			case 27 : laneColor = Color.DARKGOLDENROD;
+			break;
+			
+			case 28 : laneColor = Color.DARKKHAKI;
+			break;
+			
+			case 29 : laneColor = Color.DARKKHAKI;
+			break;
+			
+			case 30 : laneColor = Color.FUCHSIA;
+			break;
+			
+			case 31 : laneColor = Color.FUCHSIA;
 			break;
 		}
 		

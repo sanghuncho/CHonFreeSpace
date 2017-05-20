@@ -18,57 +18,46 @@ import util.math.Vector3D;
 
 public class CostMap {
 	
-	private Vector size, startPoint, goalPoint;
+	private Vector size; 
 	private NodeMap nodeMap;
 	private int edgeId = 0;
 	private Edge lane;
-	private int nodeSize;
 	private List<Node> nodes;
     private ArrayList<Edge> edges = new ArrayList<Edge>();
-    private final static int WEIGHT = 1;
-    private DijkstraAlgorithm dijkstra;
-    private  ArrayList<Obstacle> obstacles;
-	private ArrayList<Node> visitedNodes = new ArrayList<Node>();
-	private ArrayList<Vector> visitedPoints = new ArrayList<Vector>(),
-							  pointParkingHelper = new ArrayList<Vector>(),
-							  onHoldList = new ArrayList<Vector>(),
-							  pointParking = new ArrayList<Vector>();
-	
-	private int lowestCost;
-	private int[][] map;
+    private ArrayList<Node> visitedNodes = new ArrayList<Node>();
+    private int[][] map;
 	private long durationOfgeneratingAllShortcut;
 	private long durationOfOneShortcut;
 	
-	public CostMap(Vector size, Vector start, NodeMap nodeMap, ArrayList<Obstacle> obstacles,int[][] map) {
+    //private Vector startPoint; 
+	//private Vector goalPoint;	
+	//private int nodeSize;
+    //private final static int WEIGHT = 1;
+    //private  ArrayList<Obstacle> obstacles;
+	/*private ArrayList<Vector> visitedPoints = new ArrayList<Vector>(),
+							  pointParkingHelper = new ArrayList<Vector>(),
+							  onHoldList = new ArrayList<Vector>(),
+							  pointParking = new ArrayList<Vector>();*/
+	//private int lowestCost;
+	//private DijkstraAlgorithm dijkstra;
+	
+	
+	public CostMap(Vector size, Vector start, NodeMap nodeMap, 
+				ArrayList<Obstacle> obstacles,int[][] map) {
 		
 		this.size = size;
-		this.startPoint = start;
 		this.nodes = nodeMap.getNodes();
-		this.nodeSize = nodeMap.getNodes().size();
 		this.nodeMap = nodeMap;
-		this.obstacles = obstacles;
 		this.map = map;
 		this.durationOfgeneratingAllShortcut = 0;
 		
 		createSurroundingEdges(nodes);
+		
+		//this.startPoint = start;
+		//this.nodeSize = nodeMap.getNodes().size();
+		//this.obstacles = obstacles;
 	}
 
-	public int[][] getMap(){return map;}
-	
-		
-	public DijkstraAlgorithm getDijkstra(){
-		return dijkstra;
-	}
-	
-	public NodeMap getNodeMap(){
-		return nodeMap;
-	}
-	
-	public List<Node> getNodes(){
-		
-		return nodes;
-	}
-	
 	
 	
 /**
@@ -77,7 +66,7 @@ public class CostMap {
  * If the neighbour node is already contracted, then find the next node until thisnode is not contracetd.
  * If the next node is not the contracted node, then the edge between two nodes is constructed.
  */
-private void createSurroundingEdges(List<Node> nodes) {
+	private void createSurroundingEdges(List<Node> nodes) {
 		
 		for (Node node : nodes){
 			
@@ -114,7 +103,7 @@ private void createSurroundingEdges(List<Node> nodes) {
 				neighbor = nodeMap.get(neighborVector.getX(), neighborVector.getY());
 				
 				/**
-				 * isObstacle-mathod checks the map-value
+				 * isObstacle-method checks the map-value
 				 */
 				if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){ 
 					
@@ -173,47 +162,11 @@ private void createSurroundingEdges(List<Node> nodes) {
 		
 	}
 	
-	/*private void createSurroundingEdges(List<Node> nodes) {
-		
-		for (Node node : nodes){
-			
-			for (Node neighbor : node.getNeighborList()) {
-	            
-				
-				isObstacle mathode check the map-value
-				if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){ 
-					
-					if (!(checkForNode(visitedNodes, node))) {
-						 
-						createEdge(node,neighbor);
-						
-					}
-					
-				}
-			}
-			visitedNodes.add(node);
-		}
-
-	}*/
-	
 	private void createEdge(Node node,Node neighbor,int weight){
 		
 		lane = new Edge(edgeId,node,neighbor,weight);
-
-		/*System.out.println("create edge nodeX : "+ node.getPosition().getX() +"\n");
-		System.out.println("create edge nodeY : "+ node.getPosition().getY() +"\n");
-		
-		System.out.println("create edge neighborX : "+ neighbor.getPosition().getX() +"\n");
-		System.out.println("create edge neighborY : "+ neighbor.getPosition().getY() +"\n");
-		System.out.println("weight : "+ weight +"\n");
-		System.out.println("\n");*/
-		
 		edges.add(lane);
 		edgeId++;	
-	}
-	
-	public ArrayList<Edge> getEdges(){
-		return edges;
 	}
 	
 	private boolean isObstacle(Vector point) {
@@ -233,7 +186,6 @@ private void createSurroundingEdges(List<Node> nodes) {
 		
 	}
 
-	
 	private boolean checkForNode(ArrayList<Node> list, Node node) {
 		
 		for (Node checkPoint : list) {
@@ -246,7 +198,30 @@ private void createSurroundingEdges(List<Node> nodes) {
 		
 	}
 	
+	private int getCostForCoordinates(int xCord, int yCord)
+			throws ArrayIndexOutOfBoundsException {
+		if (xCord >= 0 && yCord >= 0 && xCord < size.getX()
+				&& yCord < size.getY()) {
+			return map[xCord][yCord];
+		} else {
+			throw new ArrayIndexOutOfBoundsException(
+					"xCord = " + xCord + ", yCord = " + yCord);
+		}
+	}
 	
+	public int getCost(Vector point) {
+
+		if (map[point.getX()][point.getY()] < -1) {
+			throw new ArithmeticException(
+					"set cost < -1 : " + map[point.getX()][point.getY()]);
+		}
+		return map[point.getX()][point.getY()];
+	}
+	
+	public ArrayList<Edge> getEdges(){
+		return edges;
+	}
+
 	public ArrayList<Vector> getSurroundingPoints(int x, int y) {
 		ArrayList<Vector> neighbors = new ArrayList<Vector>();
 
@@ -286,36 +261,22 @@ private void createSurroundingEdges(List<Node> nodes) {
 		return neighbors;
 	}
 	
-	private int getCostForCoordinates(int xCord, int yCord)
-			throws ArrayIndexOutOfBoundsException {
-		if (xCord >= 0 && yCord >= 0 && xCord < size.getX()
-				&& yCord < size.getY()) {
-			return map[xCord][yCord];
-		} else {
-			throw new ArrayIndexOutOfBoundsException(
-					"xCord = " + xCord + ", yCord = " + yCord);
-		}
+	public int[][] getMap(){return map;}
+	
+	public NodeMap getNodeMap(){
+		return nodeMap;
 	}
 	
-	public void setCost(Vector position, int value) throws ArithmeticException {
+	public List<Node> getNodes(){
 		
-		map[position.getX()][position.getY()] = value;
-
-		if (value < -1) {
-			throw new ArithmeticException("set cost < -1 : " + value);
-		}
+		return nodes;
 	}
 	
-	public int getCost(Vector point) {
-
-		if (map[point.getX()][point.getY()] < -1) {
-			throw new ArithmeticException(
-					"set cost < -1 : " + map[point.getX()][point.getY()]);
-		}
-		return map[point.getX()][point.getY()];
+	/*public DijkstraAlgorithm getDijkstra(){
+		return dijkstra;
 	}
-
-	private ArrayList<Vector> getPointParkingHelper() {
+*/	
+	/*private ArrayList<Vector> getPointParkingHelper() {
 		return pointParkingHelper;
 	}
 	
@@ -328,8 +289,39 @@ private void createSurroundingEdges(List<Node> nodes) {
 	}
 	private ArrayList<Vector> getPointParking() {
 		return pointParking;
+	}*/
+	
+	/*private void createSurroundingEdges(List<Node> nodes) {
+	
+	for (Node node : nodes){
+		
+		for (Node neighbor : node.getNeighborList()) {
+            
+			
+			isObstacle mathode check the map-value
+			if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){ 
+				
+				if (!(checkForNode(visitedNodes, node))) {
+					 
+					createEdge(node,neighbor);
+					
+				}
+				
+			}
+		}
+		visitedNodes.add(node);
 	}
+
+	}*/
 	
-	
+
+	/*public void setCost(Vector position, int value) throws ArithmeticException {
+		
+		map[position.getX()][position.getY()] = value;
+
+		if (value < -1) {
+			throw new ArithmeticException("set cost < -1 : " + value);
+		}
+	}*/
 	
 }

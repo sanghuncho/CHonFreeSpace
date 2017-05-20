@@ -136,25 +136,6 @@ public class CHmodel {
 		CHmodel.percentageCustom = percentage;
 	}
 	
-	/*comboBox*/
-	public static int getNumberContracted() {
-				
-		int result = 0;
-		
-		switch (CHmodel.percentage){
-			case "10%" : result = 10;
-						 break;
-			case "20%" : result = 20;
-			 			 break;
-			case "30%" : result = 20;
-			 			 break;
-
-		}
-		
-		int nodes = (mapX*mapY)/100;
-	
-		return  (nodes*result)/100;
-	}
 	public static int getNumberContractedCustom() {
 		
 		

@@ -21,55 +21,133 @@ public class Obstacle extends Rectangle {
     public Obstacle(int id){
 		
     	
-		this.xProperty().set(getRandomX());
-		this.yProperty().set(getRandomY());
+		/*this.xProperty().set(getRandomX());
+		this.yProperty().set(getRandomY());*/
 		
-		/*this.xProperty().set(100);
-		this.yProperty().set(100);*/
     	
     	/**
     	 * For evaluation the coordinates of four obstacles are set
-    	 */ 
-    	/*if(id == 0){
+    	 */
+    	
+    	if(id == 0){
     		this.xProperty().set(100);
     		this.yProperty().set(100);
     	}
     	else if(id == 1){
-    		this.xProperty().set(800);
+    		this.xProperty().set(400);
     		this.yProperty().set(100);
     	}
     	else if(id == 2){
     		this.xProperty().set(100);
-    		this.yProperty().set(450);
+    		this.yProperty().set(400);
     	}
     	else if(id == 3){
-    		this.xProperty().set(800);
-    		this.yProperty().set(450);
+    		this.xProperty().set(400);
+    		this.yProperty().set(400);
+    	}
+    	
+    	
+    	/**
+    	 * 600*600 with 12 obstacles.
+    	 */
+    	/*if(id == 0){
+    		this.xProperty().set(130);
+    		this.yProperty().set(120);
+    	}
+    	else if(id == 1){
+    		this.xProperty().set(280);
+    		this.yProperty().set(120);
+    	}
+    	else if(id == 2){
+    		this.xProperty().set(430);
+    		this.yProperty().set(120);
+    	}
+    	else if(id == 3){
+    		this.xProperty().set(130);
+    		this.yProperty().set(240);
+    	}
+    	else if(id == 4){
+    		this.xProperty().set(280);
+    		this.yProperty().set(240);
+    	}
+    	else if(id == 5){
+    		this.xProperty().set(430);
+    		this.yProperty().set(240);
+    	}
+    	else if(id == 6){
+    		this.xProperty().set(130);
+    		this.yProperty().set(360);
+    	}
+    	else if(id == 7){
+    		this.xProperty().set(280);
+    		this.yProperty().set(360);
+    	}
+    	else if(id == 8){
+    		this.xProperty().set(430);
+    		this.yProperty().set(360);
+    	}
+    	else if(id == 9){
+    		this.xProperty().set(130);
+    		this.yProperty().set(480);
+    	}
+    	else if(id == 10){
+    		this.xProperty().set(280);
+    		this.yProperty().set(480);
+    	}
+    	else if(id == 11){
+    		this.xProperty().set(430);
+    		this.yProperty().set(480);
     	}*/
-		
+    	
+    	/**
+    	 * 1000*600 with 12 obstacles.
+    	 */
+    	/*if(id == 0){
+    		this.xProperty().set(250);
+    		this.yProperty().set(150);
+    	}
+    	else if(id == 1){
+    		this.xProperty().set(500);
+    		this.yProperty().set(150);
+    	}
+    	else if(id == 2){
+    		this.xProperty().set(750);
+    		this.yProperty().set(150);
+    	}
+    	else if(id == 3){
+    		this.xProperty().set(250);
+    		this.yProperty().set(300);
+    	}
+    	else if(id == 4){
+    		this.xProperty().set(500);
+    		this.yProperty().set(300);
+    	}
+    	else if(id == 5){
+    		this.xProperty().set(750);
+    		this.yProperty().set(300);
+    	}
+    	else if(id == 6){
+    		this.xProperty().set(250);
+    		this.yProperty().set(450);
+    	}
+    	else if(id == 7){
+    		this.xProperty().set(500);
+    		this.yProperty().set(450);
+    	}
+    	else if(id == 8){
+    		this.xProperty().set(750);
+    		this.yProperty().set(450);
+    	}
+*/    	
+    	
+    	
 		this.setWidth(CHmodel.VALUE_OBSTACLE_WIDTH);
 		this.setHeight(CHmodel.VALUE_OBSTACLE_HEIGHT);
 		this.setFill(Color.BLUE);
 
 		this.id = id;
-	}	
-    
-	/*public Obstacle(){
-		
-	
-		this.xProperty().set(getRandomX());
-		this.yProperty().set(getRandomY());
-		
-		this.xProperty().set(100);
-		this.yProperty().set(100);
-		
-		this.setWidth(50);
-		this.setHeight(50);
-		this.setFill(Color.BLUE);
+	}
 
-		
-	}*/
-	
 	private int getRandomX(){
 		Random rand = new Random();
 		int randomNumX = rand.nextInt( CHmodel.getMapX());
@@ -105,5 +183,5 @@ public class Obstacle extends Rectangle {
 		
 		this.yProperty().set(y);
 	}
-
+	
 }
