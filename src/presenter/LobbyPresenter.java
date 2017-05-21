@@ -58,8 +58,9 @@ public class LobbyPresenter {
 	private int loop;
 	private int loop_map;
 	private int loop_viaNode;
-	private int[][] map;
-	
+	//private int[][] map;
+	//private int[][] constantMap;
+	private ConstantMap constantMap;
 	private NodeMap nodeMap;
 	private boolean applyCH;
 	private Thread thread;
@@ -72,11 +73,13 @@ public class LobbyPresenter {
 	
 	public LobbyPresenter(Lobby lobbyView){
 		this.lobbyView = lobbyView;
-		obs=lobbyView.getObstacle();
-		size = CHmodel.getSizeVector2D();
-		startPointNode = CHmodel.getStartVector2D();
-		goalPointNode = CHmodel.getGoalVector2D();
-		nodeMap = CHmodel.getNodeMap();
+		this.obs=lobbyView.getObstacle();
+		this.size = CHmodel.getSizeVector2D();
+		this.startPointNode = CHmodel.getStartVector2D();
+		this.goalPointNode = CHmodel.getGoalVector2D();
+		this.nodeMap = CHmodel.getNodeMap();
+		//this.constantMap = new int[size.getX()][size.getY()];
+		this.constantMap = new ConstantMap();
 		activate();
 	}
 	
@@ -85,6 +88,7 @@ public class LobbyPresenter {
 		
 		numberObs = CHmodel.getObstacle();
 		obstacles = lobbyView.getObstacleList();
+		//this.constantMap = constantMapObj.get
 		
 		for(int i = 0; i < numberObs; i++){
 						
@@ -108,24 +112,25 @@ public class LobbyPresenter {
 						
 			
 			//this.map = new int[size.getX()][size.getY()];
-			this.map = ConstantMap.getConstantMap();			
-			for (Node node : nodeMap.getNodes()) {
+			//this.map = ConstantMap.getConstantMap();
+			constantMap.setCostOnConstantMap(nodeMap);
+			/*for (Node node : nodeMap.getNodes()) {
 
 				if (node.isObstacle()) {
 				
-					setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
+					constantMap.setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
 					
 				}else if(node.isStart() || node.isGoal()){
 			
-					setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
+					constantMap.setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
 				} 
 					
 				else {
 					
-					setCost(node.getPosition(),CHmodel.VALUE_MAP_POINT);
+					constantMap.setCost(node.getPosition(),CHmodel.VALUE_MAP_POINT);
 
 				}
-			}
+			}*/
 			
 			/*loop_map=0;
 			
@@ -139,13 +144,13 @@ public class LobbyPresenter {
 			loop_viaNode=0;
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 			
-				lobbyView.createViaNodePoint(size,map,loop_viaNode);
+				lobbyView.createViaNodePoint(size,constantMap.getMap(),loop_viaNode);
 				loop_viaNode++;
 			}
 			
 			/*move to preprocessing*/
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
-        					nodeMap, obstacles , map);
+        					nodeMap, obstacles , constantMap.getMap());
 			
 			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
 			
@@ -175,31 +180,32 @@ public class LobbyPresenter {
 						
 			
 			//this.map = new int[size.getX()][size.getY()];
-			this.map = ConstantMap.getConstantMap();			
-			for (Node node : nodeMap.getNodes()) {
+			//this.map = ConstantMap.getConstantMap();	
+			constantMap.setCostOnConstantMap(nodeMap);
+			/*for (Node node : nodeMap.getNodes()) {
 
 				if (node.isObstacle()) {
 				
-					setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
+					constantMap.setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
 					
 				}else if(node.isStart() || node.isGoal()){
 								
-					setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
+					constantMap.setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
 				} 
 				
 				
 				else {
 					
-					setCost(node.getPosition(),CHmodel.VALUE_MAP_POINT);
+					constantMap.setCost(node.getPosition(),CHmodel.VALUE_MAP_POINT);
 
 				}
-			}
+			}*/
 			
 			
 			loop_viaNode=0;	
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 				
-				lobbyView.createViaNodePoint(size,map,loop_viaNode);
+				lobbyView.createViaNodePoint(size,constantMap.getMap(),loop_viaNode);
 				loop_viaNode++;
 			}
 			
@@ -208,7 +214,7 @@ public class LobbyPresenter {
 			System.out.println("contracting : " + CHmodel.getNumberContractedCustom());
 			while(loop_map < CHmodel.getNumberContractedCustom()){
 		
-				lobbyView.generateContractedPoint(size,map);
+				lobbyView.generateContractedPoint(size,constantMap.getMap());
 				loop_map++;
 			}
 			long endTime_contracted = System.currentTimeMillis();
@@ -219,9 +225,11 @@ public class LobbyPresenter {
 			
 			
 			
-			/*move to preprocessing*/
+			/**
+			 * move to preprocessing
+			 */
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
-        					nodeMap, obstacles , map);
+        					nodeMap, obstacles , constantMap.getMap());
             
             System.out.println("edge size : " + costmap.getEdges().size()/2);
 			
@@ -712,18 +720,18 @@ public class LobbyPresenter {
 		return idString;
 	}
 	
-	private boolean isObstacle(Vector point) {
-		return map[point.getX()][point.getY()] == -1;
+	/*private boolean isObstacle(Vector point) {
+		return constantMap[point.getX()][point.getY()] == -1;
 	}
 	
 	public void setCost(Vector position, int value) throws ArithmeticException {
 		
-		map[position.getX()][position.getY()] = value;
+		constantMap[position.getX()][position.getY()] = value;
 
 		if (value < -1) {
 			throw new ArithmeticException("set cost < -1 : " + value);
 		}
-	}
+	}*/
 	
 	private void setNodeObstacleProperty(NodeMap nodeMap){
 		
