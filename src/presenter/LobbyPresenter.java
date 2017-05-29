@@ -1,42 +1,26 @@
 package presenter;
 
-import java.awt.Insets;
+import java.awt.MouseInfo;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
 
-import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Cursor;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import model.CHmodel;
 import model.Obstacle;
-import model.ProgressForm;
+import model.Point;
 import model.dijkstra.ConstantMap;
 import model.dijkstra.CostMap;
 import model.dijkstra.DijkstraAlgorithm;
-import model.dijkstra.Edge;
 import model.dijkstra.Graph;
 import model.node.Node;
 import model.node.NodeMap;
-import model.node.NodeMapHandler;
 import util.enums.Property;
 import util.math.Vector;
 import util.math.Vector2D;
@@ -58,8 +42,6 @@ public class LobbyPresenter {
 	private int loop;
 	private int loop_map;
 	private int loop_viaNode;
-	//private int[][] map;
-	//private int[][] constantMap;
 	private ConstantMap constantMap;
 	private NodeMap nodeMap;
 	private boolean applyCH;
@@ -69,17 +51,23 @@ public class LobbyPresenter {
 	private boolean isCheckShort;
 	private DijkstraAlgorithm dijkstra_head;
 	private DijkstraAlgorithm dijkstra_tail;
+	
+	private Point startPoint;
+	private Point endPoint;
 
 	
 	public LobbyPresenter(Lobby lobbyView){
 		this.lobbyView = lobbyView;
 		this.obs=lobbyView.getObstacle();
 		this.size = CHmodel.getSizeVector2D();
-		this.startPointNode = CHmodel.getStartVector2D();
-		this.goalPointNode = CHmodel.getGoalVector2D();
+		/*this.startPointNode = CHmodel.getStartVector2D();
+		this.goalPointNode = CHmodel.getGoalVector2D();*/
 		this.nodeMap = CHmodel.getNodeMap();
-		//this.constantMap = new int[size.getX()][size.getY()];
 		this.constantMap = new ConstantMap();
+		
+		this.startPoint = lobbyView.getStartPoint();
+		this.endPoint = lobbyView.getEndPoint();
+		
 		activate();
 	}
 	
@@ -88,7 +76,6 @@ public class LobbyPresenter {
 		
 		numberObs = CHmodel.getObstacle();
 		obstacles = lobbyView.getObstacleList();
-		//this.constantMap = constantMapObj.get
 		
 		for(int i = 0; i < numberObs; i++){
 						
@@ -99,10 +86,21 @@ public class LobbyPresenter {
 		
 		
 		
+		startPoint.setOnMousePressed(startOnMousePressedEventHandler);
+		startPoint.setOnMouseDragged(startOnMouseDraggedEventHandler);
+		startPoint.setOnMouseReleased(startOnMouseRelesedEventHandler);
+		
+		endPoint.setOnMousePressed(endOnMousePressedEventHandler);
+		endPoint.setOnMouseDragged(endOnMouseDraggedEventHandler);
+		endPoint.setOnMouseReleased(endOnMouseRelesedEventHandler);
 		/**
-		 * this runs, if only the via-node butten is clicked
+		 * this runs, if only the via-node button is clicked
 		 */
 		lobbyView.viaNodeButton.setOnMouseClicked(event -> {
+			
+			
+			this.startPointNode = CHmodel.getStartVector2D();
+			this.goalPointNode = CHmodel.getGoalVector2D();
 			
 			setNodeObstacleProperty(nodeMap);
 			setNodeStartProperty(nodeMap);
@@ -111,35 +109,10 @@ public class LobbyPresenter {
 			this.applyCH = false;
 						
 			
-			//this.map = new int[size.getX()][size.getY()];
-			//this.map = ConstantMap.getConstantMap();
+			/**
+			 * set the cost of obstacle, start point and goal point on the constantMap
+			 */
 			constantMap.setCostOnConstantMap(nodeMap);
-			/*for (Node node : nodeMap.getNodes()) {
-
-				if (node.isObstacle()) {
-				
-					constantMap.setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
-					
-				}else if(node.isStart() || node.isGoal()){
-			
-					constantMap.setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
-				} 
-					
-				else {
-					
-					constantMap.setCost(node.getPosition(),CHmodel.VALUE_MAP_POINT);
-
-				}
-			}*/
-			
-			/*loop_map=0;
-			
-			while(loop_map < 0){
-		
-				//lobbyView.createViaNodePoint(size,map);
-				lobbyView.generateContractedPoint(size,map);
-				loop_map++;
-			}*/
 			
 			loop_viaNode=0;
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
@@ -148,9 +121,9 @@ public class LobbyPresenter {
 				loop_viaNode++;
 			}
 			
-			/*move to preprocessing*/
+			
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
-        					nodeMap, obstacles , constantMap.getMap());
+            		nodeMap, obstacles , constantMap.getMap());
 			
 			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
 			
@@ -171,36 +144,21 @@ public class LobbyPresenter {
 		lobbyView.contractButton.setOnMouseClicked(event -> {
 			
 			
+			this.startPointNode = CHmodel.getStartVector2D();
+			this.goalPointNode = CHmodel.getGoalVector2D();
+			
+			
 			setNodeObstacleProperty(nodeMap);
 			setNodeStartProperty(nodeMap);
 			setNodeGoalProperty(nodeMap);
 			
 			
 			this.applyCH = true;
-						
 			
-			//this.map = new int[size.getX()][size.getY()];
-			//this.map = ConstantMap.getConstantMap();	
+			/**
+			 * set the cost of obstacle, start point and goal point on the constantMap
+			 */
 			constantMap.setCostOnConstantMap(nodeMap);
-			/*for (Node node : nodeMap.getNodes()) {
-
-				if (node.isObstacle()) {
-				
-					constantMap.setCost(node.getPosition(), CHmodel.VALUE_MAP_OBSTACLE);
-					
-				}else if(node.isStart() || node.isGoal()){
-								
-					constantMap.setCost(node.getPosition(), CHmodel.VALUE_MAP_START_GAOL);
-				} 
-				
-				
-				else {
-					
-					constantMap.setCost(node.getPosition(),CHmodel.VALUE_MAP_POINT);
-
-				}
-			}*/
-			
 			
 			loop_viaNode=0;	
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
@@ -223,11 +181,6 @@ public class LobbyPresenter {
 			
 			
 			
-			
-			
-			/**
-			 * move to preprocessing
-			 */
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
         					nodeMap, obstacles , constantMap.getMap());
             
@@ -245,8 +198,11 @@ public class LobbyPresenter {
 			
 
 		});
-	
-		/*try to implement the threads*/
+		
+		
+		/**
+		 * It starts the searching,if search button is clicked.
+		 */
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 		
 			long  startTime_searching = System.currentTimeMillis();
@@ -254,119 +210,26 @@ public class LobbyPresenter {
 			Date resultdate = new Date(startTime_searching);
 			System.out.println("start search time : " + sdf.format(resultdate));
 			
-			/*ProgressForm pForm = new ProgressForm();
+			dijkstraForward();
 			
-			Task<Void> task3 = new Task<Void>() {
-                @Override
-                public Void call() throws InterruptedException {
-                	for (int i = 0; i < 10; i++) {
-                        updateProgress(i, 10);
-                        pForm.getDialogStage().show();
-                        Thread.sleep(2000);
-                    }
-                    updateProgress(10, 10);
-                    return null ;
-                }
-			 };
-			 
-			 pForm.activateProgressBar(task3);
-	         pForm.getDialogStage().show();
-	        
-
-			 Thread thread3 = new Thread(task3);
-			 thread3.setDaemon(true);
-	         thread3.start();*/
-	         
-	        /* try {
-				thread3.join();
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}*/
+			dijkstraBackward();
 			
-		/*	
-			costamp inclusives createSurroundingEdges(nodes),moved to preprocessing
-            costmap = new CostMap(size, CHmodel.getStartVector2D(),
-        					nodeMap, obstacles , map);
-            
-			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
-					nodeMap, obstacles , map);
-			
-			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
-			
-			DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
-					nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
-			
-			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
-					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
-			
-			    */
-			/*dijkstra_head.execute();
-			System.out.println("Execute1 end \n");
-			dijkstra_tail.execute();			
-			System.out.println("Execute2 end \n");*/
-			
-
-	        
-			
-			
-			Task<Void> task1 = new Task<Void>() {
-                @Override
-                public Void call() throws InterruptedException {
-                	dijkstra_head.execute();
-        			System.out.println("Execute1 end \n");
-
-                    return null ;
-                }
-			 };
-			
-	         Thread thread1 = new Thread(task1);
-	         thread1.setDaemon(true);
-	         thread1.start();
-	         
-	        Task<Void> task2 = new Task<Void>() {
-	                @Override
-	                public Void call() throws InterruptedException {
-	                	dijkstra_tail.execute();
-	        			System.out.println("Execute2 end \n");
-
-	                    return null ;
-	                }
-				 };
-				
-
-		    Thread thread2 = new Thread(task2);
-		    thread2.setDaemon(true);
-		    thread2.start();
-			
-		    
-				try {
-					thread1.join();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-				try {
-					thread2.join();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-		 /*here through the checkBox decided whether 
-		     * all paths are showed or the representative paths showed*/ 
+		 /**
+		  * here through the checkBox decided whether 
+		  * all paths are showed or the representative paths showed.
+		  */ 
 		 isCheckAll = lobbyView.getCheckBoxAll().isSelected();
 		 isCheckShort = lobbyView.getCheckBoxShort().isSelected();
 			
-		 /*the representative paths of homotopy class are displayed */
+		 /**
+		  * The representative paths of homotopy class are displayed.
+		  * */
 		 if((isCheckShort) && (!isCheckAll)){ 
 			 
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
 			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
 			
-			dijkstra_head.setPath(nodeMap
-					.get(firstViaNodeX,firstViaNodeY));
+			dijkstra_head.setPath(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			
 			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());
 			
@@ -375,15 +238,15 @@ public class LobbyPresenter {
 			SimpleDateFormat sdf_1 = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
 			Date resultdate_1 = new Date(firstHomotopy);
 			System.out.println("first homotopy time : " + sdf_1.format(resultdate_1));
-			dijkstra_tail.setPath(nodeMap
-					.get(firstViaNodeX,firstViaNodeY));
+			
+			dijkstra_tail.setPath(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			
 			lobbyView.getListOfPathTail().add(0,dijkstra_tail.getPath());
 			lobbyView.getPathCategory().add("start");
 			
 			//here should implement the whole distance of path and the turn value of path of the tail
 			
-			/*polygons are made by this methode*/
+			
 			loop=1;
 			int totalLoop = lobbyView.getViaNodeSize();			
 			while( loop < totalLoop ){
@@ -393,19 +256,18 @@ public class LobbyPresenter {
 				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
 				
 				
-				dijkstra_head.setPath(nodeMap
-						.get(nextViaNodeX,nextViaNodeY));
+				dijkstra_head.setPath(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				
-				dijkstra_tail.setPath(nodeMap
-						.get(nextViaNodeX,nextViaNodeY));
+				dijkstra_tail.setPath(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				
 				Polygon polygon = lobbyView.generatePolygon(lobbyView.getListOfPathHead().get(0),
 						lobbyView.getListOfPathTail().get(0),
 						dijkstra_head.getPath(),dijkstra_tail.getPath());
 		
 				
-				/*pathidList contains the list of obstacle-id,
-				which are in the polygon covered */
+				/**
+				 * pathidList contains the list of obstacle-id, which are in the polygon covered.
+				 *  */
 				ArrayList<Integer> pathIdList = lobbyView.getListPathID(polygon);
 				
 				//lobbyView.drawPolygon(polygon);
@@ -449,7 +311,9 @@ public class LobbyPresenter {
 		    createHomotopy(lobbyView, costmap);
 		 }//checkBoxShort is selected
 		 
-		 /*all the paths class are displayed */
+		 /**
+		  * All the paths are displayed.
+		  * */
 		 if((!isCheckShort) && (isCheckAll)){
 			 
 				loop=0;
@@ -485,19 +349,58 @@ public class LobbyPresenter {
 		
 		
 	}
+	private void dijkstraForward(){
+		
+		 Task<Void> task1 = new Task<Void>() {
+            @Override
+            public Void call() throws InterruptedException {
+            	dijkstra_head.execute();
+            	
+    			System.out.println("the execution_1 is the end \n");
+
+                return null ;
+            }
+		 };
+		
+         Thread thread1 = new Thread(task1);
+         thread1.setDaemon(true);
+         thread1.start();
+         
+         try {
+				thread1.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	}
+	private void dijkstraBackward(){
+		
+		 Task<Void> task2 = new Task<Void>() {
+            @Override
+            public Void call() throws InterruptedException {
+            	dijkstra_tail.execute();
+    			System.out.println("the execution_2 is the end  \n");
+
+                return null ;
+            }
+		 };
+
+	    Thread thread2 = new Thread(task2);
+	    thread2.setDaemon(true);
+	    thread2.start();
+		
+		try {
+			thread2.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	private void createHomotopy(Lobby lobbyView,CostMap costmap){
 		        
 			lobbyView.createHomotopyLane();
-			 
-			
-			/*drawing shortcut edge on lobby*/
-			/*if(applyCH){
-				
-				lobbyView.drawingShortcutEdges(costmap.getEdges());
-			}
-			else{
-				
-			}*/
 				
 			lobbyView.setText(costmap.getEdges().size(),applyCH);
 	
@@ -509,204 +412,7 @@ public class LobbyPresenter {
 		lobbyView.setText(costmap.getEdges().size(),applyCH);
 
 	}
-
 		
-		
-		/*original version*/ 
-		/*lobbyView.searchButton.setOnMouseClicked(event -> {
-		
-			//loop=0;
-			
-			
-			ProgressForm pForm = new ProgressForm();
-			
-			Task<Void> task = new Task<Void>() {
-                @Override
-                public Void call() throws InterruptedException {
-                    for (int i = 0; i < 10; i++) {
-                        updateProgress(i, 10);
-                        Thread.sleep(200);
-                    }
-                    updateProgress(10, 10);
-                    return null ;
-                }
-            };
-            
-            pForm.activateProgressBar(task);
-  
-            pForm.getDialogStage().show();
-
-            Thread thread = new Thread(task);
-            thread.start();
-            
-            
-			
-			CostMap costmap = new CostMap(size, CHmodel.getStartVector2D(),
-					nodeMap, obstacles , map);
-			
-			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
-			
-			DijkstraAlgorithm dijkstra_head = new DijkstraAlgorithm(graph,obstacles,
-					nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
-			
-			DijkstraAlgorithm dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
-					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
-			
-	
-	
-			dijkstra_head.execute();
-			System.out.println("Execute1 end \n");
-			dijkstra_tail.execute();			
-			System.out.println("Execute2 end \n");
-			
-			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
-			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
-			
-			dijkstra_head.setPath(nodeMap
-					.get(firstViaNodeX,firstViaNodeY));
-			
-			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());
-			
-			dijkstra_tail.setPath(nodeMap
-					.get(firstViaNodeX,firstViaNodeY));
-			
-			lobbyView.getListOfPathTail().add(0,dijkstra_tail.getPath());
-			
-			
-			the head path is concatenated by the tail path
-			lobbyView.getListOfPathHead().get(0).addAll(lobbyView.getListOfPathTail().get(0));
-			first complete path is added at the listpath
-			lobbyView.getListPath().add(lobbyView.getListOfPathHead().get(0));
-		
-			
-			lobbyView.getPathCategory().add("start");
-			
-			
-			polygons are made by this methode
-			loop=1;
-			int totalLoop = lobbyView.getViaNodeSize();
-			while( loop < totalLoop ){
-				
-				//bar.setProgress(loop / totalLoop);
-				
-				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
-				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
-				
-				
-				dijkstra_head.setPath(nodeMap
-						.get(nextViaNodeX,nextViaNodeY));
-				
-				dijkstra_tail.setPath(nodeMap
-						.get(nextViaNodeX,nextViaNodeY));
-				
-				lobbyView.getListOfPathHead().add(1,dijkstra_head.getPath());
-				lobbyView.getListOfPathTail().add(1,dijkstra_tail.getPath());
-				
-				
-				Polygon polygon = lobbyView.generatePolygon(lobbyView.getListOfPathHead().get(0),
-						lobbyView.getListOfPathTail().get(0),
-						dijkstra_head.getPath(),dijkstra_tail.getPath());
-		
-				
-				pathidList contain the list of obstacle-id,
-				which are in the polygon covered 
-				ArrayList<Integer> pathIdList = lobbyView.getListPathID(polygon);
-				
-				//lobbyView.drawPolygon(polygon);
-				
-				
-				String pathIdString;
-				if(pathIdList.size() == 0){
-					
-					pathIdString = "start";
-					
-				}
-				else{
-					pathIdString = pathIdToString(pathIdList);
-				}
-		
-				
-				set the homotopy categoriy
-				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(), dijkstra_tail.getPath());
-				
-				loop++;
-				
-			}
-			
-			
-			drawing at once all the path,which the homotopy relation is applied
-			lobbyView.createHomotopyLane();
-			
-			public void createHomotopyLane(){
-				
-				int head_size = listOfPathHead.size();
-						
-				for(int i=0; i< head_size; i++){
-					
-					createLane(listOfPathHead.get(i));	
-					createLane(listOfPathTail.get(i));
-						
-					}
-			}
-			
-			
-			while( loop < lobbyView.getViaNodeSize() ){  //CHmodel.getNumberContracted()
-			
-			
-					dijkstra_head.setPath(nodeMap
-							.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
-					
-					lobbyView.createLane(dijkstra_head.getPath());//LinkedList<Node>
-			            
-					dijkstra_tail.setPath(nodeMap
-							.get(lobbyView.getViaNode2D(loop).getX(),lobbyView.getViaNode2D(loop).getY()));
-					
-					lobbyView.createLane(dijkstra_tail.getPath());
-				
-				
-		        loop++;
-				
-			}
-			
-			
-			it is determined according to mode,
-			whether only the shortcut are exhibited or all edges are exhibited  
-			if(applyCH){
-				
-				if the mode has selected by via node + CH button,
-				 * then show the only the shortcut
-				lobbyView.drawingShortcutEdges(costmap.getEdges());
-			}
-			else{
-				if the mode is selected by via node button,
-				 * then show the all the edges 
-				//lobbyView.drawingEdges(costmap.getEdges());
-			}
-			
-			
-			it shows the number of edges and nodes on the lobby
-			lobbyView.setText(costmap.getEdges().size(),applyCH);
-			
-			System.out.println("Algo is end \n");
-			
-			
-			
-			
-		});
-		
-		
-		lobbyView.refreshButton.setOnMouseClicked(event -> {
-			
-			
-			lobbyView.removeLane();
-			
-			
-		});
-		
-		
-		
-	}
-*/	
 	private String pathIdToString(ArrayList<Integer> idList){
 		
 		
@@ -719,20 +425,7 @@ public class LobbyPresenter {
 		
 		return idString;
 	}
-	
-	/*private boolean isObstacle(Vector point) {
-		return constantMap[point.getX()][point.getY()] == -1;
-	}
-	
-	public void setCost(Vector position, int value) throws ArithmeticException {
-		
-		constantMap[position.getX()][position.getY()] = value;
 
-		if (value < -1) {
-			throw new ArithmeticException("set cost < -1 : " + value);
-		}
-	}*/
-	
 	private void setNodeObstacleProperty(NodeMap nodeMap){
 		
 		for(Node node : nodeMap.getNodes()){
@@ -884,8 +577,122 @@ public class LobbyPresenter {
 		        
 		    };*/
 		    
-		   
+		    EventHandler<MouseEvent> startOnMousePressedEventHandler = 
+			        new EventHandler<MouseEvent>() {
+			 
+			        @Override
+			        public void handle(MouseEvent t) {
+			        	
+			            orgSceneX = t.getSceneX()-50;//50
+			            orgSceneY = t.getSceneY()-25;//25
+			            
+			            orgTranslateX = ((Point)(t.getSource())).getTranslateX();
+			            orgTranslateY = ((Point)(t.getSource())).getTranslateY();
+			        	
+			        }       
+			    };
+     
+			EventHandler<MouseEvent> startOnMouseDraggedEventHandler = 
+			        new EventHandler<MouseEvent>() {
+			 
+			        @Override
+			        public void handle(MouseEvent t) {
+			        	
+			        	double offsetX = t.getSceneX() - orgSceneX;
+			            double offsetY = t.getSceneY() - orgSceneY;
+			            double newTranslateX = orgTranslateX;// + offsetX;
+			            double newTranslateY = orgTranslateY;// + offsetY;
 
+			            ((Point)(t.getSource())).setTranslateX(newTranslateX);
+			            ((Point)(t.getSource())).setTranslateY(newTranslateY);
+			            
+			            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX()-50-3);
+			            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY()-25-3);
+			           
+				        CHmodel.setStartX( (int)(startPoint.getCenterX()/10)+1 );
+				        CHmodel.setStartY( (int)(startPoint.getCenterY()/10)+1 );
+				        
+				        ((Point)(t.getSource())).centerXProperty().bind(xPosProperty);
+				        ((Point)(t.getSource())).centerYProperty().bind(yPosProperty);
+				        		  
+			        }
+			        
+			   };
+			    
+			EventHandler<MouseEvent> startOnMouseRelesedEventHandler = 
+				        new EventHandler<MouseEvent>() {
+				 
+				        @Override
+				        public void handle(MouseEvent t) {
+				             
+				        DoubleProperty xPosProperty = new SimpleDoubleProperty(CHmodel.getStartX());
+					    DoubleProperty yPosProperty = new SimpleDoubleProperty(CHmodel.getStartY());
+				        ((Point)(t.getSource())).centerXProperty().bind(xPosProperty);
+					    ((Point)(t.getSource())).centerYProperty().bind(yPosProperty);
+				          			        
+				        }
+				        
+				        
+				    };
+				    
+				    
+			    EventHandler<MouseEvent> endOnMousePressedEventHandler = 
+				        new EventHandler<MouseEvent>() {
+				        @Override
+				        public void handle(MouseEvent t) {
+				        	
+				            orgSceneX = t.getSceneX()-50;//50
+				            orgSceneY = t.getSceneY()-25;//25
+				            
+				            orgTranslateX = ((Point)(t.getSource())).getTranslateX();
+				            orgTranslateY = ((Point)(t.getSource())).getTranslateY();
+				        	
+				        }       
+				    };
+	     
+				EventHandler<MouseEvent> endOnMouseDraggedEventHandler = 
+				        new EventHandler<MouseEvent>() {
+				 
+				        @Override
+				        public void handle(MouseEvent t) {
+				        	
+				        	double offsetX = t.getSceneX() - orgSceneX;
+				            double offsetY = t.getSceneY() - orgSceneY;
+				            double newTranslateX = orgTranslateX;// + offsetX;
+				            double newTranslateY = orgTranslateY;// + offsetY;
+
+				            ((Point)(t.getSource())).setTranslateX(newTranslateX);
+				            ((Point)(t.getSource())).setTranslateY(newTranslateY);
+				            
+				            DoubleProperty xPosProperty = new SimpleDoubleProperty(t.getSceneX()-50-3);
+				            DoubleProperty yPosProperty = new SimpleDoubleProperty(t.getSceneY()-25-3);
+				            
+				            
+					        CHmodel.setGoalX( (int)(endPoint.getCenterX()/10)+1);
+					        CHmodel.setGoalY( (int)(endPoint.getCenterY()/10)+1);
+					        
+					        ((Point)(t.getSource())).centerXProperty().bind(xPosProperty);
+					        ((Point)(t.getSource())).centerYProperty().bind(yPosProperty);
+					        
+					        		  
+				        }
+				        
+				    };
+				EventHandler<MouseEvent> endOnMouseRelesedEventHandler = 
+					        new EventHandler<MouseEvent>() {
+					 
+					        @Override
+					        public void handle(MouseEvent t) {
+					             
+					        DoubleProperty xPosProperty = new SimpleDoubleProperty(CHmodel.getGoalX());
+						    DoubleProperty yPosProperty = new SimpleDoubleProperty(CHmodel.getGoalY());
+					        ((Point)(t.getSource())).centerXProperty().bind(xPosProperty);
+						    ((Point)(t.getSource())).centerYProperty().bind(yPosProperty);
+					          			        
+					        }
+					        
+					    };
+			
 
 }
 

@@ -17,6 +17,7 @@ public class CHmodel {
 	public static final int VALUE_MAP_VIA_NODE = 3;
 	public static final int VALUE_OBSTACLE_WIDTH = 25;
 	public static final int VALUE_OBSTACLE_HEIGHT = 25;
+	public static final int VALUE_OBSTACLE_CREATE_DISTANCE = 15;
 	public static int startX;
 	public static int startY;
 

@@ -1,5 +1,7 @@
 package model;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
@@ -7,9 +9,32 @@ import javafx.scene.shape.Circle;
  */
 public class Point extends Circle{
 	
+	private DoubleProperty XPosProperty;
+    private DoubleProperty yPosProperty;
+	
 	public Point(){	
 		
 		this.setRadius(4);		
+	}
+	
+	public void setStart(){
+		
+		
+		this.setRadius(6);
+		this.setCenterX(CHmodel.getStartX());
+		this.setCenterY(CHmodel.getStartY());
+		this.setFill(Color.GREENYELLOW);
+		
+		
+	}
+	
+	public void setEnd(){
+		
+		
+		this.setRadius(6);
+		this.setCenterX(CHmodel.getGoalX());
+		this.setCenterY(CHmodel.getGoalY());
+		this.setFill(Color.RED);
 	}
 
 

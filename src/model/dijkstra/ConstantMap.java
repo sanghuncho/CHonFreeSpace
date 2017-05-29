@@ -12,7 +12,7 @@ public class ConstantMap {
 	
 	public ConstantMap(){ }
 	
-	public static int[][] getMap(){
+	public int[][] getMap(){
 		return constantMap;
 	}
 	public boolean isObstacle(Vector point) {

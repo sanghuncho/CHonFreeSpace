@@ -121,15 +121,18 @@ public class Lobby extends BorderPane{
 		 * The staring - and end point object are created.
 		 */
 		startPoint= new Point();
+		startPoint.setStart();
+		
 		endPoint= new Point();
+		endPoint.setEnd();
 		
-		startPoint.setCenterX(CHmodel.getStartX());
+		/*startPoint.setCenterX(CHmodel.getStartX());
 		startPoint.setCenterY(CHmodel.getStartY());
-		startPoint.setFill(Color.GREENYELLOW);
+		startPoint.setFill(Color.GREENYELLOW);*/
 		
-		endPoint.setCenterX(CHmodel.getGoalX());
+		/*endPoint.setCenterX(CHmodel.getGoalX());
 		endPoint.setCenterY(CHmodel.getGoalY());
-		endPoint.setFill(Color.RED);
+		endPoint.setFill(Color.RED);*/
 		
 		contractButton.setId("contractButtonLabel");
 		
@@ -607,6 +610,13 @@ public class Lobby extends BorderPane{
 	
 	public int getViaNodeSize(){
 		return viaNodes.size();
+	}
+	
+	public Point getStartPoint(){
+		return startPoint;
+	}
+	public Point getEndPoint(){
+		return endPoint;
 	}
 
 	/*public Vector2D getViaNode2D(){

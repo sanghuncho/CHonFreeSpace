@@ -34,16 +34,20 @@ public class NodeMap {
 	
 	public List<Node> getNodes() {
 
-		/* create a new list which will contain all nodes */
+		/**
+		 *  create a new list which will contain all nodes */
 		List<Node> list = new ArrayList<>();
 
-		/* Loop through all sublists */
+		/**
+		 *  Loop through all sublists */
 		for (ArrayList<Node> sublist : structure) {
 
-			/* loop through all nodes */
+			/**
+			 *  loop through all nodes */
 			for (Node node : sublist) {
 
-				/* add the node to the list */
+				/**
+				 *  add the node to the list */
 				list.add(node);
 			}
 		}
@@ -61,7 +65,8 @@ public class NodeMap {
 
 		if (x < 0 || y < 0 || x >= size.getX() || y >= size.getY()) {
 
-			/* request out of bounds */
+			/**
+			 *  request out of bounds */
 			return null;
 		}
 		

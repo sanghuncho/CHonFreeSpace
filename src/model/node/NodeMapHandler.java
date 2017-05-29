@@ -28,54 +28,65 @@ public class NodeMapHandler {
 		
 		for (Node node : nodeMap.getNodes()) {
 			
-			/* define the position of the nodes */
+			/**
+			 *  define the position of the nodes */
 			int x = node.getPosition().getX();
 			int y = node.getPosition().getY();
 
-			/* clear any previous defined neighbors */
+			/**
+			 *  clear any previous defined neighbors */
 			node.getNeighborList().clear();
 
 			/* define the neighboring nodes */
 
-			/* the north node */
+			/**
+			 *  the north node */
 			if (!(y == 0)) {
 				node.addNeighbor(nodeMap.get(x, y - 1), Directions.NORTH);
 			}
 
-			/* the north east node */
+			/**
+			 *  the north east node */
 			if (!(y == 0) && !(x == size.getX())) {
 				node.addNeighbor(nodeMap.get(x + 1, y - 1),
 						Directions.NORTH_EAST);
 			}
 
-			/* the east node */
+			/**
+			 *  the east node */
 			if (!(x == size.getX())) {
 				node.addNeighbor(nodeMap.get(x + 1, y), Directions.EAST);
 			}
 
-			/* the south east node */
+			/**
+			 *  the south east node */
 			if (!(x == size.getX()) && !(y == size.getY())) {
 				node.addNeighbor(nodeMap.get(x + 1, y + 1),
 						Directions.SOUTH_EAST);
 			}
 
-			/* the south node */
+			/**
+			 *  the south node */
 			if (!(y == size.getY())) {
 				node.addNeighbor(nodeMap.get(x, y + 1), Directions.SOUTH);
 			}
 
-			/* the south west node */
+			/**
+			 *  the south west node */
 			if (!(x == 0) && !(y == size.getY())) {
 				node.addNeighbor(nodeMap.get(x - 1, y + 1),
 						Directions.SOUTH_WEST);
 			}
 
-			/* the west node */
+			/**
+			 * the west node */
 			if (!(x == 0)) {
 				node.addNeighbor(nodeMap.get(x - 1, y), Directions.WEST);
 			}
 
-			/* the north west node */
+			/**
+			 *  the north west node 
+			 *  */
 			if (!(x == 0) && !(y == 0)) {
 				node.addNeighbor(nodeMap.get(x - 1, y - 1),
 						Directions.NORTH_WEST);
