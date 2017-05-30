@@ -49,6 +49,7 @@ public class LobbyPresenter {
 	private CostMap costmap;
 	private boolean isCheckAll;
 	private boolean isCheckShort;
+	private boolean isCheckTop3;
 	private DijkstraAlgorithm dijkstra_head;
 	private DijkstraAlgorithm dijkstra_tail;
 	
@@ -224,12 +225,14 @@ public class LobbyPresenter {
 		  */ 
 		 isCheckAll = lobbyView.getCheckBoxAll().isSelected();
 		 isCheckShort = lobbyView.getCheckBoxShort().isSelected();
+		 isCheckTop3 = lobbyView.getCheckBoxTop3().isSelected();
 			
 		 /**
 		  * The representative paths of homotopy class are displayed.
 		  * */
-		 if((isCheckShort) && (!isCheckAll)){ 
-			 
+		 
+		 //if((isCheckShort) && (!isCheckAll)){ 
+		 if(!isCheckAll){ 
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
 			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
 			

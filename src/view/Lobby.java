@@ -43,8 +43,8 @@ import util.math.Vector2D;
 
 public class Lobby extends BorderPane{
 	
-	public Button viaNodeButton = new Button("only via-node");
-	public Button contractButton = new Button("via-node + CH");
+	public Button viaNodeButton = new Button("only via node");
+	public Button contractButton = new Button("via node + CH");
 	public Button searchButton = new Button("search");
 	public Button refreshButton = new Button("refresh");
 	
@@ -88,6 +88,7 @@ public class Lobby extends BorderPane{
 	public TextField numberOfViaNode;
 	private CheckBox cbAll;
 	private CheckBox cbShort;
+	private CheckBox cbTop3;
 	int k=0;
 	private Color laneColor;
 	
@@ -161,20 +162,20 @@ public class Lobby extends BorderPane{
 		
 		
 		final Pane leftSpacer = new Pane();
-		leftSpacer.setMinWidth(40);
+		leftSpacer.setMinWidth(30);
 		
 		numberOfViaNode = new TextField();
 		numberOfViaNode.setMaxWidth(80);
 		numberOfViaNode.setPromptText("Via Node");
 		
 		cbAll = new CheckBox("all paths");
-		cbShort = new CheckBox("representative");
-		
+		cbShort = new CheckBox("Homotopy");
+		cbTop3 = new CheckBox("Top3");
 		
 		HBox hBox = new HBox();
 		hBox.setSpacing(10);
-		hBox.getChildren().addAll(leftSpacer,viaNodeButton,numberOfViaNode,cbAll,cbShort,
-				contractButton,searchButton);//,refreshButton
+		hBox.getChildren().addAll(leftSpacer,cbShort,cbTop3,cbAll,numberOfViaNode,
+				viaNodeButton,contractButton,searchButton);//,refreshButton
 		
 		
 		final Pane leftSpacer_text = new Pane();
@@ -829,10 +830,53 @@ public class Lobby extends BorderPane{
 	public void createHomotopyLane(){
 		
 		
+		/**
+		 * if the top3-checkbox is selected on lobby, 
+		 * then only three shortest paths of homotopy classes are displayed.
+		 * */  
+		if(cbTop3.isSelected()){
+			
+			createTop3HomotopyLane();
+			
+						
+		}
+		/**
+		 * if the representative-checkbox is selected on lobby, 
+		 * then all shortest paths of homotopy classes are displayed.
+		 * */ 
+		if(cbShort.isSelected()){
+			
+			createAllHomotopyLane();
+			
+		}
+		
+	}
+	public void createAllLane(){
+		
+		int head_size = allOfPathHead.size();
+				
+		for(int i=0; i< head_size; i++){
+
+			createLane(allOfPathHead.get(i));	
+			createLane(allOfPathTail.get(i));
+				
+			}
+		
+	}	
+	private void createAllHomotopyLane(){
+		
+		int head_size = listOfPathHead.size();
+		
+		for(int i=0; i< head_size; i++){
+
+			createLane(listOfPathHead.get(i));	
+			createLane(listOfPathTail.get(i));
+				
+		}
+	}
+	private void createTop3HomotopyLane(){
 		int length = listOfPathCategory.size();
 		int[] sortCost = new int[length];
-		/*sortCost = costOfHomotopy;
-		Arrays.sort(sortCost);*/
 		
 		int first,second,third;
 		
@@ -850,8 +894,6 @@ public class Lobby extends BorderPane{
 		second = sortCost[1];
 		third = sortCost[2];
 		
-		//System.out.println("first: " + first);
-		
 		for(int i = 0; i < sortCost.length;i++ ){
 			
 			int value = costOfHomotopy[i];
@@ -867,7 +909,6 @@ public class Lobby extends BorderPane{
 			}
 		}
 				
-
 			createLane(listOfPathHead.get(alt_1));	
 			createLane(listOfPathTail.get(alt_1));
 			
@@ -876,30 +917,8 @@ public class Lobby extends BorderPane{
 			
 			createLane(listOfPathHead.get(alt_3));	
 			createLane(listOfPathTail.get(alt_3));
-				
-		
-		/*int head_size = listOfPathHead.size();
-				
-		for(int i=0; i< head_size; i++){
-
-			createLane(listOfPathHead.get(i));	
-			createLane(listOfPathTail.get(i));
-				
-			}*/
-		
+	
 	}
-	public void createAllLane(){
-		
-		int head_size = allOfPathHead.size();
-				
-		for(int i=0; i< head_size; i++){
-
-			createLane(allOfPathHead.get(i));	
-			createLane(allOfPathTail.get(i));
-				
-			}
-		
-	}	
 	/*public void createLane(LinkedList<Node> path){
 		
 		int k = path.size();
@@ -1083,6 +1102,10 @@ public class Lobby extends BorderPane{
 	public CheckBox getCheckBoxShort(){
 		
 		return cbShort;
+	}
+	public CheckBox getCheckBoxTop3(){
+		
+		return cbTop3;
 	}
 	public int[] getCostOfHomotopy(){
 		return costOfHomotopy;
