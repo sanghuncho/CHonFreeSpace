@@ -2,6 +2,7 @@ package view;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -60,9 +61,10 @@ public class Lobby extends BorderPane{
 	public Text text;
 	public int sizeOfEdges;
 	public int diverseEdges;
-	public ArrayList<LinkedList<Node>> listOfPath = new ArrayList<LinkedList<Node>>();
+	//public ArrayList<LinkedList<Node>> listOfPath = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> listOfPathHead = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> listOfPathTail = new ArrayList<LinkedList<Node>>();
+	public int[] costOfHomotopy = new int[100];
 	public ArrayList<String> listOfPathCategory = new ArrayList<String>();
 	public ArrayList<LinkedList<Node>> allOfPathHead = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> allOfPathTail = new ArrayList<LinkedList<Node>>();
@@ -731,9 +733,9 @@ public class Lobby extends BorderPane{
 		return listOfPathTail;
 		
 	}
-	public ArrayList<LinkedList<Node>> getListPath(){
+	/*public ArrayList<LinkedList<Node>> getListPath(){
 		return listOfPath;
-	}
+	}*/
 	
 	public ArrayList<String> getPathCategory(){
 		
@@ -745,26 +747,46 @@ public class Lobby extends BorderPane{
 	 * @param tail_path
 	 * @param numberViaNode
 	 */
-	public void setPathCategory(String pathId, LinkedList<Node> head_path,LinkedList<Node> tail_path,int numberViaNode,int nextViaNodeX,int nextViaNodeY){
+	public void setPathCategory(String pathId, LinkedList<Node> head_path,LinkedList<Node> tail_path,
+			int numberViaNode,int nextViaNodeX,int nextViaNodeY,int distance_next){
+		
 		
 		int length = listOfPathCategory.size();
 		boolean homotopy = false;
+		
+
 			
 		/**
-		 * find the homotopy category
+		 * find the homotopy class
 		 */
 		for(int i = 0; i < length; i++){
 			
 			/**
-			 * length of category 
+			 * classified homotopy classes and check the obstacles of homotopy class.
 			 */
 			String stringIdPath = listOfPathCategory.get(i);
 			
+			
+			/**
+			 * there is already suitable homotpy class in the list.
+			 * */ 
 			if(stringIdPath.equals(pathId)){
 				
 				//here implement the method of compare with cost and turn value between two homotopy path
-				
 				homotopy = true;
+				
+				if(costOfHomotopy[i] > distance_next){
+					
+					listOfPathHead.remove(i);
+					listOfPathHead.add(i,head_path);
+					listOfPathTail.remove(i);
+					listOfPathTail.add(i,tail_path);
+					costOfHomotopy[i] = distance_next;
+					
+				}
+				
+				
+				
 			}
 						
 		}
@@ -772,9 +794,11 @@ public class Lobby extends BorderPane{
 		if(!homotopy){
 			
 			listOfPathCategory.add(pathId);
-			listOfPathHead.add(length,head_path);
-			listOfPathTail.add(length,tail_path);
+			listOfPathHead.add(length, head_path);
+			listOfPathTail.add(length, tail_path);
+			costOfHomotopy[length] = distance_next;
 		}
+		
 		evaluation_1(listOfPathCategory.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
 		
 	  
@@ -803,15 +827,65 @@ public class Lobby extends BorderPane{
 	}
 	
 	public void createHomotopyLane(){
+		
+		
+		int length = listOfPathCategory.size();
+		int[] sortCost = new int[length];
+		/*sortCost = costOfHomotopy;
+		Arrays.sort(sortCost);*/
+		
+		int first,second,third;
+		
+		
+		for (int i = 0; i< length; i++) {
+			
+			   sortCost[i] = costOfHomotopy[i];
+		}
+		
+		Arrays.sort(sortCost);
+		
+		int alt_1 = 0,alt_2 = 0,alt_3 = 0;
+		
+		first = sortCost[0];
+		second = sortCost[1];
+		third = sortCost[2];
+		
+		//System.out.println("first: " + first);
+		
+		for(int i = 0; i < sortCost.length;i++ ){
+			
+			int value = costOfHomotopy[i];
+			
+			if(first == value){
+				alt_1 = i;
+			}
+			else if(second == value){
+				alt_2 = i; 
+			}
+			else if(third == value){
+				alt_3 = i; 	
+			}
+		}
 				
-		int head_size = listOfPathHead.size();
+
+			createLane(listOfPathHead.get(alt_1));	
+			createLane(listOfPathTail.get(alt_1));
+			
+			createLane(listOfPathHead.get(alt_2));	
+			createLane(listOfPathTail.get(alt_2));
+			
+			createLane(listOfPathHead.get(alt_3));	
+			createLane(listOfPathTail.get(alt_3));
+				
+		
+		/*int head_size = listOfPathHead.size();
 				
 		for(int i=0; i< head_size; i++){
 
 			createLane(listOfPathHead.get(i));	
 			createLane(listOfPathTail.get(i));
 				
-			}
+			}*/
 		
 	}
 	public void createAllLane(){
@@ -1009,6 +1083,9 @@ public class Lobby extends BorderPane{
 	public CheckBox getCheckBoxShort(){
 		
 		return cbShort;
+	}
+	public int[] getCostOfHomotopy(){
+		return costOfHomotopy;
 	}
 	
 }

@@ -54,6 +54,7 @@ public class LobbyPresenter {
 	
 	private Point startPoint;
 	private Point endPoint;
+	private int[] costOfHomotopy;
 
 	
 	public LobbyPresenter(Lobby lobbyView){
@@ -67,6 +68,7 @@ public class LobbyPresenter {
 		
 		this.startPoint = lobbyView.getStartPoint();
 		this.endPoint = lobbyView.getEndPoint();
+		this.costOfHomotopy = lobbyView.getCostOfHomotopy();
 		
 		activate();
 	}
@@ -93,6 +95,8 @@ public class LobbyPresenter {
 		endPoint.setOnMousePressed(endOnMousePressedEventHandler);
 		endPoint.setOnMouseDragged(endOnMouseDraggedEventHandler);
 		endPoint.setOnMouseReleased(endOnMouseRelesedEventHandler);
+		
+		
 		/**
 		 * this runs, if only the via-node button is clicked
 		 */
@@ -229,6 +233,12 @@ public class LobbyPresenter {
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
 			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
 			
+			int distance_first_x = dijkstra_head.getShortestDistance(nodeMap.get(firstViaNodeX,firstViaNodeY));
+			int distance_first_y = dijkstra_tail.getShortestDistance(nodeMap.get(firstViaNodeX,firstViaNodeY));
+			costOfHomotopy[0] = (distance_first_x + distance_first_y); 
+			
+			
+			
 			dijkstra_head.setPath(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			
 			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());
@@ -255,6 +265,12 @@ public class LobbyPresenter {
 				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
 				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
 				
+				//int distance_next = dijkstra_head.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));		
+				//System.out.println("distance_ " +numberViaNode + " : "+ distance_next);
+				
+				int distance_next_x = dijkstra_head.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));
+				int distance_next_y = dijkstra_tail.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));
+				int distance_next = (distance_next_x + distance_next_y);  
 				
 				dijkstra_head.setPath(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				
@@ -275,7 +291,10 @@ public class LobbyPresenter {
 				String pathIdString;
 				if(pathIdList.size() == 0){
 					
-					/*first homotopy class is named as "start"*/
+					/**
+					 * first homotopy class is named as "start" and 
+					 * if the path is homotopic with fist via node path, 
+					 * then id is defined as "start".*/
 					pathIdString = "start";
 					
 				}
@@ -293,7 +312,7 @@ public class LobbyPresenter {
 				 * the evaluation_1st is here implemented.
 				 */
 				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(),
-						dijkstra_tail.getPath(),numberViaNode,nextViaNodeX,nextViaNodeY);
+						dijkstra_tail.getPath(),numberViaNode,nextViaNodeX,nextViaNodeY,distance_next);
 				
 				loop++;
 				
@@ -354,10 +373,13 @@ public class LobbyPresenter {
 		 Task<Void> task1 = new Task<Void>() {
             @Override
             public Void call() throws InterruptedException {
+            	
             	dijkstra_head.execute();
             	
     			System.out.println("the execution_1 is the end \n");
-
+    			
+    			
+    			
                 return null ;
             }
 		 };

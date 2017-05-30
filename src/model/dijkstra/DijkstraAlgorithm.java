@@ -312,7 +312,7 @@ public class DijkstraAlgorithm{//implements Runnable
   	}
 
 
-    private int getShortestDistance(Node destination) {
+    public int getShortestDistance(Node destination) {
     	
         Integer d = distance.get(destination);
         
