@@ -8,24 +8,24 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Obstacle extends Rectangle {
+public class Obstacle extends Rectangle{
 	
 	int xPos;
 	int yPos;
 	int width;
 	int height;
-	int id;
+	//int id;
 	
-	private DoubleProperty XPosProperty;
+	/*private DoubleProperty XPosProperty;
     private DoubleProperty yPosProperty;
-
-    public Obstacle(int id){
+*/
+    public Obstacle(){
 		
     	
     	/**
     	 * create randomly obstacles on the map.
     	 */
-		createObstacleRandom();
+		//createObstacleRandom();
     	
     	/**
     	 * For evaluation the coordinates of four obstacles are set
@@ -44,14 +44,13 @@ public class Obstacle extends Rectangle {
     	 * 1000*600 with 12 obstacles.
     	 */
     	//createObstacle_12_1000_600(id);
-    	
-    	
+    		
     	
 		this.setWidth(CHmodel.VALUE_OBSTACLE_WIDTH);
 		this.setHeight(CHmodel.VALUE_OBSTACLE_HEIGHT);
 		this.setFill(Color.BLUE);
 
-		this.id = id;
+		//this.id = id;
 	}
     
     private void createObstacleRandom(){
@@ -72,10 +71,10 @@ public class Obstacle extends Rectangle {
 		return randomNumY;
 	}
 	
-	public int getID(){
+	/*public int getID(){
 		
 		return id;
-	}
+	}*/
 	
 	public DoubleProperty getXPoperty(){
 		

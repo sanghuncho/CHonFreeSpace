@@ -35,7 +35,8 @@ public class MainView extends GridPane{
 	public TextField endPointY;
 	public TextField numberOfObstacle;
 	public TextField percentOfContract;
-	public String percentage;
+	//public String percentage;
+	public String mode;
 	public String percentageCustom;
 	
 	
@@ -88,6 +89,9 @@ public class MainView extends GridPane{
 		
 		Label percentageLabel = new Label();
 		percentageLabel.setText("%");
+		
+		Label indoorSpaceLabel = new Label();
+		indoorSpaceLabel.setText("indoor scenario:");
 		
 		/**
 		 * all textfield are created.
@@ -196,19 +200,18 @@ public class MainView extends GridPane{
 		
 		ObservableList<String> options = 
 			    FXCollections.observableArrayList(
-			        "10%",
-			        "20%",
-			        "30%"
+			        "manual",
+			        "fair"
 			    );
 		final ComboBox comboBox = new ComboBox(options);
 		
-		comboBox.setPromptText("the percent of contracting");
+		comboBox.setPromptText("mode");
 		
 		comboBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override 
             public void changed(ObservableValue ov, String t, String t1) {                
-                percentage = t1;
-                CHmodel.setPercentage(t1);
+                mode = t1;
+                CHmodel.setMode(t1);
             }    
         });
 		
@@ -232,7 +235,10 @@ public class MainView extends GridPane{
 		gridPane.add(percentOfContract,1,4);
 		gridPane.add(percentageLabel,2,4);
 		
-		gridPane.add(createMap,0,5);
+		gridPane.add(indoorSpaceLabel, 0, 5);
+		gridPane.add(comboBox, 1, 5);
+		
+		gridPane.add(createMap,0,6);
 		gridPane.setAlignment(Pos.CENTER);
 		
 		scene = new Scene(gridPane);
@@ -241,7 +247,7 @@ public class MainView extends GridPane{
 	
 	}
 		
-	public String getPercentage(){ return percentage;}
+	public String getMode(){ return mode;}
 	
 	public TextField getPercentageCustom(){ return percentOfContract;}
 	

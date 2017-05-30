@@ -239,9 +239,7 @@ public class LobbyPresenter {
 			int distance_first_x = dijkstra_head.getShortestDistance(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			int distance_first_y = dijkstra_tail.getShortestDistance(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			costOfHomotopy[0] = (distance_first_x + distance_first_y); 
-			
-			
-			
+
 			dijkstra_head.setPath(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			
 			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());

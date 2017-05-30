@@ -33,6 +33,8 @@ import model.CHmodel;
 import model.DrawingEdge;
 import model.Lane;
 import model.Obstacle;
+import model.ObstacleFactory;
+import model.ObstacleFair;
 import model.Point;
 import model.dijkstra.Edge;
 import model.node.Node;
@@ -49,6 +51,7 @@ public class Lobby extends BorderPane{
 	public Button refreshButton = new Button("refresh");
 	
 	public Obstacle obs;
+	public ObstacleFair obsFair;
 	public ArrayList<Obstacle>  obstacles;
 	public Point startPoint;
 	public Point endPoint;
@@ -104,21 +107,43 @@ public class Lobby extends BorderPane{
 		 */
 		numberObs = CHmodel.getObstacle();
 		obstacles = new ArrayList<Obstacle>();
-
-		for(int i = 0; i < numberObs; i++){
+		
+		
+		if(CHmodel.getMode().equals("manual")){
 			
-			int id =i;
-			obs = new Obstacle(i);
-			
-			obstacles.add(obs);
+			for(int i = 0; i < numberObs; i++){
+				
+				//int id =i;
+				obs = new Obstacle();
+				
+				//obsFair = new ObstacleFair(0,200);
+				//obsFair.transform4X4();
+				
+				obstacles.add(obs);
+				//obstacles.add(obsFair);
+				Iterator itr = obstacles.iterator();
+				
+				while(itr.hasNext()){
+					Obstacle obs = (Obstacle)itr.next();
+					center.getChildren().add(obs);
+				}
+			}
 		}
-		
+		if(CHmodel.getMode().equals("fair")){
+			
+			ObstacleFactory factoryFair = new ObstacleFactory(obstacles);
+			factoryFair.produce4X4Obstacle();
+			obstacles = factoryFair.getFactoryObstacleArray();
+			
+		}
+			
 		Iterator itr = obstacles.iterator();
-		
+			
 		while(itr.hasNext()){
 			Obstacle obs = (Obstacle)itr.next();
 			center.getChildren().add(obs);
 		}
+		
 		
 		/**
 		 * The staring - and end point object are created.
@@ -162,13 +187,13 @@ public class Lobby extends BorderPane{
 		
 		
 		final Pane leftSpacer = new Pane();
-		leftSpacer.setMinWidth(30);
+		leftSpacer.setMinWidth(40);
 		
 		numberOfViaNode = new TextField();
 		numberOfViaNode.setMaxWidth(80);
 		numberOfViaNode.setPromptText("Via Node");
 		
-		cbAll = new CheckBox("all paths");
+		cbAll = new CheckBox("All");
 		cbShort = new CheckBox("Homotopy");
 		cbTop3 = new CheckBox("Top3");
 		

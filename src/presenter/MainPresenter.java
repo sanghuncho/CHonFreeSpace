@@ -53,6 +53,48 @@ public class MainPresenter {
 	
 	private void readyForLobby(){
 		
+		String modi = CHmodel.getMode();
+		
+		switch (modi){
+		case "manual":
+			readyForManualMode();
+			break;
+			
+		case "fair":
+			readyForFair();
+			break;
+			
+		//case "extended for other scenarios"	
+			
+		}
+	
+	}
+	private void readyForFair(){
+		
+		CHmodel.setMapX(1000);
+		CHmodel.setMapY(600);
+		
+		// make not visible start and goal point
+		CHmodel.setStartX(Integer.parseInt(mainView.getStartPointX().getText()));
+		CHmodel.setStartY(Integer.parseInt(mainView.getStartPointY().getText()));
+		
+		CHmodel.setGoalX(Integer.parseInt(mainView.getEndPointX().getText()));
+		CHmodel.setGoalY(Integer.parseInt(mainView.getEndPointY().getText()));
+		// make not visible number of obstacle
+		CHmodel.setObstacle(Integer.parseInt(mainView.getNumberObstacle().getText()));
+		
+		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
+		
+		CHmodel.setContractingPercent(Integer.parseInt(mainView.getPercentageCustom().getText()));
+		
+		System.out.println("the percent of CH : " + Integer.parseInt(mainView.getPercentageCustom().getText()) + "%\n");
+		
+		new NodeMapHandler(size);
+		
+		
+	}
+	private  void readyForManualMode(){
+		
 		CHmodel.setMapX(Integer.parseInt(mainView.getMapX().getText()));
 		CHmodel.setMapY(Integer.parseInt(mainView.getMapY().getText()));
 		
@@ -66,15 +108,12 @@ public class MainPresenter {
 		
 		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		
-		CHmodel.setPercentage(mainView.getPercentage());
-
 		CHmodel.setContractingPercent(Integer.parseInt(mainView.getPercentageCustom().getText()));
 		
 		System.out.println("the percent of CH : " + Integer.parseInt(mainView.getPercentageCustom().getText()) + "%\n");
 		
 		new NodeMapHandler(size);
 		
-	
 	}
 		
 }

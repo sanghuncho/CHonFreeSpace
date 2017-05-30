@@ -32,14 +32,16 @@ public class CHmodel {
 	
 	public static NodeMap nodeMap;
 	
-	public static String percentage;
+	//public static String percentage;
 	
-	public static String getPercentage() {
-		return percentage;
+	public static String mode;
+	
+	public static String getMode() {
+		return mode;
 	}
 
-	public static void setPercentage(String percentage) {
-		CHmodel.percentage = percentage;
+	public static void setMode(String mode){
+		CHmodel.mode = mode;
 	}
 
 	public static Vector2D getStartVector2D(){
@@ -133,8 +135,8 @@ public class CHmodel {
 		CHmodel.obstacle = obstacle;
 	}
 	
-	public static void setContractingPercent(int percentage) {
-		CHmodel.percentageCustom = percentage;
+	public static void setContractingPercent(int percentageCustom) {
+		CHmodel.percentageCustom = percentageCustom;
 	}
 	
 	public static int getNumberContractedCustom() {
