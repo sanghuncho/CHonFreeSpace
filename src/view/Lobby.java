@@ -138,19 +138,29 @@ public class Lobby extends BorderPane{
 		if(CHmodel.getMode().equals("fair")){
 			
 			ObstacleFactory factoryFair = new ObstacleFactory(obstacles);
+			
 			factoryFair.produce4X4Obstacle();
 			factoryFair.produce4X3Obstacle();
+			factoryFair.produce6X4Obstacle();
+			factoryFair.produce3X5Obstacle();
+			factoryFair.produce4X2Obstacle();
+			factoryFair.produce2X4Obstacle();
+			factoryFair.produce3X4Obstacle();
+			factoryFair.produce3X3Obstacle();
+			
 			obstacles = factoryFair.getFactoryObstacleArray();
 			numberObs = obstacles.size();
 			
+			Iterator itr = obstacles.iterator();
+			
+			while(itr.hasNext()){
+				Obstacle obs = (Obstacle)itr.next();
+				center.getChildren().add(obs);
+			}
+			
 		}
 			
-		Iterator itr = obstacles.iterator();
-			
-		while(itr.hasNext()){
-			Obstacle obs = (Obstacle)itr.next();
-			center.getChildren().add(obs);
-		}
+		
 		
 		
 		/**
