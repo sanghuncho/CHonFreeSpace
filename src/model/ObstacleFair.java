@@ -25,6 +25,7 @@ public class ObstacleFair extends Obstacle{
 		this.setFill(Color.GAINSBORO);
 	}
 	
+	
 	public void transform4X3(){
 		
 		this.setWidth(100);

@@ -77,15 +77,29 @@ public class LobbyPresenter {
 	public void activate(){
 		
 		
-		numberObs = CHmodel.getObstacle();
-		obstacles = lobbyView.getObstacleList();
+		/**
+		 * if only manual mode is slelected,
+		 * then the obstacle can be moved by dragging it.
+		 * */
+		if(CHmodel.getMode().equals("manual")){
+			
+			numberObs = CHmodel.getNumberObstacle();
+			
+		}else if(CHmodel.getMode().equals("fair")){
+			
+			numberObs = 0;
+		}
 		
+		
+		obstacles = lobbyView.getObstacleList();
+			
 		for(int i = 0; i < numberObs; i++){
-						
+							
 			obstacles.get(i).setOnMousePressed(obstacleOnMousePressedEventHandler);
 			obstacles.get(i).setOnMouseDragged(obstacleOnMouseDraggedEventHandler);
-			//obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
+				//obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
 		}
+		
 		
 		
 		

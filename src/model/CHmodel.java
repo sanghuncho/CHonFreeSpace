@@ -24,7 +24,7 @@ public class CHmodel {
 	public static int goalX;
 	public static int goalY;
 	
-	public static int obstacle;
+	public static int obstacleNumber;
 	
 	public static int percentageCustom;
 	
@@ -40,6 +40,7 @@ public class CHmodel {
 		return mode;
 	}
 
+	/*There are two mode, manual or fair*/
 	public static void setMode(String mode){
 		CHmodel.mode = mode;
 	}
@@ -127,12 +128,12 @@ public class CHmodel {
 		CHmodel.goalY = (goalY-1)*10+5;
 	}
 
-	public static int getObstacle() {
-		return obstacle;
+	public static int getNumberObstacle() {
+		return obstacleNumber;
 	}
 
-	public static void setObstacle(int obstacle) {
-		CHmodel.obstacle = obstacle;
+	public static void setNumberObstacle(int obstacleNumber) {
+		CHmodel.obstacleNumber = obstacleNumber;
 	}
 	
 	public static void setContractingPercent(int percentageCustom) {
@@ -148,4 +149,5 @@ public class CHmodel {
 	
 		return  (nodes*result)/100;
 	}
+
 }

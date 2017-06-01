@@ -71,7 +71,7 @@ public class MainPresenter {
 	}
 	private void readyForFair(){
 		
-		CHmodel.setMapX(1000);
+		CHmodel.setMapX(800);
 		CHmodel.setMapY(600);
 		
 		// make not visible start and goal point
@@ -81,7 +81,7 @@ public class MainPresenter {
 		CHmodel.setGoalX(Integer.parseInt(mainView.getEndPointX().getText()));
 		CHmodel.setGoalY(Integer.parseInt(mainView.getEndPointY().getText()));
 		// make not visible number of obstacle
-		CHmodel.setObstacle(Integer.parseInt(mainView.getNumberObstacle().getText()));
+		//CHmodel.setNumerObstacle(0);
 		
 		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		
@@ -104,7 +104,7 @@ public class MainPresenter {
 		CHmodel.setGoalX(Integer.parseInt(mainView.getEndPointX().getText()));
 		CHmodel.setGoalY(Integer.parseInt(mainView.getEndPointY().getText()));
 		
-		CHmodel.setObstacle(Integer.parseInt(mainView.getNumberObstacle().getText()));
+		CHmodel.setNumberObstacle(Integer.parseInt(mainView.getNumberObstacle().getText()));
 		
 		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		
