@@ -123,12 +123,12 @@ public class Lobby extends BorderPane{
 				obs = new Obstacle();
 				
 				obstacles.add(obs);
-				Iterator itr = obstacles.iterator();
+				/*Iterator itr = obstacles.iterator();
 				
 				while(itr.hasNext()){
 					Obstacle obs = (Obstacle)itr.next();
 					center.getChildren().add(obs);
-				}
+				}*/
 			}
 		}
 		
@@ -151,15 +151,21 @@ public class Lobby extends BorderPane{
 			obstacles = factoryFair.getFactoryObstacleArray();
 			numberObs = obstacles.size();
 			
-			Iterator itr = obstacles.iterator();
+			/*Iterator itr = obstacles.iterator();
 			
 			while(itr.hasNext()){
 				Obstacle obs = (Obstacle)itr.next();
 				center.getChildren().add(obs);
-			}
+			}*/
 			
 		}
 			
+		Iterator itr = obstacles.iterator();
+		
+		while(itr.hasNext()){
+			Obstacle obs = (Obstacle)itr.next();
+			center.getChildren().add(obs);
+		}
 		
 		
 		
@@ -319,7 +325,8 @@ public class Lobby extends BorderPane{
 				
 				int xPosVertex = vertexOfObstacle.get(k).getX();
 				int yPosVertex = vertexOfObstacle.get(k).getY();
-				
+				/*System.out.println("obstacle X" + xPosVertex);
+				System.out.println("obstacle Y" + yPosVertex);*/
 				if(polygon.contains(xPosVertex,yPosVertex)){
 					coveredPoint++;
 				}
@@ -674,7 +681,6 @@ public class Lobby extends BorderPane{
 	}*/
 	
 	
-	/*for test*/
 	public Polygon generatePolygon(LinkedList<Node> head_first, LinkedList<Node> tail_first
 			,LinkedList<Node> head_second,LinkedList<Node> tail_second){
 	
@@ -691,7 +697,92 @@ public class Lobby extends BorderPane{
 		for(int i = 0 ; i < k ; i ++){
 			
 			double pointX = head_first.get(i).getPosition().getX();
+			System.out.println("fisrst head  pointX: "+ pointX);
+			
 			double pointY = head_first.get(i).getPosition().getY();
+			System.out.println("first head  pointY: "+ pointY);
+			
+			polygon.getPoints().add(pointX*10 +5);
+			polygon.getPoints().add(pointY*10 +5);
+				
+		}
+		
+		
+		double finalX_tail=tail_first.get(l-1).getPosition().getX();
+		double finalY_tail=tail_first.get(l-1).getPosition().getY();
+		for(int i = 1 ; i <= l ; i ++){
+				
+				double pointX = tail_first.get(l-i).getPosition().getX();
+				System.out.println("first tail pointX: "+ pointX);
+				double pointY = tail_first.get(l-i).getPosition().getY();
+				System.out.println("first tail pointY: "+ pointY);
+				polygon.getPoints().add(pointX*10 +5);
+				polygon.getPoints().add(pointY*10 +5);
+					
+			}
+		
+		for(int i = 0 ; i < n ; i++){
+			
+			double pointX = tail_second.get(i).getPosition().getX();
+			System.out.println("second tail pointX: "+ pointX);
+			double pointY = tail_second.get(i).getPosition().getY();
+			System.out.println("second tail pointY: "+ pointY);
+			polygon.getPoints().add(pointX*10 +5);
+			polygon.getPoints().add(pointY*10 +5);
+				
+		}
+		
+		polygon.getPoints().add(finalX_tail*10 +5);
+		polygon.getPoints().add(finalY_tail*10 +5);
+		
+		
+		
+		for(int i = 1 ; i <= m ; i ++){
+			
+			double pointX = head_second.get(m-i).getPosition().getX();
+			System.out.println("secons head pointX: "+ pointX);
+			double pointY = head_second.get(m-i).getPosition().getY();
+			System.out.println("second head pointY: "+ pointY);
+			polygon.getPoints().add(pointX*10 +5);
+			polygon.getPoints().add(pointY*10 +5);
+				
+		}
+		polygon.getPoints().add(finalX*10 +5);
+		polygon.getPoints().add(finalY*10 +5);
+		
+		
+		
+		
+
+		
+		
+		
+		
+		return polygon;
+	}
+
+	
+	/*for test*/
+	/*public Polygon generatePolygon(LinkedList<Node> head_first, LinkedList<Node> tail_first
+			,LinkedList<Node> head_second,LinkedList<Node> tail_second){
+	
+		polygon = new Polygon();
+		
+		int k = head_first.size();
+		int l = tail_first.size();
+		int m = head_second.size();
+		int n = tail_second.size();
+		
+		double finalX=head_first.get(k-1).getPosition().getX();
+		double finalY=head_first.get(k-1).getPosition().getY();
+		
+		for(int i = 0 ; i < k ; i ++){
+			
+			double pointX = head_first.get(i).getPosition().getX();
+			System.out.println("fisrst head  pointX: "+ pointX);
+			
+			double pointY = head_first.get(i).getPosition().getY();
+			System.out.println("first head  pointY: "+ pointY);
 			
 			polygon.getPoints().add(pointX*10 +5);
 			polygon.getPoints().add(pointY*10 +5);
@@ -702,8 +793,9 @@ public class Lobby extends BorderPane{
 		for(int i = 0 ; i < m ; i ++){
 			
 			double pointX = head_second.get(i).getPosition().getX();
+			System.out.println("secons head pointX: "+ pointX);
 			double pointY = head_second.get(i).getPosition().getY();
-			
+			System.out.println("second head pointY: "+ pointY);
 			polygon.getPoints().add(pointX*10 +5);
 			polygon.getPoints().add(pointY*10 +5);
 				
@@ -718,8 +810,9 @@ public class Lobby extends BorderPane{
 		for(int i = 0 ; i < l ; i ++){
 				
 				double pointX = tail_first.get(i).getPosition().getX();
+				System.out.println("first tail pointX: "+ pointX);
 				double pointY = tail_first.get(i).getPosition().getY();
-				
+				System.out.println("first tail pointY: "+ pointY);
 				polygon.getPoints().add(pointX*10 +5);
 				polygon.getPoints().add(pointY*10 +5);
 					
@@ -728,8 +821,9 @@ public class Lobby extends BorderPane{
 		for(int i = 0 ; i < n ; i++){
 			
 			double pointX = tail_second.get(i).getPosition().getX();
+			System.out.println("second tail pointX: "+ pointX);
 			double pointY = tail_second.get(i).getPosition().getY();
-			
+			System.out.println("second tail pointY: "+ pointY);
 			polygon.getPoints().add(pointX*10 +5);
 			polygon.getPoints().add(pointY*10 +5);
 				
@@ -742,7 +836,7 @@ public class Lobby extends BorderPane{
 		
 		return polygon;
 	}
-	
+*/	
 	public Polygon getPolygon(){
 		return polygon;
 	}
@@ -798,8 +892,6 @@ public class Lobby extends BorderPane{
 		int length = listOfPathCategory.size();
 		boolean homotopy = false;
 		
-
-			
 		/**
 		 * find the homotopy class
 		 */
@@ -819,7 +911,7 @@ public class Lobby extends BorderPane{
 				//here implement the method of compare with cost and turn value between two homotopy path
 				homotopy = true;
 				
-				if(costOfHomotopy[i] > distance_next){
+				if(costOfHomotopy[i] >= distance_next){
 					
 					listOfPathHead.remove(i);
 					listOfPathHead.add(i,head_path);
@@ -829,10 +921,7 @@ public class Lobby extends BorderPane{
 					
 				}
 				
-				
-				
-			}
-						
+			}					
 		}
 		
 		if(!homotopy){
@@ -919,47 +1008,67 @@ public class Lobby extends BorderPane{
 	}
 	private void createTop3HomotopyLane(){
 		int length = listOfPathCategory.size();
-		int[] sortCost = new int[length];
+		int[] costArray = new int[length];
 		
-		int first,second,third;
+		int minimum,se_minimum,th_minimum;
 		
 		
 		for (int i = 0; i< length; i++) {
 			
-			   sortCost[i] = costOfHomotopy[i];
+			   costArray[i] = costOfHomotopy[i];
 		}
 		
-		Arrays.sort(sortCost);
+		Arrays.sort(costArray);
 		
-		int alt_1 = 0,alt_2 = 0,alt_3 = 0;
+		minimum = costArray[0];
+		se_minimum = costArray[1];
+		th_minimum = costArray[2];
 		
-		first = sortCost[0];
-		second = sortCost[1];
-		third = sortCost[2];
+		int min_index = 0,se_min_index = 0, th_min_index = 0;
 		
-		for(int i = 0; i < sortCost.length;i++ ){
+		for(int i = 0; i < costOfHomotopy.length; i++){
 			
 			int value = costOfHomotopy[i];
 			
-			if(first == value){
-				alt_1 = i;
-			}
-			else if(second == value){
-				alt_2 = i; 
-			}
-			else if(third == value){
-				alt_3 = i; 	
+			if(value == minimum){
+				
+				min_index = i;
+				
 			}
 		}
+			
+		for(int i = 0; i < costOfHomotopy.length; i++){
+			
+			int value = costOfHomotopy[i];
+			
+			if((value == se_minimum) && (min_index != i)){
 				
-			createLane(listOfPathHead.get(alt_1));	
-			createLane(listOfPathTail.get(alt_1));
+				se_min_index = i;
+				
+			}
+		}
+		
+		for(int i = 0; i < costOfHomotopy.length; i++){
 			
-			createLane(listOfPathHead.get(alt_2));	
-			createLane(listOfPathTail.get(alt_2));
+			int value = costOfHomotopy[i];
 			
-			createLane(listOfPathHead.get(alt_3));	
-			createLane(listOfPathTail.get(alt_3));
+			if((value == th_minimum) && (min_index != i) && (se_min_index != i)){
+				
+				th_min_index = i;
+				
+			}
+		}
+		
+		
+				
+			createLane(listOfPathHead.get(min_index));	
+			createLane(listOfPathTail.get(min_index));
+			
+			createLane(listOfPathHead.get(se_min_index));	
+			createLane(listOfPathTail.get(se_min_index));
+			
+			createLane(listOfPathHead.get(th_min_index));	
+			createLane(listOfPathTail.get(th_min_index));
 	
 	}
 	/*public void createLane(LinkedList<Node> path){
@@ -1002,10 +1111,10 @@ public class Lobby extends BorderPane{
 			
 			
 		}
-		/*if first/shortest on lobby is checked,
+		/*if either homotpy or top3 on lobby is checked,
 		 * then various color is applied*/
-		if(cbShort.isSelected()){
-		colorNumber++;
+		if(cbShort.isSelected() || cbTop3.isSelected()){
+			colorNumber++;
 		}
 		
 	}
@@ -1026,10 +1135,10 @@ public class Lobby extends BorderPane{
 		
 		switch(number) {
 			
-			case 0 : laneColor = Color.CORAL;
+			case 0 : laneColor = Color.PINK;
 			break;
 			
-			case 1 : laneColor = Color.CORAL;
+			case 1 : laneColor = Color.PINK;
 			break;
 			
 			case 2 : laneColor = Color.BROWN;
@@ -1062,10 +1171,10 @@ public class Lobby extends BorderPane{
 			case 11 : laneColor = Color.PURPLE;
 			break;
 			
-			case 12 : laneColor = Color.PINK;
+			case 12 : laneColor = Color.PALEGREEN;
 			break;
 			
-			case 13 : laneColor = Color.PINK;
+			case 13 : laneColor = Color.PALEGREEN;
 			break;
 			
 			case 14 : laneColor = Color.AQUAMARINE;

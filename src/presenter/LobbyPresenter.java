@@ -247,11 +247,13 @@ public class LobbyPresenter {
 		 
 		 //if((isCheckShort) && (!isCheckAll)){ 
 		 if(!isCheckAll){ 
+			 
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
 			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
 			
 			int distance_first_x = dijkstra_head.getShortestDistance(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			int distance_first_y = dijkstra_tail.getShortestDistance(nodeMap.get(firstViaNodeX,firstViaNodeY));
+			
 			costOfHomotopy[0] = (distance_first_x + distance_first_y); 
 
 			dijkstra_head.setPath(nodeMap.get(firstViaNodeX,firstViaNodeY));
@@ -294,7 +296,32 @@ public class LobbyPresenter {
 				Polygon polygon = lobbyView.generatePolygon(lobbyView.getListOfPathHead().get(0),
 						lobbyView.getListOfPathTail().get(0),
 						dijkstra_head.getPath(),dijkstra_tail.getPath());
-		
+				
+				/*Polygon polygon = new Polygon();
+				
+				polygon.getPoints().add((double) 305);
+				polygon.getPoints().add((double) 305);
+				
+				polygon.getPoints().add((double) 325);
+				polygon.getPoints().add((double) 275);
+				
+				polygon.getPoints().add((double) 355);
+				polygon.getPoints().add((double) 275);
+				
+				
+				polygon.getPoints().add((double) 355);
+				polygon.getPoints().add((double) 255);
+				
+				polygon.getPoints().add((double) 335);
+				polygon.getPoints().add((double) 255);
+				
+				polygon.getPoints().add((double) 335);
+				polygon.getPoints().add((double) 305);
+				
+				polygon.getPoints().add((double) 305);
+				polygon.getPoints().add((double) 305);
+				polygon.getPoints().add((double) 355);
+				polygon.getPoints().add((double) 275);*/
 				
 				/**
 				 * pathidList contains the list of obstacle-id, which are in the polygon covered.

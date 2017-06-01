@@ -124,9 +124,9 @@ public class ObstacleFactory {
 		
 		factoryObstacle2X4 = new ArrayList<ObstacleFair>();
 		
-		factoryObstacle2X4.add(new ObstacleFair(425,150));
-		factoryObstacle2X4.add(new ObstacleFair(425,250));
-		factoryObstacle2X4.add(new ObstacleFair(425,350));
+		factoryObstacle2X4.add(new ObstacleFair(420,150));
+		factoryObstacle2X4.add(new ObstacleFair(420,250));
+		factoryObstacle2X4.add(new ObstacleFair(420,350));
 		factoryObstacle2X4.add(new ObstacleFair(550,500));
 		
 		

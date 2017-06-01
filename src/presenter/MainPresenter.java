@@ -71,15 +71,24 @@ public class MainPresenter {
 	}
 	private void readyForFair(){
 		
+		/**
+		 * The size of fiar-mode is already fixed as 800x600.
+		 * */
 		CHmodel.setMapX(800);
 		CHmodel.setMapY(600);
 		
 		// make not visible start and goal point
-		CHmodel.setStartX(Integer.parseInt(mainView.getStartPointX().getText()));
-		CHmodel.setStartY(Integer.parseInt(mainView.getStartPointY().getText()));
+		/**
+		 * The position of start point on the map.
+		 * */
+		CHmodel.setStartX(5);
+		CHmodel.setStartY(5);
 		
-		CHmodel.setGoalX(Integer.parseInt(mainView.getEndPointX().getText()));
-		CHmodel.setGoalY(Integer.parseInt(mainView.getEndPointY().getText()));
+		/**
+		 * The position of goal point on the map.
+		 * */
+		CHmodel.setGoalX(65);
+		CHmodel.setGoalY(45);
 		// make not visible number of obstacle
 		//CHmodel.setNumerObstacle(0);
 		
@@ -98,9 +107,16 @@ public class MainPresenter {
 		CHmodel.setMapX(Integer.parseInt(mainView.getMapX().getText()));
 		CHmodel.setMapY(Integer.parseInt(mainView.getMapY().getText()));
 		
+		
+		/**
+		 * The position of start point on the map.
+		 * */
 		CHmodel.setStartX(Integer.parseInt(mainView.getStartPointX().getText()));
 		CHmodel.setStartY(Integer.parseInt(mainView.getStartPointY().getText()));
 		
+		/**
+		 * The position of start point on the map.
+		 * */
 		CHmodel.setGoalX(Integer.parseInt(mainView.getEndPointX().getText()));
 		CHmodel.setGoalY(Integer.parseInt(mainView.getEndPointY().getText()));
 		

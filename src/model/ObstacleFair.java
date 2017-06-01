@@ -41,7 +41,7 @@ public class ObstacleFair extends Obstacle{
 	}
 	public void transform3X5(){
 		
-		this.setWidth(75);
+		this.setWidth(80);
 		this.setHeight(125);
 		this.setFill(Color.DARKOLIVEGREEN);
 	}
