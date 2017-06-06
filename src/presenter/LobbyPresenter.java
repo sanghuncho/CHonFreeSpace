@@ -56,6 +56,7 @@ public class LobbyPresenter {
 	private Point startPoint;
 	private Point endPoint;
 	private int[] costOfHomotopy;
+	private int nodeNumberObstacle;
 
 	
 	public LobbyPresenter(Lobby lobbyView){
@@ -185,6 +186,7 @@ public class LobbyPresenter {
 				lobbyView.createViaNodePoint(size,constantMap.getMap(),loop_viaNode);
 				loop_viaNode++;
 			}
+			CHmodel.setNumberOfViaNode(lobbyView.getnumberOfViaNode());
 			
 			loop_map=0;
 			long  startTime_contracted = System.currentTimeMillis();
@@ -492,6 +494,7 @@ public class LobbyPresenter {
 
 	private void setNodeObstacleProperty(NodeMap nodeMap){
 		
+		this.nodeNumberObstacle = 0;
 		for(Node node : nodeMap.getNodes()){
 			
 			for (Obstacle obstacle : obstacles) {
@@ -499,10 +502,12 @@ public class LobbyPresenter {
 					if(isNodeInsideObs(node,obstacle)){
 						
 						node.setProperty(Property.OBSTACLE);
+						this.nodeNumberObstacle++;
 					}	
 			}
 			
 		}
+		CHmodel.setNodeNumberObstacle(this.nodeNumberObstacle);
 		
 	}
 	

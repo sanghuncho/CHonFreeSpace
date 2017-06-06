@@ -31,10 +31,10 @@ public class CHmodel {
 	public static Vector2D sizeVector;
 	
 	public static NodeMap nodeMap;
-	
-	//public static String percentage;
-	
+		
 	public static String mode;
+	public static int nodeNumberObstacle;
+	public static int numberOfViaNode;
 	
 	public static String getMode() {
 		return mode;
@@ -146,8 +146,19 @@ public class CHmodel {
 		int result = CHmodel.percentageCustom;
 		
 		int nodes = (mapX*mapY)/100;
-	
-		return  (nodes*result)/100;
+		
+		/**
+		 * Here 2 is regarded as number of start point and goal point
+		 * */
+		return  ((nodes-2-nodeNumberObstacle - numberOfViaNode)*result)/100; 
+	}
+	public static void setNodeNumberObstacle(int nodeNumberObs){
+		
+		CHmodel.nodeNumberObstacle = nodeNumberObs;
+	}
+	public static void setNumberOfViaNode(int numberViaNode){
+		
+		CHmodel.numberOfViaNode = numberViaNode;
 	}
 
 }

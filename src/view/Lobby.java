@@ -122,6 +122,26 @@ public class Lobby extends BorderPane{
 				//int id =i;
 				obs = new Obstacle();
 				
+				/**
+				 *test
+				 * */
+				/*if(i == 0){
+		    		obs.xProperty().set(100);
+		    		obs.yProperty().set(100);
+		    	}
+		    	else if(i == 1){
+		    		obs.xProperty().set(400);
+		    		obs.yProperty().set(100);
+		    	}
+		    	else if(i == 2){
+		    		obs.xProperty().set(100);
+		    		obs.yProperty().set(400);
+		    	}
+		    	else if(i == 3){
+		    		obs.xProperty().set(400);
+		    		obs.yProperty().set(400);
+		    	}*/
+				
 				obstacles.add(obs);
 				/*Iterator itr = obstacles.iterator();
 				
@@ -697,10 +717,8 @@ public class Lobby extends BorderPane{
 		for(int i = 0 ; i < k ; i ++){
 			
 			double pointX = head_first.get(i).getPosition().getX();
-			System.out.println("fisrst head  pointX: "+ pointX);
 			
 			double pointY = head_first.get(i).getPosition().getY();
-			System.out.println("first head  pointY: "+ pointY);
 			
 			polygon.getPoints().add(pointX*10 +5);
 			polygon.getPoints().add(pointY*10 +5);
@@ -713,9 +731,7 @@ public class Lobby extends BorderPane{
 		for(int i = 1 ; i <= l ; i ++){
 				
 				double pointX = tail_first.get(l-i).getPosition().getX();
-				System.out.println("first tail pointX: "+ pointX);
 				double pointY = tail_first.get(l-i).getPosition().getY();
-				System.out.println("first tail pointY: "+ pointY);
 				polygon.getPoints().add(pointX*10 +5);
 				polygon.getPoints().add(pointY*10 +5);
 					
@@ -724,9 +740,7 @@ public class Lobby extends BorderPane{
 		for(int i = 0 ; i < n ; i++){
 			
 			double pointX = tail_second.get(i).getPosition().getX();
-			System.out.println("second tail pointX: "+ pointX);
 			double pointY = tail_second.get(i).getPosition().getY();
-			System.out.println("second tail pointY: "+ pointY);
 			polygon.getPoints().add(pointX*10 +5);
 			polygon.getPoints().add(pointY*10 +5);
 				
@@ -740,9 +754,7 @@ public class Lobby extends BorderPane{
 		for(int i = 1 ; i <= m ; i ++){
 			
 			double pointX = head_second.get(m-i).getPosition().getX();
-			System.out.println("secons head pointX: "+ pointX);
 			double pointY = head_second.get(m-i).getPosition().getY();
-			System.out.println("second head pointY: "+ pointY);
 			polygon.getPoints().add(pointX*10 +5);
 			polygon.getPoints().add(pointY*10 +5);
 				

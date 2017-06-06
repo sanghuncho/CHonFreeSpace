@@ -61,6 +61,7 @@ public class NodeMap {
 
 	}
 	
+	
 	public Node get(int x, int y) {
 
 		if (x < 0 || y < 0 || x >= size.getX() || y >= size.getY()) {
