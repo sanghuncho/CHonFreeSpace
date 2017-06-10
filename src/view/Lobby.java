@@ -123,24 +123,72 @@ public class Lobby extends BorderPane{
 				obs = new Obstacle();
 				
 				/**
-				 *test
+				 *test 6 obstacles
 				 * */
 				/*if(i == 0){
-		    		obs.xProperty().set(100);
-		    		obs.yProperty().set(100);
+		    		obs.xProperty().set(150);
+		    		obs.yProperty().set(200);
 		    	}
 		    	else if(i == 1){
-		    		obs.xProperty().set(400);
-		    		obs.yProperty().set(100);
+		    		obs.xProperty().set(300);
+		    		obs.yProperty().set(200);
 		    	}
 		    	else if(i == 2){
-		    		obs.xProperty().set(100);
-		    		obs.yProperty().set(400);
+		    		obs.xProperty().set(450);
+		    		obs.yProperty().set(200);
 		    	}
 		    	else if(i == 3){
-		    		obs.xProperty().set(400);
+		    		obs.xProperty().set(150);
+		    		obs.yProperty().set(400);
+		    	}
+		    	else if(i == 4){
+		    		obs.xProperty().set(300);
+		    		obs.yProperty().set(400);
+		    	}
+		    	else if(i == 5){
+		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(400);
 		    	}*/
+				
+				if(i == 0){
+		    		obs.xProperty().set(150);
+		    		obs.yProperty().set(150);
+		    	}
+		    	else if(i == 1){
+		    		obs.xProperty().set(300);
+		    		obs.yProperty().set(150);
+		    	}
+		    	else if(i == 2){
+		    		obs.xProperty().set(450);
+		    		obs.yProperty().set(150);
+		    	}
+				
+		    	else if(i == 3){
+		    		obs.xProperty().set(150);
+		    		obs.yProperty().set(300);
+		    	}
+		    	else if(i == 4){
+		    		obs.xProperty().set(300);
+		    		obs.yProperty().set(300);
+		    	}
+		    	else if(i == 5){
+		    		obs.xProperty().set(450);
+		    		obs.yProperty().set(300);
+		    	}
+				
+		    	else if(i == 6){
+		    		obs.xProperty().set(150);
+		    		obs.yProperty().set(450);
+		    	}
+		    	else if(i == 7){
+		    		obs.xProperty().set(300);
+		    		obs.yProperty().set(450);
+		    	}
+		    	else if(i == 8){
+		    		obs.xProperty().set(450);
+		    		obs.yProperty().set(450);
+		    	}
+		    	
 				
 				obstacles.add(obs);
 				/*Iterator itr = obstacles.iterator();
@@ -159,14 +207,29 @@ public class Lobby extends BorderPane{
 			
 			ObstacleFactory factoryFair = new ObstacleFactory(obstacles);
 			
-			factoryFair.produce4X4Obstacle();
+			factoryFair.produce2X8Obstacle();
+			factoryFair.produce40X1Obstacle();
+			factoryFair.produce1X28Obstacle();
+			factoryFair.produce2X2Obstacle();
+			factoryFair.produce3X3Obstacle();
+			factoryFair.produce2X7Obstacle();
+			factoryFair.produce2X6Obstacle();
+			factoryFair.produce3X4Obstacle();
+			factoryFair.produce9X2Obstacle();
+			factoryFair.produce3X2Obstacle();
+			factoryFair.produce3X7Obstacle();
+			factoryFair.produce6X2Obstacle();
+			factoryFair.produce4X1Obstacle();
+			factoryFair.produce1X5Obstacle();
+			
+			/*factoryFair.produce4X4Obstacle();
 			factoryFair.produce4X3Obstacle();
 			factoryFair.produce6X4Obstacle();
 			factoryFair.produce3X5Obstacle();
 			factoryFair.produce4X2Obstacle();
 			factoryFair.produce2X4Obstacle();
 			factoryFair.produce3X4Obstacle();
-			factoryFair.produce3X3Obstacle();
+			factoryFair.produce3X3Obstacle();*/
 			
 			obstacles = factoryFair.getFactoryObstacleArray();
 			numberObs = obstacles.size();
@@ -999,6 +1062,8 @@ public class Lobby extends BorderPane{
 		
 		int head_size = allOfPathHead.size();
 				
+		
+		
 		for(int i=0; i< head_size; i++){
 
 			createLane(allOfPathHead.get(i));	
@@ -1010,6 +1075,8 @@ public class Lobby extends BorderPane{
 	private void createAllHomotopyLane(){
 		
 		int head_size = listOfPathHead.size();
+		
+		System.out.println("head size : " + head_size);
 		
 		for(int i=0; i< head_size; i++){
 
@@ -1133,7 +1200,9 @@ public class Lobby extends BorderPane{
 	
 	public void drawPolygon(Polygon polygon){
 		
-		polygon.setFill(Color.ANTIQUEWHITE);
+		
+		Color color=new Color(0f,1f,0f,.5f );
+		polygon.setFill(color);
 		center.getChildren().add(polygon);
 		
 		
@@ -1165,10 +1234,10 @@ public class Lobby extends BorderPane{
 			case 5 : laneColor = Color.DARKGREEN;
 			break;
 			
-			case 6 : laneColor = Color.GREY;
+			case 6 : laneColor = Color.RED;
 			break;
 			
-			case 7 : laneColor = Color.GREY;
+			case 7 : laneColor = Color.RED;
 			break;
 			
 			case 8 : laneColor = Color.CHARTREUSE;
@@ -1183,10 +1252,10 @@ public class Lobby extends BorderPane{
 			case 11 : laneColor = Color.PURPLE;
 			break;
 			
-			case 12 : laneColor = Color.PALEGREEN;
+			case 12 : laneColor = Color.GREY;
 			break;
 			
-			case 13 : laneColor = Color.PALEGREEN;
+			case 13 : laneColor = Color.GREY;
 			break;
 			
 			case 14 : laneColor = Color.AQUAMARINE;

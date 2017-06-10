@@ -17,6 +17,78 @@ public class ObstacleFair extends Obstacle{
 		this.yProperty().set(yProperty);
 		
 	}
+	public void transform1X5(){
+		
+		this.setWidth(20);
+		this.setHeight(100);
+		this.setFill(Color.PALEGOLDENROD);
+	}
+	public void transform4X1(){
+		
+		this.setWidth(80);
+		this.setHeight(20);
+		this.setFill(Color.PALEGOLDENROD);
+	}	
+	public void transform6X2(){
+		
+		this.setWidth(120);
+		this.setHeight(40);
+		this.setFill(Color.PEACHPUFF);
+	}
+	public void transform3X7(){
+		
+		this.setWidth(60);
+		this.setHeight(140);
+		this.setFill(Color.SLATEGRAY);
+	}
+	public void transform3X2(){
+		
+		this.setWidth(60);
+		this.setHeight(40);
+		this.setFill(Color.POWDERBLUE);
+	}
+	public void transform9X2(){
+		
+		this.setWidth(180);
+		this.setHeight(40);
+		this.setFill(Color.LEMONCHIFFON);
+	}
+	public void transform2X6(){
+		
+		this.setWidth(40);
+		this.setHeight(120);
+		this.setFill(Color.HONEYDEW);
+	}
+	public void transform2X7(){
+		
+		this.setWidth(40);
+		this.setHeight(140);
+		this.setFill(Color.DARKSALMON);
+	}
+	public void transform2X2(){
+		
+		this.setWidth(40);
+		this.setHeight(40);
+		this.setFill(Color.DARKKHAKI);
+	}
+	public void transform2X8(){
+		
+		this.setWidth(40);
+		this.setHeight(160);
+		this.setFill(Color.CADETBLUE);
+	}
+	public void transform40X1(){
+		
+		this.setWidth(800);
+		this.setHeight(10);
+		this.setFill(Color.GRAY);
+	}
+	public void transform1X28(){
+		
+		this.setWidth(10);
+		this.setHeight(580);
+		this.setFill(Color.GRAY);
+	}
 	
 	public void transform4X4(){
 		
@@ -59,14 +131,14 @@ public class ObstacleFair extends Obstacle{
 	}
 	public void transform3X4(){
 		
-		this.setWidth(75);
-		this.setHeight(100);
+		this.setWidth(60);
+		this.setHeight(80);
 		this.setFill(Color.LIGHTSLATEGRAY);
 	}
 	public void transform3X3(){
 		
-		this.setWidth(75);
-		this.setHeight(75);
+		this.setWidth(60);
+		this.setHeight(60);
 		this.setFill(Color.MEDIUMTURQUOISE);
 	}
 
