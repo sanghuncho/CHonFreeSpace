@@ -234,7 +234,8 @@ public class LobbyPresenter {
 		 * It starts the searching,if search button is clicked.
 		 */
 		lobbyView.searchButton.setOnMouseClicked(event -> {
-		
+			
+			lobbyView.setNumberShortcutEdges(costmap.getEdges());
 			this.permitChange = true;
 			
 			long  startTime_searching = System.currentTimeMillis();

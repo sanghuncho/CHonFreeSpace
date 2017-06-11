@@ -106,6 +106,7 @@ public class Lobby extends BorderPane{
 
 	int k=0;
 	private Color laneColor;
+	private int numberShortcutEdge=0;
 	
 	public Lobby(Stage stage){
 		
@@ -519,6 +520,9 @@ public class Lobby extends BorderPane{
 			Vector start = edges.get(i).getSource().getPosition();
 			Vector goal = edges.get(i).getDestination().getPosition();
 			
+			/**
+			 * true, if the length is longer than root2
+			 * */
 			if(checkLengthEdge(edges.get(i))){
 				
 				if( !checkHomoEdge(edges.get(i)) ){
@@ -533,6 +537,26 @@ public class Lobby extends BorderPane{
 			}
 			
 		}
+	}
+	public void setNumberShortcutEdges(ArrayList<Edge> edges){
+		
+		int size = edges.size();
+		for(int i=0; i < size; i++){
+			
+			/**
+			 * true, if the length is longer than root2
+			 * */
+			if(checkLengthEdge(edges.get(i))){
+				
+				if( !checkHomoEdge(edges.get(i)) ){
+				
+				this.numberShortcutEdge++;
+			
+				}
+			}
+			
+		}
+		
 	}
 	
 	/**
@@ -942,10 +966,10 @@ public class Lobby extends BorderPane{
 		}
 		String liveNumberNode = Integer.toString(numberOfNode-numberContracted);
 		
-		int variousEdges = sizeOfEdges/2;
+		int numberWholeEdge = sizeOfEdges/2 - (numberContracted*8) + this.numberShortcutEdge;
 				
 		text.setText("the number of nodes : " + liveNumberNode
-				+ ",  the number of edges : " + variousEdges);
+				+ ",  the number of edges : " + numberWholeEdge);
 		
 	}
 	
