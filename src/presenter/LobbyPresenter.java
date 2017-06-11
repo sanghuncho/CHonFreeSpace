@@ -7,8 +7,11 @@ import java.util.Date;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
+import javafx.scene.control.Toggle;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
@@ -50,6 +53,11 @@ public class LobbyPresenter {
 	private boolean isCheckAll;
 	private boolean isCheckShort;
 	private boolean isCheckTop3;
+	
+	private boolean isRadioAll;
+	private boolean isRadioCH;
+	private boolean isRadioTop3;
+	
 	private DijkstraAlgorithm dijkstra_head;
 	private DijkstraAlgorithm dijkstra_tail;
 	
@@ -58,6 +66,7 @@ public class LobbyPresenter {
 	private int[] costOfHomotopy;
 	private int nodeNumberObstacle;
 
+	private boolean permitChange = false;
 	
 	public LobbyPresenter(Lobby lobbyView){
 		this.lobbyView = lobbyView;
@@ -226,6 +235,8 @@ public class LobbyPresenter {
 		 */
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 		
+			this.permitChange = true;
+			
 			long  startTime_searching = System.currentTimeMillis();
 			SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
 			Date resultdate = new Date(startTime_searching);
@@ -242,13 +253,19 @@ public class LobbyPresenter {
 		 isCheckAll = lobbyView.getCheckBoxAll().isSelected();
 		 isCheckShort = lobbyView.getCheckBoxShort().isSelected();
 		 isCheckTop3 = lobbyView.getCheckBoxTop3().isSelected();
-			
-		 /**
-		  * The representative paths of homotopy class are displayed.
-		  * */
 		 
-		 //if((isCheckShort) && (!isCheckAll)){ 
-		 if(!isCheckAll){ 
+		 /**
+		  * here through the checkBox decided whether 
+		  * all paths are showed or the representative paths showed.
+		  */ 
+		 isRadioAll = lobbyView.getRadioButtonAll().isSelected();
+		 isRadioCH = lobbyView.getRadioButtonCH().isSelected();
+		 isRadioTop3 = lobbyView.getRadioButtonTop3().isSelected();
+		 /**
+		  * The representative paths of homotopy class as top3 paths or all paths of homotopy classesare displayed.'
+		  * */
+		 //if(!isCheckAll){ 
+		 if(!isRadioAll){ 
 			 
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
 			int firstViaNodeY = lobbyView.getViaNode2D(0).getY();
@@ -372,12 +389,15 @@ public class LobbyPresenter {
 			
 			
 		    createHomotopy(lobbyView, costmap);
-		 }//checkBoxShort is selected
+		   
+		    
+		 }
 		 
 		 /**
 		  * All the paths are displayed.
 		  * */
-		 if((!isCheckShort) && (isCheckAll)){
+		 //if((!isCheckShort) && (isCheckAll)){
+		 if((!isRadioCH) && (isRadioAll)){ 
 			 
 				loop=0;
 				int totalLoop = lobbyView.getViaNodeSize();
@@ -409,6 +429,91 @@ public class LobbyPresenter {
 		
 		          
 		});
+		
+		
+		lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+			    public void changed(ObservableValue<? extends Toggle> ov,
+				        Toggle old_toggle, Toggle new_toggle) {
+			    	
+				            if(lobbyView.getRadioGroup().getSelectedToggle().equals(lobbyView.getRadioButtonAll())) {
+				            	
+				            	System.out.println("Remove!!");
+				    		    
+				    		    lobbyView.removeLane();
+				    		    
+				    		    createAllPath();
+				            }                
+				        }
+				});
+		
+		lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+		    public void changed(ObservableValue<? extends Toggle> ov,
+			        Toggle old_toggle, Toggle new_toggle) {
+		    	
+			            if(lobbyView.getRadioGroup().getSelectedToggle().equals(lobbyView.getRadioButtonTop3())) {
+			            	
+			            	System.out.println("Remove!!");
+			    		    
+			    		    lobbyView.removeLane();
+			    		    
+			    		    createTop3Path();
+			            }                
+			        }
+			});
+		
+		lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+		    public void changed(ObservableValue<? extends Toggle> ov,
+			        Toggle old_toggle, Toggle new_toggle) {
+		    	
+			            if(lobbyView.getRadioGroup().getSelectedToggle().equals(lobbyView.getRadioButtonCH())) {
+			            	
+			            	System.out.println("Remove!!");
+			    		    
+			    		    lobbyView.removeLane();
+			    		    
+			    		    createHomotopyPath();
+			            }                
+			        }
+			});
+		
+		
+		
+	}
+	
+	
+	private void createTop3Path(){
+		lobbyView.initiateColorNumber();
+		createHomotopy(lobbyView, costmap);
+	}
+	private void createHomotopyPath(){
+		
+		lobbyView.initiateColorNumber();
+		createHomotopy(lobbyView, costmap);
+	}
+	private void createAllPath(){
+		
+		lobbyView.initiateColorNumber();
+		loop=0;
+		int totalLoop = lobbyView.getViaNodeSize();
+		
+		while( loop < totalLoop ){
+							
+			int viaNodeX = lobbyView.getViaNode2D(loop).getX();
+			int viaNodeY = lobbyView.getViaNode2D(loop).getY();
+			
+			dijkstra_head.setPath(nodeMap
+					.get(viaNodeX,viaNodeY));
+			
+			dijkstra_tail.setPath(nodeMap
+					.get(viaNodeX,viaNodeY));
+			
+			lobbyView.setAllPaths(dijkstra_head.getPath(),
+					dijkstra_tail.getPath());
+			
+			loop++;
+			
+		}
+		createAllPaths(lobbyView, costmap);
 		
 		
 	}
@@ -761,6 +866,7 @@ public class LobbyPresenter {
 					        }
 					        
 					    };
+			
 			
 
 }

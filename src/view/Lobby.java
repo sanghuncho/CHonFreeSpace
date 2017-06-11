@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,7 +19,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -49,7 +53,6 @@ public class Lobby extends BorderPane{
 	public Button contractButton = new Button("via node + CH");
 	public Button searchButton = new Button("search");
 	public Button refreshButton = new Button("refresh");
-	
 	public Obstacle obs;
 	public ObstacleFair obsFair;
 	public ArrayList<Obstacle>  obstacles;
@@ -89,9 +92,18 @@ public class Lobby extends BorderPane{
 	private Polygon polygon;
 	private int colorNumber = 0;
 	public TextField numberOfViaNode;
+	
 	private CheckBox cbAll;
 	private CheckBox cbShort;
 	private CheckBox cbTop3;
+	
+	private RadioButton radioAll = new RadioButton("All");
+	private RadioButton radioCH = new RadioButton("Homotopy");
+	private RadioButton radioTop3 = new RadioButton("Top3");
+	
+	final ToggleGroup radioGroup = new ToggleGroup();
+	private boolean permissionChange = false;
+
 	int k=0;
 	private Color laneColor;
 	
@@ -221,15 +233,7 @@ public class Lobby extends BorderPane{
 			factoryFair.produce6X2Obstacle();
 			factoryFair.produce4X1Obstacle();
 			factoryFair.produce1X5Obstacle();
-			
-			/*factoryFair.produce4X4Obstacle();
-			factoryFair.produce4X3Obstacle();
-			factoryFair.produce6X4Obstacle();
-			factoryFair.produce3X5Obstacle();
-			factoryFair.produce4X2Obstacle();
-			factoryFair.produce2X4Obstacle();
-			factoryFair.produce3X4Obstacle();
-			factoryFair.produce3X3Obstacle();*/
+		
 			
 			obstacles = factoryFair.getFactoryObstacleArray();
 			numberObs = obstacles.size();
@@ -289,9 +293,6 @@ public class Lobby extends BorderPane{
 		center.setMaxSize(1000,1000);
 		center.getChildren().addAll(startPoint,endPoint);
 		
-		/*ProgressBar bar = new ProgressBar(0.0);
-		top.getChildren().add(bar);*/
-		
 		
 		final Pane leftSpacer = new Pane();
 		leftSpacer.setMinWidth(40);
@@ -304,11 +305,19 @@ public class Lobby extends BorderPane{
 		cbShort = new CheckBox("Homotopy");
 		cbTop3 = new CheckBox("Top3");
 		
+		radioCH.setToggleGroup(radioGroup);
+		radioCH.setSelected(true);
+		
+		radioTop3.setToggleGroup(radioGroup);
+		radioAll.setToggleGroup(radioGroup);
+		
+		
+		
+		
 		HBox hBox = new HBox();
 		hBox.setSpacing(10);
-		hBox.getChildren().addAll(leftSpacer,cbShort,cbTop3,cbAll,numberOfViaNode,
-				viaNodeButton,contractButton,searchButton);//,refreshButton
-		
+		//hBox.getChildren().addAll(leftSpacer,cbShort,cbTop3,cbAll,numberOfViaNode,viaNodeButton,contractButton,searchButton);
+		hBox.getChildren().addAll(leftSpacer,radioCH,radioTop3,radioAll,numberOfViaNode,viaNodeButton,contractButton,searchButton);
 		
 		final Pane leftSpacer_text = new Pane();
 		leftSpacer_text.setMinWidth(40);
@@ -340,6 +349,11 @@ public class Lobby extends BorderPane{
 		 
 		stage.setScene(scene);
 			
+	}
+	
+	public void setPermissionChange(boolean change){
+		
+		this.permissionChange = change;
 	}
 	
 	/**
@@ -1041,8 +1055,8 @@ public class Lobby extends BorderPane{
 		 * if the top3-checkbox is selected on lobby, 
 		 * then only three shortest paths of homotopy classes are displayed.
 		 * */  
-		if(cbTop3.isSelected()){
-			
+		//if(cbTop3.isSelected()){
+		if(radioTop3.isSelected()){	
 			createTop3HomotopyLane();
 			
 						
@@ -1051,8 +1065,8 @@ public class Lobby extends BorderPane{
 		 * if the representative-checkbox is selected on lobby, 
 		 * then all shortest paths of homotopy classes are displayed.
 		 * */ 
-		if(cbShort.isSelected()){
-			
+		//if(cbShort.isSelected()){
+		if(radioCH.isSelected()){
 			createAllHomotopyLane();
 			
 		}
@@ -1062,8 +1076,6 @@ public class Lobby extends BorderPane{
 		
 		int head_size = allOfPathHead.size();
 				
-		
-		
 		for(int i=0; i< head_size; i++){
 
 			createLane(allOfPathHead.get(i));	
@@ -1187,14 +1199,27 @@ public class Lobby extends BorderPane{
 				System.out.println("centerchildren is null");
 			}
 			center.getChildren().add(lane);
+			laneList.add(lane);
 			
 			
 		}
 		/*if either homotpy or top3 on lobby is checked,
 		 * then various color is applied*/
-		if(cbShort.isSelected() || cbTop3.isSelected()){
+		//if(cbShort.isSelected() || cbTop3.isSelected()){
+		if(radioCH.isSelected() || radioTop3.isSelected()){
 			colorNumber++;
 		}
+		
+	}
+	
+	public void removeLane(){
+		
+		int sizeLane = laneList.size();
+			
+			for(int j=0; j< sizeLane; j++){
+				
+					center.getChildren().remove(laneList.get(j));
+			}
 		
 	}
 	
@@ -1340,8 +1365,28 @@ public class Lobby extends BorderPane{
 		
 		return cbTop3;
 	}
+	
+	public RadioButton getRadioButtonAll(){
+		
+		return radioAll;
+	}
+	public RadioButton getRadioButtonCH(){
+		
+		return radioCH;
+	}
+	public RadioButton getRadioButtonTop3(){
+		
+		return radioTop3;
+	}
+	public ToggleGroup getRadioGroup(){
+		return radioGroup;
+	}
+	
 	public int[] getCostOfHomotopy(){
 		return costOfHomotopy;
+	}
+	public void initiateColorNumber(){
+		colorNumber = 0;
 	}
 	
 }
