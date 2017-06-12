@@ -201,7 +201,8 @@ public class MainView extends GridPane{
 		ObservableList<String> options = 
 			    FXCollections.observableArrayList(
 			        "manual",
-			        "fair"
+			        "fair",
+			        "floor"
 			    );
 		final ComboBox comboBox = new ComboBox(options);
 		

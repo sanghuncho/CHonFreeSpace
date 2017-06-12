@@ -64,15 +64,18 @@ public class MainPresenter {
 			readyForFair();
 			break;
 			
+		case "floor":
+			readyForFloor();
+			break;
+			
 		//case "extended for other scenarios"	
 			
 		}
 	
 	}
-	private void readyForFair(){
-		
+	private void readyForFloor(){
 		/**
-		 * The size of fiar-mode is already fixed as 800x600.
+		 * The size of floor-mode is already fixed as 800x600.
 		 * */
 		CHmodel.setMapX(800);
 		CHmodel.setMapY(600);
@@ -87,8 +90,40 @@ public class MainPresenter {
 		/**
 		 * The position of goal point on the map.
 		 * */
-		CHmodel.setGoalX(65);
-		CHmodel.setGoalY(45);
+		CHmodel.setGoalX(75);
+		CHmodel.setGoalY(55);
+		// make not visible number of obstacle
+		//CHmodel.setNumerObstacle(0);
+		
+		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
+		
+		CHmodel.setContractingPercent(Integer.parseInt(mainView.getPercentageCustom().getText()));
+		
+		System.out.println("the percent of CH : " + Integer.parseInt(mainView.getPercentageCustom().getText()) + "%\n");
+		
+		new NodeMapHandler(size);
+		
+	}
+	private void readyForFair(){
+		
+		/**
+		 * The size of fair-mode is already fixed as 800x600.
+		 * */
+		CHmodel.setMapX(800);
+		CHmodel.setMapY(600);
+		
+		// make not visible start and goal point
+		/**
+		 * The position of start point on the map.
+		 * */
+		CHmodel.setStartX(5);
+		CHmodel.setStartY(5);
+		
+		/**
+		 * The position of goal point on the map.
+		 * */
+		CHmodel.setGoalX(75);
+		CHmodel.setGoalY(55);
 		// make not visible number of obstacle
 		//CHmodel.setNumerObstacle(0);
 		

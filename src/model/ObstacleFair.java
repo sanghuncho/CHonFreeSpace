@@ -17,6 +17,25 @@ public class ObstacleFair extends Obstacle{
 		this.yProperty().set(yProperty);
 		
 	}
+	
+	public void transform(int width, int height){
+		
+		this.setWidth(width);
+		this.setHeight(height);
+		this.setFill(Color.PALEGOLDENROD);
+	}
+	public void transform1X6(){
+		
+		this.setWidth(10);
+		this.setHeight(120);
+		this.setFill(Color.PALEGOLDENROD);
+	}
+	public void transform6X1(){
+		
+		this.setWidth(120);
+		this.setHeight(10);
+		this.setFill(Color.PALEGOLDENROD);
+	}
 	public void transform1X5(){
 		
 		this.setWidth(20);

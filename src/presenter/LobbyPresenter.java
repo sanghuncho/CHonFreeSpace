@@ -88,7 +88,7 @@ public class LobbyPresenter {
 		
 		
 		/**
-		 * if only manual mode is slelected,
+		 * if only manual mode is selected,
 		 * then the obstacle can be moved by dragging it.
 		 * */
 		if(CHmodel.getMode().equals("manual")){
@@ -96,6 +96,9 @@ public class LobbyPresenter {
 			numberObs = CHmodel.getNumberObstacle();
 			
 		}else if(CHmodel.getMode().equals("fair")){
+			
+			numberObs = 0;
+		}else if(CHmodel.getMode().equals("floor")){
 			
 			numberObs = 0;
 		}
@@ -427,12 +430,7 @@ public class LobbyPresenter {
 			 	//error 
 		 }
 		 
-		
-		          
-		});
-		
-		
-		lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+		 lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 			    public void changed(ObservableValue<? extends Toggle> ov,
 				        Toggle old_toggle, Toggle new_toggle) {
 			    	
@@ -477,6 +475,56 @@ public class LobbyPresenter {
 			        }
 			});
 		
+		
+		          
+		});
+		
+		
+		/*lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+			    public void changed(ObservableValue<? extends Toggle> ov,
+				        Toggle old_toggle, Toggle new_toggle) {
+			    	
+				            if(lobbyView.getRadioGroup().getSelectedToggle().equals(lobbyView.getRadioButtonAll())) {
+				            	
+				            	System.out.println("Remove!!");
+				    		    
+				    		    lobbyView.removeLane();
+				    		    
+				    		    createAllPath();
+				            }                
+				        }
+				});
+		
+		lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+		    public void changed(ObservableValue<? extends Toggle> ov,
+			        Toggle old_toggle, Toggle new_toggle) {
+		    	
+			            if(lobbyView.getRadioGroup().getSelectedToggle().equals(lobbyView.getRadioButtonTop3())) {
+			            	
+			            	System.out.println("Remove!!");
+			    		    
+			    		    lobbyView.removeLane();
+			    		    
+			    		    createTop3Path();
+			            }                
+			        }
+			});
+		
+		lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+		    public void changed(ObservableValue<? extends Toggle> ov,
+			        Toggle old_toggle, Toggle new_toggle) {
+		    	
+			            if(lobbyView.getRadioGroup().getSelectedToggle().equals(lobbyView.getRadioButtonCH())) {
+			            	
+			            	System.out.println("Remove!!");
+			    		    
+			    		    lobbyView.removeLane();
+			    		    
+			    		    createHomotopyPath();
+			            }                
+			        }
+			});
+		*/
 		
 		
 	}
