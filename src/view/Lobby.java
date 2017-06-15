@@ -989,7 +989,7 @@ public class Lobby extends BorderPane{
 		return polygon;
 	}
 	
-	public void setText(int sizeOfEdges, boolean applyCH){
+	public void setText(int totalEdges, boolean applyCH){
 		
 		int numberOfNode = nodemap.getSizeNode();
 		int numberContracted = 0;
@@ -1000,9 +1000,16 @@ public class Lobby extends BorderPane{
 		else{
 		}
 		String liveNumberNode = Integer.toString(numberOfNode-numberContracted);
+		/**
+		 * whole edges does not include the shortcut edges
+		 * */		
+		//int numberWholeEdge = (totalEdges/2) -  this.numberShortcutEdge;
+	
+		/**
+		 * whole edges include the shortcut edges
+		 * */
+		int numberWholeEdge = (totalEdges/2);
 		
-		int numberWholeEdge = sizeOfEdges/2 - (numberContracted*8) + this.numberShortcutEdge;
-				
 		text.setText("the number of nodes : " + liveNumberNode
 				+ ",  the number of edges : " + numberWholeEdge);
 		

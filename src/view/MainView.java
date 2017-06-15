@@ -169,7 +169,7 @@ public class MainView extends GridPane{
 		 * the number of the obstacle is initialized by input value.
 		 */
 		
-		numberOfObstacle = new TextField("1");
+		numberOfObstacle = new TextField("9");
 		numberOfObstacle.setMinHeight(50);
 		numberOfObstacle.setPrefWidth(100);
 		numberOfObstacle.setId("numeberTextField");
@@ -185,7 +185,7 @@ public class MainView extends GridPane{
 		 * the percentage of contraction hierarhes is initialized by input value.
 		 */
 		
-		percentOfContract = new TextField("10");
+		percentOfContract = new TextField("80");
 		percentOfContract.setMinHeight(50);
 		percentOfContract.setPrefWidth(100);
 		percentOfContract.setId("");
