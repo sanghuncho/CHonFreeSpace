@@ -25,7 +25,7 @@ public class Obstacle extends Rectangle{
     	/**
     	 * create randomly obstacles on the map.
     	 */
-		createObstacleRandom();
+		//createObstacleRandom();
     	
     	/**
     	 * For evaluation the coordinates of four obstacles are set

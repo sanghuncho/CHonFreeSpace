@@ -185,7 +185,7 @@ public class MainView extends GridPane{
 		 * the percentage of contraction hierarhes is initialized by input value.
 		 */
 		
-		percentOfContract = new TextField("80");
+		percentOfContract = new TextField("60");
 		percentOfContract.setMinHeight(50);
 		percentOfContract.setPrefWidth(100);
 		percentOfContract.setId("");

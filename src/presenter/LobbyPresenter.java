@@ -64,6 +64,7 @@ public class LobbyPresenter {
 	private Point startPoint;
 	private Point endPoint;
 	private int[] costOfHomotopy;
+	private double[] valueOfTurning;
 	private int nodeNumberObstacle;
 
 	private boolean permitChange = false;
@@ -80,7 +81,7 @@ public class LobbyPresenter {
 		this.startPoint = lobbyView.getStartPoint();
 		this.endPoint = lobbyView.getEndPoint();
 		this.costOfHomotopy = lobbyView.getCostOfHomotopy();
-		
+		this.valueOfTurning = lobbyView.getValueOfTurning();
 		activate();
 	}
 	
@@ -165,7 +166,8 @@ public class LobbyPresenter {
 			dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
 			
-			    
+			System.out.println("node size : " + nodeMap.getNodes().size());
+            System.out.println("edge size : " + costmap.getEdges().size()/2);
 			
 
 		});
@@ -217,7 +219,8 @@ public class LobbyPresenter {
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
         					nodeMap, obstacles , constantMap.getMap());
             
-            System.out.println("edge size : " + costmap.getEdges().size()/2);
+            System.out.println("node size : " + (nodeMap.getNodes().size() - CHmodel.getNumberContractedCustom()));
+            System.out.println("edge size : " + (costmap.getEdges().size()/2));
 			
 			Graph graph = new Graph(nodeMap.getNodes(),costmap.getEdges());
 			
@@ -277,8 +280,13 @@ public class LobbyPresenter {
 			int distance_first_x = dijkstra_head.getShortestDistance(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			int distance_first_y = dijkstra_tail.getShortestDistance(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			
+			double turningValueFromHead_f = dijkstra_head.getTurningValue(nodeMap.get(firstViaNodeX,firstViaNodeY));
+			double turningValueFromTail_f = dijkstra_tail.getTurningValue(nodeMap.get(firstViaNodeX,firstViaNodeY));
+			
+			
 			costOfHomotopy[0] = (distance_first_x + distance_first_y); 
-
+			valueOfTurning[0] = (turningValueFromHead_f + turningValueFromTail_f);
+					
 			dijkstra_head.setPath(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			
 			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());
@@ -311,6 +319,11 @@ public class LobbyPresenter {
 				int distance_next_x = dijkstra_head.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				int distance_next_y = dijkstra_tail.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				int distance_next = (distance_next_x + distance_next_y);  
+				
+				
+				double turningValueFromHead_n = dijkstra_head.getTurningValue(nodeMap.get(nextViaNodeX,nextViaNodeY));
+				double turningValueFromTail_n = dijkstra_tail.getTurningValue(nodeMap.get(nextViaNodeX,nextViaNodeY));
+				double turningOfValue_next = (turningValueFromHead_n + turningValueFromTail_n);
 				
 				dijkstra_head.setPath(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				
@@ -377,7 +390,7 @@ public class LobbyPresenter {
 				 * the evaluation_1st is here implemented.
 				 */
 				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(),
-						dijkstra_tail.getPath(),numberViaNode,nextViaNodeX,nextViaNodeY,distance_next);
+						dijkstra_tail.getPath(),numberViaNode,nextViaNodeX,nextViaNodeY,distance_next,turningOfValue_next);
 				
 				loop++;
 				
@@ -385,14 +398,17 @@ public class LobbyPresenter {
 			
 			/**
 			 *the evaluation_3st is implemented.
-			 *this shows the durationn of from the running of two dijkstra's algorithm to the homotopy test. 
+			 *this shows the duration of from the running of two dijkstra's algorithm to the homotopy test. 
 			 */
 			long endTime_searching = System.currentTimeMillis();
 			long duration_searching = (endTime_searching - startTime_searching);
+			long duration_classifying = (endTime_searching - firstHomotopy);
 			System.out.println("the duration of the searching and the homotopy test : " + duration_searching + " miliseconds");
-			
+			System.out.println("the duration of homotopy test : " + duration_classifying + " miliseconds");
 			
 		    createHomotopy(lobbyView, costmap);
+		    lobbyView.printCostOfHomotopyClass();
+		    lobbyView.printValueOfTurning();
 		   
 		    
 		 }
@@ -424,11 +440,15 @@ public class LobbyPresenter {
 					
 				}
 				createAllPaths(lobbyView, costmap);
+				lobbyView.printCostOfHomotopyClass();
+				lobbyView.printValueOfTurning();
 			
 		 }
 		 else{
 			 	//error 
 		 }
+		 
+		 
 		 
 		 lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 			    public void changed(ObservableValue<? extends Toggle> ov,
@@ -525,6 +545,7 @@ public class LobbyPresenter {
 			        }
 			});
 		*/
+		
 		
 		
 	}
@@ -707,7 +728,7 @@ public class LobbyPresenter {
 		//obsXpos-10
 		if( (obsXpos-10 <= nodeGoalX ) && ( nodeGoalX <= obsXposWidth)){ 
 			
-			if(( obsYpos-10 <= nodeGoalY) && ( nodeGoalY <= obsYposWidth)){
+			if(( obsYpos-10  <= nodeGoalY) && ( nodeGoalY <= obsYposWidth)){
 				
 				return true;
 				

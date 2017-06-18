@@ -85,6 +85,7 @@ public class CostMap {
 					neighborDirection = node.getDirectionOfNeighbor(neighbor);
 
 				}
+				
 				long startTime_shortcut = System.currentTimeMillis();
 				
 				while(isContractedNode(neighborVector)){
@@ -95,7 +96,9 @@ public class CostMap {
 					weight++;
 					
 				}
+				
 				long endTime_shortcut = System.currentTimeMillis();
+				
 				durationOfOneShortcut = (endTime_shortcut - startTime_shortcut);
 				durationOfgeneratingAllShortcut = durationOfgeneratingAllShortcut 
 						+ durationOfOneShortcut;

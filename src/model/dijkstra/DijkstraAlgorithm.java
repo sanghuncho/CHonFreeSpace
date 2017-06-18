@@ -433,6 +433,9 @@ public class DijkstraAlgorithm{//implements Runnable
     public void setThread(Thread thread) {
 		this.thread = thread;
 	}
+    public double getTurningValue(Node node){
+    	return turning.get(node);
+    } 
 
 
 

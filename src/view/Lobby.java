@@ -70,7 +70,8 @@ public class Lobby extends BorderPane{
 	//public ArrayList<LinkedList<Node>> listOfPath = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> listOfPathHead = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> listOfPathTail = new ArrayList<LinkedList<Node>>();
-	public int[] costOfHomotopy = new int[100];
+	public int[] costOfHomotopy = new int[50];
+	private double[] valueOfTurning = new double[50];
 	public ArrayList<String> listOfPathCategory = new ArrayList<String>();
 	public ArrayList<LinkedList<Node>> allOfPathHead = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> allOfPathTail = new ArrayList<LinkedList<Node>>();
@@ -1011,7 +1012,8 @@ public class Lobby extends BorderPane{
 		int numberWholeEdge = (totalEdges/2);
 		
 		text.setText("the number of nodes : " + liveNumberNode
-				+ ",  the number of edges : " + numberWholeEdge);
+				+ ",  the number of edges : " + numberWholeEdge
+				+ ",  alternative routes : " + listOfPathCategory.size());
 		
 	}
 	
@@ -1041,7 +1043,7 @@ public class Lobby extends BorderPane{
 	 * @param numberViaNode
 	 */
 	public void setPathCategory(String pathId, LinkedList<Node> head_path,LinkedList<Node> tail_path,
-			int numberViaNode,int nextViaNodeX,int nextViaNodeY,int distance_next){
+			int numberViaNode,int nextViaNodeX,int nextViaNodeY,int distance_next,double turningOfValue_next){
 		
 		
 		int length = listOfPathCategory.size();
@@ -1066,13 +1068,36 @@ public class Lobby extends BorderPane{
 				//here implement the method of compare with cost and turn value between two homotopy path
 				homotopy = true;
 				
-				if(costOfHomotopy[i] >= distance_next){
+				/*if(costOfHomotopy[i] >= distance_next){
 					
 					listOfPathHead.remove(i);
 					listOfPathHead.add(i,head_path);
 					listOfPathTail.remove(i);
 					listOfPathTail.add(i,tail_path);
 					costOfHomotopy[i] = distance_next;
+					
+				}*/
+				
+				if(costOfHomotopy[i] == distance_next){
+					
+					if(valueOfTurning[i] > turningOfValue_next){
+						
+						listOfPathHead.remove(i);
+						listOfPathHead.add(i,head_path);
+						listOfPathTail.remove(i);
+						listOfPathTail.add(i,tail_path);
+						costOfHomotopy[i] = distance_next;
+						valueOfTurning[i] = turningOfValue_next;
+					}
+					
+				}else if(costOfHomotopy[i] > distance_next){
+					
+					listOfPathHead.remove(i);
+					listOfPathHead.add(i,head_path);
+					listOfPathTail.remove(i);
+					listOfPathTail.add(i,tail_path);
+					costOfHomotopy[i] = distance_next;
+					valueOfTurning[i] = turningOfValue_next;
 					
 				}
 				
@@ -1085,6 +1110,7 @@ public class Lobby extends BorderPane{
 			listOfPathHead.add(length, head_path);
 			listOfPathTail.add(length, tail_path);
 			costOfHomotopy[length] = distance_next;
+			valueOfTurning[length] = turningOfValue_next;
 		}
 		
 		evaluation_1(listOfPathCategory.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
@@ -1107,6 +1133,50 @@ public class Lobby extends BorderPane{
 		
 		
 	}
+	public void printCostOfHomotopyClass(){
+		
+		int arrayLength = costOfHomotopy.length;
+		int wholeValue = 0;
+		int[] costArrayHelp = new int[arrayLength];
+		
+		for (int i = 0; i < arrayLength; i++) {
+			
+			   costArrayHelp[i] = costOfHomotopy[i];
+			   wholeValue = wholeValue + costOfHomotopy[i];
+		}
+		
+		Arrays.sort(costArrayHelp);
+		for(int i = 0; i < arrayLength; i++ ){
+			
+			System.out.println("each cost of homotopy classes : " + costArrayHelp[i]);
+			
+			
+		}
+		System.out.println("sum of cost : " + wholeValue);
+	}
+	
+	public void printValueOfTurning(){
+		
+		int arrayLength = valueOfTurning.length;
+		double [] costArrayHelp = new double[arrayLength];
+		
+		for (int i = 0; i < arrayLength; i++) {
+			
+			   costArrayHelp[i] = valueOfTurning[i];
+			  
+		}
+		
+		Arrays.sort(costArrayHelp);
+		for(int i = 0; i < arrayLength; i++ ){
+			
+			System.out.println("each value of turning : " + costArrayHelp[i]);
+			
+			
+		}
+		//System.out.println("sum of cost : " + wholeValue);
+	}
+	
+	
 	public void setAllPaths(LinkedList<Node> head_path,LinkedList<Node> tail_path){
 			
 		allOfPathHead.add(head_path);
@@ -1450,6 +1520,10 @@ public class Lobby extends BorderPane{
 	
 	public int[] getCostOfHomotopy(){
 		return costOfHomotopy;
+	}
+	
+	public double[] getValueOfTurning(){
+		return valueOfTurning;
 	}
 	public void initiateColorNumber(){
 		colorNumber = 0;
