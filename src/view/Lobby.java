@@ -139,7 +139,7 @@ public class Lobby extends BorderPane{
 				/**
 				 *test 6 obstacles
 				 * */
-				/*if(i == 0){
+				if(i == 0){
 		    		obs.xProperty().set(150);
 		    		obs.yProperty().set(200);
 		    	}
@@ -162,9 +162,9 @@ public class Lobby extends BorderPane{
 		    	else if(i == 5){
 		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(400);
-		    	}*/
+		    	}
 				
-				if(i == 0){
+			/*	if(i == 0){
 		    		obs.xProperty().set(150);
 		    		obs.yProperty().set(150);
 		    	}
@@ -201,7 +201,7 @@ public class Lobby extends BorderPane{
 		    	else if(i == 8){
 		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(450);
-		    	}
+		    	}*/
 		    	
 				
 				obstacles.add(obs);

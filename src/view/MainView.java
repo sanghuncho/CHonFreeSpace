@@ -169,7 +169,7 @@ public class MainView extends GridPane{
 		 * the number of the obstacle is initialized by input value.
 		 */
 		
-		numberOfObstacle = new TextField("9");
+		numberOfObstacle = new TextField("6");
 		numberOfObstacle.setMinHeight(50);
 		numberOfObstacle.setPrefWidth(100);
 		numberOfObstacle.setId("numeberTextField");
