@@ -4,6 +4,7 @@ import java.awt.MouseInfo;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -24,6 +25,7 @@ import model.dijkstra.DijkstraAlgorithm;
 import model.dijkstra.Graph;
 import model.node.Node;
 import model.node.NodeMap;
+import model.node.NodeMapHandler;
 import util.enums.Property;
 import util.math.Vector;
 import util.math.Vector2D;
@@ -69,6 +71,11 @@ public class LobbyPresenter {
 
 	private boolean permitChange = false;
 	
+	Thread thread1;
+	Thread thread2;
+	Thread thread3;
+	Thread thread4;
+	
 	public LobbyPresenter(Lobby lobbyView){
 		this.lobbyView = lobbyView;
 		this.obs=lobbyView.getObstacle();
@@ -82,7 +89,9 @@ public class LobbyPresenter {
 		this.endPoint = lobbyView.getEndPoint();
 		this.costOfHomotopy = lobbyView.getCostOfHomotopy();
 		this.valueOfTurning = lobbyView.getValueOfTurning();
+	
 		activate();
+			
 	}
 	
 	public void activate(){
@@ -407,8 +416,11 @@ public class LobbyPresenter {
 			System.out.println("the duration of homotopy test : " + duration_classifying + " miliseconds");
 			
 		    createHomotopy(lobbyView, costmap);
-		    lobbyView.printCostOfHomotopyClass();
-		    lobbyView.printValueOfTurning();
+		    //lobbyView.printCostOfHomotopyClass();
+		    //lobbyView.printValueOfTurning();
+		    
+		    autoEvaluation(5);
+		    
 		   
 		    
 		 }
@@ -498,58 +510,191 @@ public class LobbyPresenter {
 		
 		          
 		});
-		
-		
-		/*lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-			    public void changed(ObservableValue<? extends Toggle> ov,
-				        Toggle old_toggle, Toggle new_toggle) {
-			    	
-				            if(lobbyView.getRadioGroup().getSelectedToggle().equals(lobbyView.getRadioButtonAll())) {
-				            	
-				            	System.out.println("Remove!!");
-				    		    
-				    		    lobbyView.removeLane();
-				    		    
-				    		    createAllPath();
-				            }                
-				        }
-				});
-		
-		lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-		    public void changed(ObservableValue<? extends Toggle> ov,
-			        Toggle old_toggle, Toggle new_toggle) {
-		    	
-			            if(lobbyView.getRadioGroup().getSelectedToggle().equals(lobbyView.getRadioButtonTop3())) {
-			            	
-			            	System.out.println("Remove!!");
-			    		    
-			    		    lobbyView.removeLane();
-			    		    
-			    		    createTop3Path();
-			            }                
-			        }
-			});
-		
-		lobbyView.getRadioGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-		    public void changed(ObservableValue<? extends Toggle> ov,
-			        Toggle old_toggle, Toggle new_toggle) {
-		    	
-			            if(lobbyView.getRadioGroup().getSelectedToggle().equals(lobbyView.getRadioButtonCH())) {
-			            	
-			            	System.out.println("Remove!!");
-			    		    
-			    		    lobbyView.removeLane();
-			    		    
-			    		    createHomotopyPath();
-			            }                
-			        }
-			});
-		*/
-		
-		
-		
-	}
 	
+	}
+	private void autoEvaluation(int loop){
+		
+		
+		getThreadForward().interrupt();
+		getThreadBackward().interrupt();
+		int times = 0;
+		
+		while(times < loop){
+			
+			lobbyView.removeLane();
+			
+			if(CHmodel.getMode().equals("manual")){
+				
+				numberObs = CHmodel.getNumberObstacle();
+				
+			}else if(CHmodel.getMode().equals("fair")){
+				
+				numberObs = 0;
+			}else if(CHmodel.getMode().equals("floor")){
+				
+				numberObs = 0;
+			}
+			
+			
+			obstacles = lobbyView.getObstacleList();
+					
+			
+			this.startPointNode = CHmodel.getStartVector2D();
+			this.goalPointNode = CHmodel.getGoalVector2D();
+			
+			NodeMapHandler handler = new NodeMapHandler(CHmodel.getSizeVector2D());
+			NodeMap nodeMapT = handler.getNodeMap();
+			setNodeObstacleProperty(nodeMapT);
+			setNodeStartProperty(nodeMapT);
+			setNodeGoalProperty(nodeMapT);
+			
+			this.applyCH = false;
+			
+			
+			ConstantMap constantMapT = new ConstantMap();
+			constantMapT.setCostOnConstantMap(nodeMapT);
+			
+			loop_viaNode=0;
+			ArrayList<Point> viaNodes_T = new ArrayList<Point>();
+			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
+			
+				lobbyView.createViaNodePoint_T(size,constantMapT.getMap(),loop_viaNode,viaNodes_T);
+				loop_viaNode++;
+				
+			}
+			
+			
+			CostMap costMapT  = new CostMap(size, CHmodel.getStartVector2D(),
+            		nodeMapT, obstacles , constantMapT.getMap());
+			
+			Graph graphT = new Graph(nodeMapT.getNodes(),costMapT.getEdges());
+			
+			DijkstraAlgorithm dijkstra_head_T = new DijkstraAlgorithm(graphT, obstacles,
+					nodeMapT.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
+			
+			DijkstraAlgorithm dijkstra_tail_T = new DijkstraAlgorithm(graphT, obstacles,
+					nodeMapT.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+			
+			this.permitChange = true;
+			
+			long  startTime_searching = System.currentTimeMillis();
+			SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
+			Date resultdate = new Date(startTime_searching);
+			System.out.println("start search time : " + sdf.format(resultdate));
+			
+			dijkstraForward_T(dijkstra_head_T);
+			
+			dijkstraBackward_T(dijkstra_tail_T);
+			
+			int firstViaNodeX = getViaNode2D_T(0,viaNodes_T).getX();
+			int firstViaNodeY = getViaNode2D_T(0,viaNodes_T).getY();
+			
+			int distance_first_x = dijkstra_head_T.getShortestDistance(nodeMapT.get(firstViaNodeX,firstViaNodeY));		
+			int distance_first_y = dijkstra_tail_T.getShortestDistance(nodeMapT.get(firstViaNodeX,firstViaNodeY));
+					
+			double turningValueFromHead_f = dijkstra_head_T.getTurningValue(nodeMapT.get(firstViaNodeX,firstViaNodeY));
+			double turningValueFromTail_f = dijkstra_tail_T.getTurningValue(nodeMapT.get(firstViaNodeX,firstViaNodeY));
+					
+			int[] costOfHomotopy_T = new int[50];
+			double[] valueOfTurning_T = new double[50];
+					
+			costOfHomotopy_T[0] = (distance_first_x + distance_first_y); 
+			valueOfTurning_T[0] = (turningValueFromHead_f + turningValueFromTail_f);
+							
+			dijkstra_head_T.setPath(nodeMapT.get(firstViaNodeX,firstViaNodeY));
+					
+			ArrayList<LinkedList<Node>> listOfPathHead_T = new ArrayList<LinkedList<Node>>();
+			listOfPathHead_T.add(0,dijkstra_head_T.getPath());
+					
+			long  firstHomotopy = System.currentTimeMillis();
+			SimpleDateFormat sdf_1 = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
+			Date resultdate_1 = new Date(firstHomotopy);
+			System.out.println("first homotopy time : " + sdf_1.format(resultdate_1));
+					
+			dijkstra_tail_T.setPath(nodeMapT.get(firstViaNodeX,firstViaNodeY));
+			ArrayList<LinkedList<Node>> listOfPathTail_T = new ArrayList<LinkedList<Node>>();
+			listOfPathTail_T.add(0,dijkstra_tail_T.getPath());
+			
+			ArrayList<String> listOfPathCategory_T = new ArrayList<String>();
+			listOfPathCategory_T.add("start");
+			int totalLoop_T = viaNodes_T.size();
+			
+			
+			loop=1;
+			while( loop < totalLoop_T ){
+				
+				int numberViaNode = loop+1;
+				//getViaNode2D_T(0,viaNodes_T).getX();
+				int nextViaNodeX = getViaNode2D_T(loop,viaNodes_T).getX();
+				int nextViaNodeY = getViaNode2D_T(loop,viaNodes_T).getY();
+				
+			
+				int distance_next_x = dijkstra_head_T.getShortestDistance(nodeMapT.get(nextViaNodeX,nextViaNodeY));
+				int distance_next_y = dijkstra_tail_T.getShortestDistance(nodeMapT.get(nextViaNodeX,nextViaNodeY));
+				int distance_next = (distance_next_x + distance_next_y);  
+				
+				
+				double turningValueFromHead_n = dijkstra_head_T.getTurningValue(nodeMapT.get(nextViaNodeX,nextViaNodeY));
+				double turningValueFromTail_n = dijkstra_tail_T.getTurningValue(nodeMapT.get(nextViaNodeX,nextViaNodeY));
+				double turningOfValue_next = (turningValueFromHead_n + turningValueFromTail_n);
+				
+				dijkstra_head_T.setPath(nodeMapT.get(nextViaNodeX,nextViaNodeY));
+				
+				dijkstra_tail_T.setPath(nodeMapT.get(nextViaNodeX,nextViaNodeY));
+				
+				Polygon polygon = lobbyView.generatePolygon(listOfPathHead_T.get(0),
+						listOfPathTail_T.get(0),
+						dijkstra_head_T.getPath(),dijkstra_tail_T.getPath());
+				
+				
+				ArrayList<Integer> pathIdList = lobbyView.getListPathID(polygon);
+				
+				//lobbyView.drawPolygon(polygon);
+					
+				String pathIdString;
+				if(pathIdList.size() == 0){
+					
+					pathIdString = "start";
+					
+				}
+				else{
+					
+					pathIdString = pathIdToString(pathIdList);
+				}
+		
+				
+				
+				lobbyView.setPathCategory_T(pathIdString, dijkstra_head_T.getPath(), 
+						dijkstra_tail_T.getPath(), numberViaNode,nextViaNodeX, nextViaNodeY, 
+							distance_next,turningOfValue_next, listOfPathCategory_T, costOfHomotopy_T, valueOfTurning_T,
+							listOfPathHead_T, listOfPathTail_T );
+				
+				loop++;
+				
+			}
+			
+			
+			long endTime_searching = System.currentTimeMillis();
+			long duration_searching = (endTime_searching - startTime_searching);
+			long duration_classifying = (endTime_searching - firstHomotopy);
+			System.out.println("the duration of the searching and the homotopy test : " + duration_searching + " miliseconds");
+			System.out.println("the duration of homotopy test : " + duration_classifying + " miliseconds");
+			
+		    createHomotopy(lobbyView, costMapT);
+			
+			
+			times++;
+			getThreadForward_T().interrupt();
+			getThreadBackward_T().interrupt();
+		}
+		
+		
+	}	
+	private Vector2D getViaNode2D_T(int i,ArrayList<Point> viaNodes_T){
+
+			return new Vector2D((viaNodes_T.get(i).getCenterX()-5)/10,(viaNodes_T.get(i).getCenterY()-5)/10);
+
+	}
 	
 	private void createTop3Path(){
 		lobbyView.initiateColorNumber();
@@ -603,7 +748,8 @@ public class LobbyPresenter {
             }
 		 };
 		
-         Thread thread1 = new Thread(task1);
+         //Thread thread1 = new Thread(task1);
+		 thread1 = new Thread(task1);
          thread1.setDaemon(true);
          thread1.start();
          
@@ -614,6 +760,20 @@ public class LobbyPresenter {
 				e.printStackTrace();
 			}
 		
+	}
+	private Thread getThreadForward(){
+		return thread1;
+		
+	}
+	private Thread getThreadBackward(){
+		return thread2;	
+	}
+	private Thread getThreadForward_T(){
+		return thread3;
+		
+	}
+	private Thread getThreadBackward_T(){
+		return thread4;	
 	}
 	private void dijkstraBackward(){
 		
@@ -627,12 +787,65 @@ public class LobbyPresenter {
             }
 		 };
 
-	    Thread thread2 = new Thread(task2);
+	    //Thread thread2 = new Thread(task2);
+		thread2 = new Thread(task2);
 	    thread2.setDaemon(true);
 	    thread2.start();
 		
 		try {
 			thread2.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	private void dijkstraForward_T(DijkstraAlgorithm dijkstra_head_T){
+		
+		 Task<Void> task3 = new Task<Void>() {
+           @Override
+           public Void call() throws InterruptedException {
+           	
+           	dijkstra_head_T.execute();
+           	
+   			System.out.println("the execution_1_T is the end \n");
+   			
+   			
+   			
+               return null ;
+           }
+		 };
+		
+        thread3 = new Thread(task3);
+        thread3.setDaemon(true);
+        thread3.start();
+        
+        try {
+				thread3.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+	}
+	private void dijkstraBackward_T(DijkstraAlgorithm dijkstra_tail_T){
+		
+		 Task<Void> task4 = new Task<Void>() {
+           @Override
+           public Void call() throws InterruptedException {
+           	dijkstra_tail_T.execute();
+   			System.out.println("the execution_2_T is the end  \n");
+
+               return null ;
+           }
+		 };
+
+	    thread4 = new Thread(task4);
+	    thread4.setDaemon(true);
+	    thread4.start();
+		
+		try {
+			thread4.join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

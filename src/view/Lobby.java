@@ -139,7 +139,7 @@ public class Lobby extends BorderPane{
 				/**
 				 *test 6 obstacles
 				 * */
-				if(i == 0){
+				/*if(i == 0){
 		    		obs.xProperty().set(150);
 		    		obs.yProperty().set(200);
 		    	}
@@ -162,9 +162,9 @@ public class Lobby extends BorderPane{
 		    	else if(i == 5){
 		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(400);
-		    	}
+		    	}*/
 				
-			/*	if(i == 0){
+			if(i == 0){
 		    		obs.xProperty().set(150);
 		    		obs.yProperty().set(150);
 		    	}
@@ -201,7 +201,7 @@ public class Lobby extends BorderPane{
 		    	else if(i == 8){
 		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(450);
-		    	}*/
+		    	}
 		    	
 				
 				obstacles.add(obs);
@@ -765,6 +765,36 @@ public class Lobby extends BorderPane{
 		
 	}
 	
+	public void createViaNodePoint_T(Vector2D size, int[][] map,int loop_viaNode,ArrayList<Point> viaNodes_T){
+	
+		randX = new Random();
+		randomNumX = randX.nextInt( size.getX());
+		randY = new Random();
+		randomNumY = randY.nextInt( size.getY());
+
+		
+		//while( insideObstacle(randomNumX,randomNumY,map) || isContractedNode(randomNumX,randomNumY,map) ){
+		while( insideObstacle(randomNumX,randomNumY,map) || isViaNode(randomNumX,randomNumY,map) ){
+			randX = new Random();
+			randomNumX = randX.nextInt(size.getX());
+			randY = new Random();
+			randomNumY = randY.nextInt(size.getY());
+		
+		}
+		
+		//if( !insideObstacle(randomNumX,randomNumY,map) && !isContractedNode(randomNumX,randomNumY,map)){
+		if( !insideObstacle(randomNumX,randomNumY,map) && !isViaNode(randomNumX,randomNumY,map)){
+			viaNode = new Point();
+			viaNode.setCenterX(randomNumX*10+5);
+			viaNode.setCenterY(randomNumY*10+5);
+			viaNode.setFill(Color.YELLOW);
+			center.getChildren().add(viaNode);
+			map[randomNumX][randomNumY] = CHmodel.VALUE_MAP_VIA_NODE;
+			viaNodes_T.add(viaNode);
+		}
+		
+	}
+	
 	private boolean insideObstacle(int randomX, int randomY, int[][] map){
 		
 		if( (map[randomX][randomY]) == -1 || (map[randomX][randomY]) == 0){
@@ -817,6 +847,7 @@ public class Lobby extends BorderPane{
 		
 		return viaNodes;
 	}
+	
 	
 	public int getViaNodeSize(){
 		return viaNodes.size();
@@ -1132,6 +1163,75 @@ public class Lobby extends BorderPane{
 				+ sdf.format(resultdate));
 		
 		
+	}
+	public void setPathCategory_T(String pathId, LinkedList<Node> head_path,LinkedList<Node> tail_path,
+			int numberViaNode,int nextViaNodeX,int nextViaNodeY,int distance_next,double turningOfValue_next,
+			ArrayList<String> listOfPathCategory_T, int[] costOfHomotopy_T, double[] valueOfTurning_T,
+			ArrayList<LinkedList<Node>> listOfPathHead_T, ArrayList<LinkedList<Node>> listOfPathTail_T){
+		
+		
+		int length = listOfPathCategory_T.size();
+		boolean homotopy = false;
+		
+		/**
+		 * find the homotopy class
+		 */
+		for(int i = 0; i < length; i++){
+			
+			/**
+			 * classified homotopy classes and check the obstacles of homotopy class.
+			 */
+			String stringIdPath = listOfPathCategory_T.get(i);
+			
+			
+			/**
+			 * there is already suitable homotpy class in the list.
+			 * */ 
+			if(stringIdPath.equals(pathId)){
+				
+				//here implement the method of compare with cost and turn value between two homotopy path
+				homotopy = true;
+				
+				
+				
+				if(costOfHomotopy_T[i] == distance_next){
+					
+					if(valueOfTurning_T[i] > turningOfValue_next){
+						
+						listOfPathHead_T.remove(i);
+						listOfPathHead_T.add(i,head_path);
+						listOfPathTail_T.remove(i);
+						listOfPathTail_T.add(i,tail_path);
+						costOfHomotopy_T[i] = distance_next;
+						valueOfTurning_T[i] = turningOfValue_next;
+					}
+					
+				}else if(costOfHomotopy_T[i] > distance_next){
+					
+					listOfPathHead_T.remove(i);
+					listOfPathHead_T.add(i,head_path);
+					listOfPathTail_T.remove(i);
+					listOfPathTail_T.add(i,tail_path);
+					costOfHomotopy_T[i] = distance_next;
+					valueOfTurning_T[i] = turningOfValue_next;
+					
+				}
+				
+			}					
+		}
+		
+		if(!homotopy){
+			
+			listOfPathCategory_T.add(pathId);
+			listOfPathHead_T.add(length, head_path);
+			listOfPathTail_T.add(length, tail_path);
+			costOfHomotopy_T[length] = distance_next;
+			valueOfTurning_T[length] = turningOfValue_next;
+		}
+		
+		evaluation_1(listOfPathCategory_T.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
+		
+	  
 	}
 	public void printCostOfHomotopyClass(){
 		
