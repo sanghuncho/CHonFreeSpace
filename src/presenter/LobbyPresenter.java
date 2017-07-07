@@ -155,12 +155,51 @@ public class LobbyPresenter {
 			 * set the cost of obstacle, start point and goal point on the constantMap
 			 */
 			constantMap.setCostOnConstantMap(nodeMap);
+			int row = constantMap.getRow();
+			int column = constantMap.getColumn();
+			int distance_viaNode =  (int) Math.ceil((row*column)/lobbyView.getnumberOfViaNode());
 			
-			loop_viaNode=0;
+			/*loop_viaNode=0;
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 			
 				lobbyView.createViaNodePoint(size,constantMap.getMap(),loop_viaNode);
 				loop_viaNode++;
+			}*/
+			
+			loop_viaNode=0;
+			int act_row = 0;
+			int act_column = 0;
+			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
+				
+				if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap())){
+					
+					lobbyView.createViaNodePoint(act_column, act_row, constantMap.getMap());
+					loop_viaNode++;
+					
+					act_column = act_column + distance_viaNode;
+					
+					if(act_column >= row){
+						act_column = (act_column % row);
+						act_row++;
+					}
+				}
+				else if(lobbyView.insideObstacle(act_column, act_row, constantMap.getMap())){
+					
+					act_column = act_column + 1;
+					
+					if(act_column >= row){
+						act_column = (act_column % row);
+						act_row++;
+					}
+					
+					
+				}
+				
+				
+				
+				System.out.println("column row test : " + act_column +" : " + act_row  );
+				
+				
 			}
 			
 			
@@ -204,11 +243,11 @@ public class LobbyPresenter {
 			constantMap.setCostOnConstantMap(nodeMap);
 			
 			loop_viaNode=0;	
-			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
+			/*while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 				
 				lobbyView.createViaNodePoint(size,constantMap.getMap(),loop_viaNode);
 				loop_viaNode++;
-			}
+			}*/
 			CHmodel.setNumberOfViaNode(lobbyView.getnumberOfViaNode());
 			
 			loop_map=0;
@@ -396,6 +435,7 @@ public class LobbyPresenter {
 				
 				/**
 				 * The path is classified into the homotopy class.
+				 * 
 				 * the evaluation_1st is here implemented.
 				 */
 				lobbyView.setPathCategory(pathIdString, dijkstra_head.getPath(),
@@ -419,8 +459,9 @@ public class LobbyPresenter {
 		    //lobbyView.printCostOfHomotopyClass();
 		    //lobbyView.printValueOfTurning();
 		    
-		    autoEvaluation(5);
+		    //autoEvaluation(10);
 		    
+		    System.out.println("autoEvaluation end");
 		   
 		    
 		 }
@@ -512,14 +553,14 @@ public class LobbyPresenter {
 		});
 	
 	}
-	private void autoEvaluation(int loop){
+	private void autoEvaluation(int loopForTest){
 		
 		
 		getThreadForward().interrupt();
 		getThreadBackward().interrupt();
 		int times = 0;
 		
-		while(times < loop){
+		while(times < loopForTest){
 			
 			lobbyView.removeLane();
 			
@@ -548,8 +589,8 @@ public class LobbyPresenter {
 			setNodeStartProperty(nodeMapT);
 			setNodeGoalProperty(nodeMapT);
 			
-			this.applyCH = false;
-			
+			//this.applyCH = false;
+			this.applyCH = true;
 			
 			ConstantMap constantMapT = new ConstantMap();
 			constantMapT.setCostOnConstantMap(nodeMapT);
@@ -561,6 +602,16 @@ public class LobbyPresenter {
 				lobbyView.createViaNodePoint_T(size,constantMapT.getMap(),loop_viaNode,viaNodes_T);
 				loop_viaNode++;
 				
+			}
+			if(applyCH){
+				int loop_map_T = 0;
+				long  startTime_contracted = System.currentTimeMillis();
+				System.out.println("contracting : " + CHmodel.getNumberContractedCustom());
+				while(loop_map_T < CHmodel.getNumberContractedCustom()){
+			
+					lobbyView.generateContractedPoint(size,constantMapT.getMap());
+					loop_map_T++;
+				}
 			}
 			
 			
@@ -663,7 +714,9 @@ public class LobbyPresenter {
 				}
 		
 				
-				
+				/**
+				 * Evaluation_1 is in this method implemented.
+				 * */
 				lobbyView.setPathCategory_T(pathIdString, dijkstra_head_T.getPath(), 
 						dijkstra_tail_T.getPath(), numberViaNode,nextViaNodeX, nextViaNodeY, 
 							distance_next,turningOfValue_next, listOfPathCategory_T, costOfHomotopy_T, valueOfTurning_T,
@@ -683,13 +736,27 @@ public class LobbyPresenter {
 		    createHomotopy(lobbyView, costMapT);
 			
 			
+		    eval_whole_iteration(listOfPathHead_T,times);
+		    //eval_path_quality(costOfHomotopy_T, valueOfTurning_T);
+		    
 			times++;
-			getThreadForward_T().interrupt();
-			getThreadBackward_T().interrupt();
+			//getThreadForward_T().interrupt();
+			//getThreadBackward_T().interrupt();
 		}
 		
 		
-	}	
+	}
+	private void eval_path_quality(int[] costOfHomotopy_T, double[] valueOfTurning_T){
+		
+		lobbyView.printCostOfHomotopyClass_T(costOfHomotopy_T);
+	    lobbyView.printValueOfTurning_T(valueOfTurning_T);
+		
+	}
+	private void eval_whole_iteration(ArrayList<LinkedList<Node>> listOfPathHead_T, int times){
+		
+		System.out.println("founded homotopy classes : " + listOfPathHead_T.size() + " , " + times);
+		
+	}
 	private Vector2D getViaNode2D_T(int i,ArrayList<Point> viaNodes_T){
 
 			return new Vector2D((viaNodes_T.get(i).getCenterX()-5)/10,(viaNodes_T.get(i).getCenterY()-5)/10);

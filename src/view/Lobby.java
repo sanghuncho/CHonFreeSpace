@@ -85,7 +85,7 @@ public class Lobby extends BorderPane{
 	private Scene scene;
 	private int numberObs;
 	private ArrayList<Point> viaNodes = new ArrayList<Point>();
-	private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
+	//private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
 	private ArrayList<Edge> variousEdges = new ArrayList<Edge>(); 
 	private ArrayList<Edge> shortcuts = new ArrayList<Edge>(); 
 	private ArrayList<Lane> laneList = new ArrayList<Lane>();	
@@ -163,7 +163,8 @@ public class Lobby extends BorderPane{
 		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(400);
 		    	}*/
-				
+			
+			
 			if(i == 0){
 		    		obs.xProperty().set(150);
 		    		obs.yProperty().set(150);
@@ -202,6 +203,9 @@ public class Lobby extends BorderPane{
 		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(450);
 		    	}
+				
+				
+		    	
 		    	
 				
 				obstacles.add(obs);
@@ -711,7 +715,7 @@ public class Lobby extends BorderPane{
 			contractedNode.setCenterY(randomNumY*10+5);
 			contractedNode.setFill(Color.WHITE);
 			center.getChildren().add(contractedNode);
-			contractedPoints.add(contractedNode);
+			//contractedPoints.add(contractedNode);
 			map[randomNumX][randomNumY] = CHmodel.VALUE_MAP_CONTRACTING;
 			//System.out.println("contracted" + k);
 			//k++;
@@ -735,13 +739,20 @@ public class Lobby extends BorderPane{
 		
 	}
 	
-	public void createViaNodePoint(Vector2D size, int[][] map,int loop_viaNode){
+	
+	/**
+	 * random via node version
+	 * */
+	/*public void createViaNodePoint(Vector2D size, int[][] map,int loop_viaNode){
 		
 		randX = new Random();
 		randomNumX = randX.nextInt( size.getX());
 		randY = new Random();
 		randomNumY = randY.nextInt( size.getY());
 
+		System.out.println("map with : " + map.length);
+		System.out.println("map Height : " + map[0].length);
+		
 		
 		//while( insideObstacle(randomNumX,randomNumY,map) || isContractedNode(randomNumX,randomNumY,map) ){
 		while( insideObstacle(randomNumX,randomNumY,map) || isViaNode(randomNumX,randomNumY,map) ){
@@ -763,6 +774,31 @@ public class Lobby extends BorderPane{
 			viaNodes.add(viaNode);
 		}
 		
+	}*/
+	
+	public void createViaNodePoint(int column, int row, int[][] map){
+	
+
+		//while( insideObstacle(randomNumX,randomNumY,map) || isContractedNode(randomNumX,randomNumY,map) ){
+		/*while( insideObstacle(randomNumX,randomNumY,map) || isViaNode(randomNumX,randomNumY,map) ){
+			randX = new Random();
+			randomNumX = randX.nextInt(size.getX());
+			randY = new Random();
+			randomNumY = randY.nextInt(size.getY());
+		
+		}*/
+	
+		//if( !insideObstacle(randomNumX,randomNumY,map) && !isContractedNode(randomNumX,randomNumY,map)){
+		//if( !insideObstacle(randomNumX,randomNumY,map) && !isViaNode(randomNumX,randomNumY,map)){
+			viaNode = new Point();
+			viaNode.setCenterX(column*10+5);
+			viaNode.setCenterY(row*10+5);
+			viaNode.setFill(Color.YELLOW);
+			center.getChildren().add(viaNode);
+			map[column][row] = CHmodel.VALUE_MAP_VIA_NODE;
+			viaNodes.add(viaNode);
+		//}
+	
 	}
 	
 	public void createViaNodePoint_T(Vector2D size, int[][] map,int loop_viaNode,ArrayList<Point> viaNodes_T){
@@ -795,7 +831,23 @@ public class Lobby extends BorderPane{
 		
 	}
 	
-	private boolean insideObstacle(int randomX, int randomY, int[][] map){
+	/*private boolean insideObstacle(int randomX, int randomY, int[][] map){
+		
+		if( (map[randomX][randomY]) == -1 || (map[randomX][randomY]) == 0){
+			
+			if((map[randomX][randomY]) == 0){
+				
+				//System.out.println("map = 0 \n");
+			}
+			return true;
+			
+		}
+		else{
+			return false;
+		}
+		
+	}*/
+	public boolean insideObstacle(int randomX, int randomY, int[][] map){
 		
 		if( (map[randomX][randomY]) == -1 || (map[randomX][randomY]) == 0){
 			
@@ -1149,21 +1201,7 @@ public class Lobby extends BorderPane{
 	  
 	}
 	
-	/**
-	 * @param lengthOfCategory
-	 * @param numberViaNode
-	 * test for the relation between the homotopy clss and the number of the via-node. 
-	 */
-	private void evaluation_1(int lengthOfCategory,int numberViaNode,int nextViaNodeX,int nextViaNodeY){
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
-		Date resultdate = new Date(System.currentTimeMillis());
-		System.out.println("the number of homotopy class : " + lengthOfCategory 
-				+ " the numebr of via-node : " + numberViaNode + ", time : " 
-				+ sdf.format(resultdate));
-		
-		
-	}
+	
 	public void setPathCategory_T(String pathId, LinkedList<Node> head_path,LinkedList<Node> tail_path,
 			int numberViaNode,int nextViaNodeX,int nextViaNodeY,int distance_next,double turningOfValue_next,
 			ArrayList<String> listOfPathCategory_T, int[] costOfHomotopy_T, double[] valueOfTurning_T,
@@ -1229,9 +1267,24 @@ public class Lobby extends BorderPane{
 			valueOfTurning_T[length] = turningOfValue_next;
 		}
 		
-		evaluation_1(listOfPathCategory_T.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
+		//evaluation_1(listOfPathCategory_T.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
 		
 	  
+	}
+	/**
+	 * @param lengthOfCategory
+	 * @param numberViaNode
+	 * test for the relation between the homotopy clss and the number of the via-node. 
+	 */
+	private void evaluation_1(int lengthOfCategory,int numberViaNode,int nextViaNodeX,int nextViaNodeY){
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
+		Date resultdate = new Date(System.currentTimeMillis());
+		System.out.println("the number of homotopy class : " + lengthOfCategory 
+				+ " the numebr of via-node : " + numberViaNode + ", time : " 
+				+ sdf.format(resultdate));
+		
+		
 	}
 	public void printCostOfHomotopyClass(){
 		
@@ -1254,6 +1307,27 @@ public class Lobby extends BorderPane{
 		}
 		System.out.println("sum of cost : " + wholeValue);
 	}
+	public void printCostOfHomotopyClass_T(int[] costOfHomotopy_T){
+		
+		int arrayLength = costOfHomotopy_T.length;
+		int wholeValue = 0;
+		int[] costArrayHelp = new int[arrayLength];
+		
+		for (int i = 0; i < arrayLength; i++) {
+			
+			   costArrayHelp[i] = costOfHomotopy_T[i];
+			   wholeValue = wholeValue + costOfHomotopy_T[i];
+		}
+		
+		Arrays.sort(costArrayHelp);
+		for(int i = 0; i < arrayLength; i++ ){
+			
+			System.out.println("each cost of homotopy classes : " + costArrayHelp[i]);
+			
+			
+		}
+		System.out.println("sum of cost : " + wholeValue);
+	}
 	
 	public void printValueOfTurning(){
 		
@@ -1263,6 +1337,26 @@ public class Lobby extends BorderPane{
 		for (int i = 0; i < arrayLength; i++) {
 			
 			   costArrayHelp[i] = valueOfTurning[i];
+			  
+		}
+		
+		Arrays.sort(costArrayHelp);
+		for(int i = 0; i < arrayLength; i++ ){
+			
+			System.out.println("each value of turning : " + costArrayHelp[i]);
+			
+			
+		}
+		//System.out.println("sum of cost : " + wholeValue);
+	}
+	public void printValueOfTurning_T(double[] valueOfTurning_T){
+		
+		int arrayLength = valueOfTurning_T.length;
+		double [] costArrayHelp = new double[arrayLength];
+		
+		for (int i = 0; i < arrayLength; i++) {
+			
+			   costArrayHelp[i] = valueOfTurning_T[i];
 			  
 		}
 		
@@ -1324,7 +1418,7 @@ public class Lobby extends BorderPane{
 		
 		int head_size = listOfPathHead.size();
 		
-		System.out.println("head size : " + head_size);
+		//System.out.println("head size : " + head_size);
 		
 		for(int i=0; i< head_size; i++){
 
