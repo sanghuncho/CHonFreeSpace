@@ -157,51 +157,74 @@ public class LobbyPresenter {
 			constantMap.setCostOnConstantMap(nodeMap);
 			int row = constantMap.getRow();
 			int column = constantMap.getColumn();
-			int distance_viaNode =  (int) Math.ceil((row*column)/lobbyView.getnumberOfViaNode());
+			int actual_default_node = row*column - constantMap.getSizeOfObstacleNode();
+			int distance_viaNode =  (int) Math.ceil( (actual_default_node / lobbyView.getnumberOfViaNode())-0.5);
 			
+			
+			/**
+			 * the order of generating via node is random order
+			 * */
 			/*loop_viaNode=0;
 			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 			
-				lobbyView.createViaNodePoint(size,constantMap.getMap(),loop_viaNode);
+				lobbyView.createViaNodePoint_radomization(size,constantMap.getMap(),loop_viaNode);
 				loop_viaNode++;
 			}*/
 			
+			/**
+			 * the order of generating via node is enumeration order
+			 * */
 			loop_viaNode=0;
 			int act_row = 0;
 			int act_column = 0;
-			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
+			int hop = distance_viaNode-1;
+			while((loop_viaNode < lobbyView.getnumberOfViaNode()) && (act_row < row) ){
 				
-				if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap())){
+				/**
+				 * insideObstacle method check whether the point is located in the obstacle or in start-, goal point.
+				 * */
+				if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap()) && hop == (distance_viaNode-1) ){
 					
-					lobbyView.createViaNodePoint(act_column, act_row, constantMap.getMap());
+					
+					lobbyView.createViaNodePoint_enumeration(act_column, act_row, constantMap.getMap());
+					System.out.println("iteration : " + loop_viaNode );
 					loop_viaNode++;
 					
-					act_column = act_column + distance_viaNode;
+					act_column = act_column + 1;
 					
-					if(act_column >= row){
-						act_column = (act_column % row);
+					if(act_column >= column){
+						act_column = (act_column % column);
 						act_row++;
 					}
+					hop = 0;
+					
+				}
+				else if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap()) && hop != (distance_viaNode-1) ){
+					
+					act_column = act_column + 1;
+					
+					if(act_column >= column){
+						act_column = (act_column % column);
+						act_row++;
+					}
+					hop++;
+					
 				}
 				else if(lobbyView.insideObstacle(act_column, act_row, constantMap.getMap())){
 					
 					act_column = act_column + 1;
 					
-					if(act_column >= row){
-						act_column = (act_column % row);
+					if(act_column >= column){
+						act_column = (act_column % column);
 						act_row++;
 					}
 					
 					
 				}
 				
-				
-				
-				System.out.println("column row test : " + act_column +" : " + act_row  );
-				
-				
 			}
 			
+			System.out.println("create via node end");
 			
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
             		nodeMap, obstacles , constantMap.getMap());
@@ -240,14 +263,14 @@ public class LobbyPresenter {
 			/**
 			 * set the cost of obstacle, start point and goal point on the constantMap
 			 */
-			constantMap.setCostOnConstantMap(nodeMap);
+			/*constantMap.setCostOnConstantMap(nodeMap);
 			
 			loop_viaNode=0;	
-			/*while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
+			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
 				
-				lobbyView.createViaNodePoint(size,constantMap.getMap(),loop_viaNode);
+				lobbyView.createViaNodePoint_randomization(size,constantMap.getMap(),loop_viaNode);
 				loop_viaNode++;
-			}*/
+			}
 			CHmodel.setNumberOfViaNode(lobbyView.getnumberOfViaNode());
 			
 			loop_map=0;
@@ -255,16 +278,259 @@ public class LobbyPresenter {
 			System.out.println("contracting : " + CHmodel.getNumberContractedCustom());
 			while(loop_map < CHmodel.getNumberContractedCustom()){
 		
-				lobbyView.generateContractedPoint(size,constantMap.getMap());
+				lobbyView.generateContractedPoint_randomization(size,constantMap.getMap());
 				loop_map++;
 			}
 			long endTime_contracted = System.currentTimeMillis();
 			long duration_allContracted = (endTime_contracted - startTime_contracted);
-			System.out.println("the duration of the contracting : " + duration_allContracted + " miliseconds");
+			System.out.println("the duration of the contracting : " + duration_allContracted + " miliseconds");*/
+			
+			
+			/**
+			 * contraction hierarchies randomly -> via node enumeration
+			 * */
+			
+			/**************************************************************************/
+		/*	constantMap.setCostOnConstantMap(nodeMap);
+			
+			loop_map=0;
+			//long  startTime_contracted = System.currentTimeMillis();
+			//System.out.println("contracting : " + CHmodel.getNumberContractedCustom());
+			while(loop_map < CHmodel.getNumberContractedCustom()){
+		
+				lobbyView.generateContractedPoint_randomization(size,constantMap.getMap());
+				loop_map++;
+			}
+			//long endTime_contracted = System.currentTimeMillis();
+			//long duration_allContracted = (endTime_contracted - startTime_contracted);
+			//System.out.println("the duration of the contracting : " + duration_allContracted + " miliseconds");
+			
+			int row = constantMap.getRow();
+			int column = constantMap.getColumn();
+			int actual_default_node = (row*column - constantMap.getSizeOfObstacleNode() - CHmodel.getNumberContractedCustom());
+			int distance_viaNode =  (int) Math.ceil( (actual_default_node / lobbyView.getnumberOfViaNode())-0.5);
+			
+			
+			*//**
+			 * the order of generating via node is enumeration order 
+			 * *//*
+			loop_viaNode=0;
+			int act_row = 0;
+			int act_column = 0;
+			int hop = distance_viaNode-1;
+			
+			while((loop_viaNode < lobbyView.getnumberOfViaNode()) && (act_row < row) ){
+				
+				*//**
+				 * insideObstacle method check whether the point is located in the obstacle or in start-, goal point.
+				 * *//*
+				if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap()) 
+						&& !lobbyView.isContractedNode(act_column, act_row, constantMap.getMap())
+							&& hop == (distance_viaNode-1) ){
+					
+					lobbyView.createViaNodePoint_enumeration(act_column, act_row, constantMap.getMap());
+					
+					loop_viaNode++;
+					
+					act_column = act_column + 1;
+					
+					if(act_column >= column-1){
+						act_column = 0;
+						act_row++;
+					}
+					hop = 0;
+					
+				}
+				else if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap()) 
+						&& !lobbyView.isContractedNode(act_column, act_row, constantMap.getMap())
+							&& hop != (distance_viaNode-1) ){
+					
+					act_column = act_column + 1;
+					
+					if(act_column >= column-1){
+						act_column = 0;
+						act_row++;
+					}
+					hop++;
+					
+				}
+				else if(lobbyView.insideObstacle(act_column, act_row, constantMap.getMap())
+						||  lobbyView.isContractedNode(act_column, act_row, constantMap.getMap())){
+					
+					act_column = act_column + 1;
+					
+					if(act_column >= column-1){
+						act_column = 0;
+						act_row++;
+					}
+					
+					
+				}
+				
+			}
+			CHmodel.setNumberOfViaNode(lobbyView.getnumberOfViaNode());*/
+           /**************************************************************************/
+			
+			constantMap.setCostOnConstantMap(nodeMap);
+			int row = constantMap.getRow();
+			int column = constantMap.getColumn();
+			int actual_default_node = row*column - constantMap.getSizeOfObstacleNode();
+			int distance_viaNode =  (int) Math.ceil( (actual_default_node / lobbyView.getnumberOfViaNode())-0.5);
+			System.out.println("distance_viaNode : " + distance_viaNode );
+			/**
+			 * the order of generating via node is enumeration order 
+			 * */
+			loop_viaNode=0;
+			int act_row = 0;
+			int act_column = 0;
+			int hop = distance_viaNode-1;
+			
+			while((loop_viaNode < lobbyView.getnumberOfViaNode()) && (act_row < row) ){
+				
+				/**
+				 * insideObstacle method check whether the point is located in the obstacle or in start-, goal point.
+				 * */
+				if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap()) 
+							&& hop == (distance_viaNode-1) ){
+					
+					lobbyView.createViaNodePoint_enumeration(act_column, act_row, constantMap.getMap());
+					
+					loop_viaNode++;
+					
+					act_column = act_column + 1;
+					
+					if(act_column >= column-1){
+						act_column = 0;
+						act_row++;
+					}
+					hop = 0;
+					
+				}
+				else if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap()) 
+							&& hop != (distance_viaNode-1) ){
+					
+					act_column = act_column + 1;
+					
+					if(act_column >= column-1){
+						act_column = 0;
+						act_row++;
+					}
+					hop++;
+					
+				}
+				else if(lobbyView.insideObstacle(act_column, act_row, constantMap.getMap())){
+					
+					act_column = act_column + 1;
+					
+					if(act_column >= column-1){
+						act_column = 0;
+						act_row++;
+					}
+					
+					
+				}
+				
+			}
+			CHmodel.setNumberOfViaNode(lobbyView.getnumberOfViaNode());
+			
+			
+			loop_map=0;
+			while(loop_map < CHmodel.getNumberContractedCustom()){
+		
+				lobbyView.generateContractedPoint_randomization(size,constantMap.getMap());
+				loop_map++;
+			}
 			
 			
 			
-            costmap = new CostMap(size, CHmodel.getStartVector2D(),
+			
+			
+			/*loop_viaNode=0;	
+			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
+				
+				lobbyView.createViaNodePoint_randomization(size,constantMap.getMap(),loop_viaNode);
+				loop_viaNode++;
+			}
+			CHmodel.setNumberOfViaNode(lobbyView.getnumberOfViaNode());
+			*/
+			
+			
+			
+			
+			
+			/**
+			 * the order of generating contracted node is enumeration order
+			 * */
+			/*constantMap.setCostOnConstantMap(nodeMap);
+			int row = constantMap.getRow();
+			int column = constantMap.getColumn();
+			int actual_default_node = row*column - constantMap.getSizeOfObstacleNode() - 2*(row+column) - 4;
+			int distance_contractedNode =  (int) Math.ceil( (actual_default_node / CHmodel.getNumberContractedCustom()+0.5));
+			
+			
+			loop_map=0;
+			int act_row = 0;
+			int act_column = 0;
+			int hop = distance_contractedNode;
+			//long  startTime_contracted = System.currentTimeMillis();
+			//System.out.println("contracting : " + CHmodel.getNumberContractedCustom());
+			while((loop_map < CHmodel.getNumberContractedCustom()) && (act_row < row)){
+				
+				if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap()) 
+						&& !lobbyView.isEdgeOfMap(act_column, act_row, constantMap.getMap()) 
+							&& hop == (distance_contractedNode) ){
+					
+					lobbyView.generateContractedPoint_enumeration(act_column, act_row, constantMap.getMap());
+					loop_map++;
+					System.out.println("contracted node : " + act_column + ", " + act_row);
+					act_column = act_column + 1;
+					
+					if(act_column == column-1){
+						act_column = 0;
+						act_row++;
+					}
+					hop = 0;
+				
+				}
+				else if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap()) 
+						&& !lobbyView.isEdgeOfMap(act_column, act_row, constantMap.getMap()) 
+							&& hop != (distance_contractedNode) ){
+					
+					act_column = act_column + 1;
+					
+					if(act_column == column-1){
+						act_column = 0;
+						act_row++;
+					}
+					hop++;
+					
+				}
+				else if(lobbyView.insideObstacle(act_column, act_row, constantMap.getMap())
+						|| lobbyView.isEdgeOfMap(act_column, act_row, constantMap.getMap())){
+					
+					act_column = act_column + 1;
+					
+					if(act_column == column-1){
+						act_column = 0;
+						act_row++;
+					}
+					
+					
+				}
+			}*/
+			
+			
+			/*loop_viaNode=0;	
+			while(loop_viaNode < lobbyView.getnumberOfViaNode() ){
+				
+				lobbyView.createViaNodePoint_randomization(size,constantMap.getMap(),loop_viaNode);
+				loop_viaNode++;
+			}
+			CHmodel.setNumberOfViaNode(lobbyView.getnumberOfViaNode());*/
+			
+
+			
+           costmap = new CostMap(size, CHmodel.getStartVector2D(),
         					nodeMap, obstacles , constantMap.getMap());
             
             System.out.println("node size : " + (nodeMap.getNodes().size() - CHmodel.getNumberContractedCustom()));
@@ -276,7 +542,7 @@ public class LobbyPresenter {
 					nodeMap.get(startPointNode.getX(),startPointNode.getY()),lobbyView); 
 			
 			dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
-					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
+					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView);
 			
 			    
 			
@@ -360,6 +626,8 @@ public class LobbyPresenter {
 				int numberViaNode = loop+1;
 				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
 				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
+				
+				//System.out.println("via node x : " + nextViaNodeX + ", via node y : " + nextViaNodeY);
 				
 				//int distance_next = dijkstra_head.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));		
 				//System.out.println("distance_ " +numberViaNode + " : "+ distance_next);
@@ -609,7 +877,7 @@ public class LobbyPresenter {
 				System.out.println("contracting : " + CHmodel.getNumberContractedCustom());
 				while(loop_map_T < CHmodel.getNumberContractedCustom()){
 			
-					lobbyView.generateContractedPoint(size,constantMapT.getMap());
+					lobbyView.generateContractedPoint_randomization(size,constantMapT.getMap());
 					loop_map_T++;
 				}
 			}

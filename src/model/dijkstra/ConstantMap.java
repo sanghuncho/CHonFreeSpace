@@ -20,12 +20,12 @@ public class ConstantMap {
 	
 	public int getColumn(){
 		
-		return constantMap[0].length;
+		return CHmodel.getSizeVector2D().getX();
 	}
 	
 	public int getRow(){
 		
-		return constantMap.length;
+		return CHmodel.getSizeVector2D().getY();
 	}
 	public boolean isObstacle(Vector point) {
 		return constantMap[point.getX()][point.getY()] == -1;
@@ -78,7 +78,7 @@ public class ConstantMap {
 	}
 	public int getSizeOfObstacleNode(){
 		
-		return sizeOfObstacleNode;
+		return sizeOfObstacleNode+2;
 	}
 	
 

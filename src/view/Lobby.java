@@ -226,8 +226,8 @@ public class Lobby extends BorderPane{
 			ObstacleFactory factoryFair = new ObstacleFactory(obstacles);
 			
 			factoryFair.produce2X8Obstacle();
-			factoryFair.produce40X1Obstacle();
-			factoryFair.produce1X28Obstacle();
+			/*factoryFair.produce40X1Obstacle();
+			factoryFair.produce1X28Obstacle();*/
 			factoryFair.produce2X2Obstacle();
 			factoryFair.produce3X3Obstacle();
 			factoryFair.produce2X7Obstacle();
@@ -678,7 +678,7 @@ public class Lobby extends BorderPane{
 		
 	}
 	
-	public void generateContractedPoint(Vector2D size, int[][] map){
+	public void generateContractedPoint_randomization(Vector2D size, int[][] map){
 		
 		randX = new Random();
 		randomNumX = randX.nextInt( size.getX());
@@ -694,6 +694,10 @@ public class Lobby extends BorderPane{
 		
 		while(insideObstacle(randomNumX,randomNumY,map) || isEdgeOfMap(randomNumX,randomNumY,map) ||
 				isContractedNode(randomNumX,randomNumY,map) || isViaNode(randomNumX,randomNumY,map)){
+		
+		/*while(insideObstacle(randomNumX,randomNumY,map) 
+				|| isEdgeOfMap(randomNumX,randomNumY,map) 
+					||isContractedNode(randomNumX,randomNumY,map)){*/
 			
 				randX = new Random();
 				randomNumX = randX.nextInt( size.getX());
@@ -708,6 +712,8 @@ public class Lobby extends BorderPane{
 		
 		if( !insideObstacle(randomNumX,randomNumY,map) || !isContractedNode(randomNumX,randomNumY,map) 
 				|| !isViaNode(randomNumX,randomNumY,map)){
+		/*if( !insideObstacle(randomNumX,randomNumY,map) 
+				|| !isContractedNode(randomNumX,randomNumY,map)){*/
 			
 
 			contractedNode = new Point();
@@ -717,10 +723,21 @@ public class Lobby extends BorderPane{
 			center.getChildren().add(contractedNode);
 			//contractedPoints.add(contractedNode);
 			map[randomNumX][randomNumY] = CHmodel.VALUE_MAP_CONTRACTING;
-			//System.out.println("contracted" + k);
+			//System.out.println("contracted ");
 			//k++;
 			
 		}
+		
+	}
+	public void generateContractedPoint_enumeration(int column, int row, int[][] map){
+		
+			contractedNode = new Point();
+			contractedNode.setCenterX(column*10+5);
+			contractedNode.setCenterY(row*10+5);
+			contractedNode.setFill(Color.WHITE);
+			center.getChildren().add(contractedNode);
+			//contractedPoints.add(contractedNode);
+			map[column][row] = CHmodel.VALUE_MAP_CONTRACTING;
 		
 	}
 	
@@ -743,7 +760,7 @@ public class Lobby extends BorderPane{
 	/**
 	 * random via node version
 	 * */
-	/*public void createViaNodePoint(Vector2D size, int[][] map,int loop_viaNode){
+	public void createViaNodePoint_randomization(Vector2D size, int[][] map,int loop_viaNode){
 		
 		randX = new Random();
 		randomNumX = randX.nextInt( size.getX());
@@ -774,22 +791,10 @@ public class Lobby extends BorderPane{
 			viaNodes.add(viaNode);
 		}
 		
-	}*/
+	}
 	
-	public void createViaNodePoint(int column, int row, int[][] map){
-	
+	public void createViaNodePoint_enumeration(int column, int row, int[][] map){
 
-		//while( insideObstacle(randomNumX,randomNumY,map) || isContractedNode(randomNumX,randomNumY,map) ){
-		/*while( insideObstacle(randomNumX,randomNumY,map) || isViaNode(randomNumX,randomNumY,map) ){
-			randX = new Random();
-			randomNumX = randX.nextInt(size.getX());
-			randY = new Random();
-			randomNumY = randY.nextInt(size.getY());
-		
-		}*/
-	
-		//if( !insideObstacle(randomNumX,randomNumY,map) && !isContractedNode(randomNumX,randomNumY,map)){
-		//if( !insideObstacle(randomNumX,randomNumY,map) && !isViaNode(randomNumX,randomNumY,map)){
 			viaNode = new Point();
 			viaNode.setCenterX(column*10+5);
 			viaNode.setCenterY(row*10+5);
@@ -797,7 +802,6 @@ public class Lobby extends BorderPane{
 			center.getChildren().add(viaNode);
 			map[column][row] = CHmodel.VALUE_MAP_VIA_NODE;
 			viaNodes.add(viaNode);
-		//}
 	
 	}
 	
@@ -849,12 +853,9 @@ public class Lobby extends BorderPane{
 	}*/
 	public boolean insideObstacle(int randomX, int randomY, int[][] map){
 		
-		if( (map[randomX][randomY]) == -1 || (map[randomX][randomY]) == 0){
+		if( (map[randomX][randomY]) == CHmodel.VALUE_MAP_OBSTACLE 
+				|| (map[randomX][randomY]) ==  CHmodel.VALUE_MAP_START_GAOL){
 			
-			if((map[randomX][randomY]) == 0){
-				
-				//System.out.println("map = 0 \n");
-			}
 			return true;
 			
 		}
@@ -864,9 +865,9 @@ public class Lobby extends BorderPane{
 		
 	}
 	
-	private boolean isContractedNode(int randomX, int randomY, int[][] map){		
+	public boolean isContractedNode(int randomX, int randomY, int[][] map){		
 		
-		if( (map[randomX][randomY]) == 2){
+		if( (map[randomX][randomY]) == CHmodel.VALUE_MAP_CONTRACTING){
 		
 			return true;
 			

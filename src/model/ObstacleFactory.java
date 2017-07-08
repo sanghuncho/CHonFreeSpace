@@ -564,8 +564,8 @@ public class ObstacleFactory {
 		
 		
 		factoryObstacle2X6 = new ArrayList<ObstacleFair>();
-		factoryObstacle2X6.add(new ObstacleFair(100,470));
-		factoryObstacle2X6.add(new ObstacleFair(520,470));
+		factoryObstacle2X6.add(new ObstacleFair(100,480));
+		factoryObstacle2X6.add(new ObstacleFair(520,480));
 		factoryObstacle2X6.add(new ObstacleFair(320,440));
 		
 		
@@ -582,7 +582,7 @@ public class ObstacleFactory {
 		
 		factoryObstacle2X7 = new ArrayList<ObstacleFair>();
 		factoryObstacle2X7.add(new ObstacleFair(240,60));
-		factoryObstacle2X7.add(new ObstacleFair(340,10));
+		factoryObstacle2X7.add(new ObstacleFair(340,0));
 		
 		
 		for(int i =0; i < factoryObstacle2X7.size(); i++){
@@ -632,7 +632,7 @@ public class ObstacleFactory {
 		
 		
 		factoryObstacle2X8 = new ArrayList<ObstacleFair>();
-		factoryObstacle2X8.add(new ObstacleFair(100,10));
+		factoryObstacle2X8.add(new ObstacleFair(100,0));
 		factoryObstacle2X8.add(new ObstacleFair(600,220));
 		factoryObstacle2X8.add(new ObstacleFair(700,220));
 		

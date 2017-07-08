@@ -43,7 +43,7 @@ public class CostMap {
 	
 	
 	public CostMap(Vector size, Vector start, NodeMap nodeMap, 
-				ArrayList<Obstacle> obstacles,int[][] map) {
+				ArrayList<Obstacle> obstacles, int[][] map) {
 		
 		this.size = size;
 		this.nodes = nodeMap.getNodes();
@@ -93,6 +93,7 @@ public class CostMap {
 					Node freshNeighbor = getFreshNeighbor(node,neighborDirection,weight+1); 
 					
 					neighborVector = freshNeighbor.getPosition();
+					
 					weight++;
 					
 				}

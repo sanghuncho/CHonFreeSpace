@@ -150,7 +150,7 @@ public class CHmodel {
 		/**
 		 * Here 2 is regarded as number of start point and goal point
 		 * */
-		return  ((nodes-2-nodeNumberObstacle - numberOfViaNode)*result)/100; 
+		return  ((nodes-2-nodeNumberObstacle)*result)/100; 
 	}
 	public static void setNodeNumberObstacle(int nodeNumberObs){
 		
