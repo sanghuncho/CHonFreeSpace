@@ -804,6 +804,17 @@ public class Lobby extends BorderPane{
 			viaNodes.add(viaNode);
 	
 	}
+	public void createViaNodePoint_enumeration_T(int column, int row, int[][] map,ArrayList<Point> viaNodes_T){
+
+		viaNode = new Point();
+		viaNode.setCenterX(column*10+5);
+		viaNode.setCenterY(row*10+5);
+		viaNode.setFill(Color.YELLOW);
+		center.getChildren().add(viaNode);
+		map[column][row] = CHmodel.VALUE_MAP_VIA_NODE;
+		viaNodes_T.add(viaNode);
+
+}
 	
 	public void createViaNodePoint_T(Vector2D size, int[][] map,int loop_viaNode,ArrayList<Point> viaNodes_T){
 	
@@ -1268,7 +1279,7 @@ public class Lobby extends BorderPane{
 			valueOfTurning_T[length] = turningOfValue_next;
 		}
 		
-		//evaluation_1(listOfPathCategory_T.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
+		evaluation_1(listOfPathCategory_T.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
 		
 	  
 	}
