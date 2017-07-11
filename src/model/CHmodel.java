@@ -1,5 +1,6 @@
 package model;
 
+import javafx.scene.control.RadioButton;
 import model.node.NodeMap;
 import util.math.Vector;
 import util.math.Vector2D;
@@ -24,6 +25,9 @@ public class CHmodel {
 	public static int goalX;
 	public static int goalY;
 	
+	public static int startViaNodeX;
+	public static int startViaNodeY;
+	
 	public static int obstacleNumber;
 	
 	public static int percentageCustom;
@@ -35,6 +39,25 @@ public class CHmodel {
 	public static String mode;
 	public static int nodeNumberObstacle;
 	public static int numberOfViaNode;
+	public static RadioButton randomRadion;
+	public static RadioButton enumerateRadio;
+	
+	public static RadioButton getRadioButtonRandom(){
+		
+		return randomRadion;
+	}
+	public static void setRandomRadio(RadioButton random){
+		
+		CHmodel.randomRadion = random;
+	}
+	public static RadioButton getRadioButtonEnum(){
+		
+		return enumerateRadio;
+	}
+	public static void setEnumRadio(RadioButton enumerate){
+		
+		CHmodel.enumerateRadio = enumerate;
+	}
 	
 	public static String getMode() {
 		return mode;
@@ -126,6 +149,20 @@ public class CHmodel {
 
 	public static void setGoalY(int goalY) {
 		CHmodel.goalY = (goalY-1)*10+5;
+	}
+	public static int getStartViaNodeX() {
+		return startViaNodeX;
+	}
+
+	public static void setStartViaNodeX(int startViaNodeX) {
+		CHmodel.startViaNodeX = (startViaNodeX-1)*10+5;
+	}
+	public static int getStartViaNodeY() {
+		return startViaNodeY;
+	}
+
+	public static void setStartViaNodeY(int startViaNodeY) {
+		CHmodel.startViaNodeY = (startViaNodeY-1)*10+5;
 	}
 
 	public static int getNumberObstacle() {

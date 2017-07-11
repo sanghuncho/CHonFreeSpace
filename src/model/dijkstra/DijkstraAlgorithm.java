@@ -434,7 +434,17 @@ public class DijkstraAlgorithm{//implements Runnable
 		this.thread = thread;
 	}
     public double getTurningValue(Node node){
-    	return turning.get(node);
+    	
+    	if(turning.get(node) != null){
+    		
+    		return turning.get(node);
+    	
+    	}
+    	else{
+    		
+    		return 100;
+    	}
+    	
     } 
 
 

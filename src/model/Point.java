@@ -36,6 +36,15 @@ public class Point extends Circle{
 		this.setCenterY(CHmodel.getGoalY());
 		this.setFill(Color.RED);
 	}
+	public void setStartViaNode(){
+		
+		
+		this.setRadius(6);
+		this.setCenterX(5);
+		this.setCenterY(5);
+		this.setFill(Color.MAGENTA);
+	}
+	
 
 
 }

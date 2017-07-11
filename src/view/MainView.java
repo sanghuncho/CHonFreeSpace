@@ -10,10 +10,13 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -25,6 +28,11 @@ import model.CHmodel;
 public class MainView extends GridPane{
 	
 	private Scene scene;
+	private RadioButton enumerate;
+	private RadioButton random;
+	//final ToggleGroup radioGroup;
+	private ToggleGroup radioGroup;
+	
 	
 	public Button createMap; 
 	public TextField mapXField;
@@ -92,6 +100,9 @@ public class MainView extends GridPane{
 		
 		Label indoorSpaceLabel = new Label();
 		indoorSpaceLabel.setText("indoor scenario:");
+		
+		Label viaNodeLabel = new Label();
+		viaNodeLabel.setText("via node order:");
 		
 		/**
 		 * all textfield are created.
@@ -216,6 +227,17 @@ public class MainView extends GridPane{
             }    
         });
 		
+		enumerate = new RadioButton("enumerate");
+		CHmodel.setEnumRadio(enumerate);
+		random = new RadioButton("random");
+		CHmodel.setRandomRadio(random);
+		radioGroup =  new ToggleGroup();
+		
+		enumerate.setToggleGroup(radioGroup);
+		enumerate.setSelected(true);
+		
+		random.setToggleGroup(radioGroup);
+		
 		
 		gridPane.add(mapLabel,0,0);
 		gridPane.add(mapXField,1,0);
@@ -239,7 +261,11 @@ public class MainView extends GridPane{
 		gridPane.add(indoorSpaceLabel, 0, 5);
 		gridPane.add(comboBox, 1, 5);
 		
-		gridPane.add(createMap,0,6);
+		gridPane.add(viaNodeLabel, 0, 6);
+		gridPane.add(enumerate, 1, 6);
+		gridPane.add(random, 2, 6);
+		
+		gridPane.add(createMap,0,7);
 		gridPane.setAlignment(Pos.CENTER);
 		
 		scene = new Scene(gridPane);
@@ -281,6 +307,13 @@ public class MainView extends GridPane{
 	public TextField getNumberObstacle(){
 		
 		return numberOfObstacle;
+	}
+	
+	public RadioButton getRadioButtonEnum(){
+		return enumerate;
+	}
+	public RadioButton getRadioButtonRandom(){
+		return random;
 	}
 
 }
