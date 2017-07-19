@@ -405,10 +405,14 @@ public class LobbyPresenter {
 			
 			double turningValueFromHead_f = dijkstra_head.getTurningValue(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			double turningValueFromTail_f = dijkstra_tail.getTurningValue(nodeMap.get(firstViaNodeX,firstViaNodeY));
+			Node prod_node_head_f = dijkstra_head.getPredecessors(nodeMap.get(firstViaNodeX,firstViaNodeY));
+			Node prod_node_tail_f = dijkstra_tail.getPredecessors(nodeMap.get(firstViaNodeX,firstViaNodeY));
+			double turningValue_ViaNode_f = getTurningValue_ViaNode(prod_node_head_f, 
+												nodeMap.get(firstViaNodeX,firstViaNodeY), prod_node_tail_f); 
 			
 			
 			costOfHomotopy[0] = (distance_first_x + distance_first_y); 
-			valueOfTurning[0] = (turningValueFromHead_f + turningValueFromTail_f);
+			valueOfTurning[0] = (turningValueFromHead_f + turningValueFromTail_f + turningValue_ViaNode_f );
 					
 			dijkstra_head.setPath(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			
@@ -445,10 +449,16 @@ public class LobbyPresenter {
 				int distance_next_y = dijkstra_tail.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				int distance_next = (distance_next_x + distance_next_y);  
 				
+				Node prod_node_head_n = dijkstra_head.getPredecessors(nodeMap.get(nextViaNodeX,nextViaNodeY));
+				Node prod_node_tail_n = dijkstra_tail.getPredecessors(nodeMap.get(nextViaNodeX,nextViaNodeY));
+				double turningValue_ViaNode_n = getTurningValue_ViaNode(prod_node_head_n,
+													nodeMap.get(nextViaNodeX,nextViaNodeY), prod_node_tail_n); 
+				
+				
 				
 				double turningValueFromHead_n = dijkstra_head.getTurningValue(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				double turningValueFromTail_n = dijkstra_tail.getTurningValue(nodeMap.get(nextViaNodeX,nextViaNodeY));
-				double turningOfValue_next = (turningValueFromHead_n + turningValueFromTail_n);
+				double turningOfValue_next = (turningValueFromHead_n + turningValueFromTail_n + turningValue_ViaNode_n);
 				
 				dijkstra_head.setPath(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				
@@ -533,12 +543,12 @@ public class LobbyPresenter {
 			System.out.println("the duration of homotopy test : " + duration_classifying + " miliseconds");
 			
 		    createHomotopy(lobbyView, costmap);
-		    //lobbyView.printCostOfHomotopyClass();
-		    //lobbyView.printValueOfTurning();
+		    lobbyView.printCostOfHomotopyClass();
+		    lobbyView.printValueOfTurning();
 		    
 		   //autoEvaluation(3);
 		    
-		    System.out.println("autoEvaluation end");
+		    //System.out.println("autoEvaluation end");
 		   
 		    
 		 }
@@ -630,6 +640,76 @@ public class LobbyPresenter {
 		});
 	
 	}
+	private double getTurningValue_ViaNode(Node pastNode, Node node ,Node target){
+  		
+  		int angle_PastNode_Node = getAngle(pastNode,node);
+  		
+  		int angle_Target_Node = getAngle(target,node);
+  		
+  		int angle = angle_PastNode_Node - angle_Target_Node;
+  		
+  		double turning = 100;
+  		
+  		if (angle < 0) {
+			angle += 360;
+		}
+  		
+	  		switch(angle){
+	  		
+		  		case 0 : 
+		  			turning =  0;
+		  			break;
+		  		case 45 :
+		  			turning =  0.5;
+		  			break;
+		  		case 90 :
+		  			turning =  1;
+		  			break;
+		  		case 135 :
+		  			turning =  0.5;
+		  			break;
+		  		case 180 :
+		  			turning =  0;
+		  			break;
+		  		case 225 :
+		  			turning =  0.5;
+		  			break;
+		  		case 270 :
+		  			turning = 1.0;
+		  			break;
+		  		case 315 :
+		  			turning = 0.5;
+		  			break;
+		  		case 360 :
+		  			turning = 0;
+		  			break;
+			
+  		}
+	  	return turning;
+  	
+  		
+  	}
+	private int getAngle(Node node, Node target){
+  		
+  		double nodeX = node.getPosition().getX();
+  		double nodeY = node.getPosition().getY();
+  		
+  		double targetX = target.getPosition().getX();
+  		double targetY = target.getPosition().getY();
+  				
+  		double theta =Math.atan2((targetY - nodeY),(targetX - nodeX));
+  		
+  		theta += Math.PI / 2.0;
+  		
+  		int angle = (int) Math.toDegrees(theta);
+  		
+  		if (angle < 0) {
+			angle += 360;
+		}
+  		
+  		return angle;
+			
+  	}
 	
 	private void generateContractedNodeRandom(){
 		
@@ -956,6 +1036,7 @@ public class LobbyPresenter {
 					
 			double turningValueFromHead_f = dijkstra_head_T.getTurningValue(nodeMapT.get(firstViaNodeX,firstViaNodeY));
 			double turningValueFromTail_f = dijkstra_tail_T.getTurningValue(nodeMapT.get(firstViaNodeX,firstViaNodeY));
+			
 					
 			int[] costOfHomotopy_T = new int[50];
 			double[] valueOfTurning_T = new double[50];

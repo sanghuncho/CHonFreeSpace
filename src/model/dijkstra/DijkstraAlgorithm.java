@@ -128,6 +128,11 @@ public class DijkstraAlgorithm{//implements Runnable
          
      }
      
+     public Node getPredecessors(Node node){
+    	 
+    	 return predecessors.get(node);
+     }
+     
     public LinkedList<Node> getPath(){
     	
     	return path;
@@ -265,6 +270,7 @@ public class DijkstraAlgorithm{//implements Runnable
   	private void setNumberTurningPath(Node pastNode,Node node ,Node target){
   		
   		int angle_PastNode_Node = getAngle(pastNode,node);
+  		
   		int angle_Target_Node = getAngle(target,node);
   		
   		int angle = angle_PastNode_Node - angle_Target_Node;
@@ -272,6 +278,8 @@ public class DijkstraAlgorithm{//implements Runnable
   		if (angle < 0) {
 			angle += 360;
 		}
+  		
+  		
   		
   		double turningNode = turning.get(node);
   		

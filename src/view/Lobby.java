@@ -166,7 +166,7 @@ public class Lobby extends BorderPane{
 		    	}*/
 			
 			
-			if(i == 0){
+			/*if(i == 0){
 		    		obs.xProperty().set(150);
 		    		obs.yProperty().set(150);
 		    	}
@@ -203,8 +203,15 @@ public class Lobby extends BorderPane{
 		    	else if(i == 8){
 		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(450);
-		    	}
+		    	}*/
 				
+				 if(i == 0){
+			    		obs.xProperty().set(300);
+			    		obs.yProperty().set(300);}
+			     else if(i == 1){
+				    		obs.xProperty().set(450);
+				    		obs.yProperty().set(150);
+				 }
 				
 		    	
 		    	
@@ -1221,7 +1228,7 @@ public class Lobby extends BorderPane{
 			valueOfTurning[length] = turningOfValue_next;
 		}
 		
-		evaluation_1(listOfPathCategory.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
+		//evaluation_1(listOfPathCategory.size(), numberViaNode,nextViaNodeX,nextViaNodeY);
 		
 	  
 	}
@@ -1323,7 +1330,7 @@ public class Lobby extends BorderPane{
 			   wholeValue = wholeValue + costOfHomotopy[i];
 		}
 		
-		Arrays.sort(costArrayHelp);
+		//Arrays.sort(costArrayHelp);
 		for(int i = 0; i < arrayLength; i++ ){
 			
 			System.out.println("each cost of homotopy classes : " + costArrayHelp[i]);
@@ -1365,7 +1372,7 @@ public class Lobby extends BorderPane{
 			  
 		}
 		
-		Arrays.sort(costArrayHelp);
+		//Arrays.sort(costArrayHelp);
 		for(int i = 0; i < arrayLength; i++ ){
 			
 			System.out.println("each value of turning : " + costArrayHelp[i]);
