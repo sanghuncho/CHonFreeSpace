@@ -56,6 +56,7 @@ public class MainPresenter {
 		String modi = CHmodel.getMode();
 		
 		switch (modi){
+		
 		case "manual":
 			readyForManualMode();
 			break;
@@ -92,8 +93,7 @@ public class MainPresenter {
 		 * */
 		CHmodel.setGoalX(75);
 		CHmodel.setGoalY(55);
-		// make not visible number of obstacle
-		//CHmodel.setNumerObstacle(0);
+		
 		
 		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		
@@ -112,7 +112,7 @@ public class MainPresenter {
 		CHmodel.setMapX(800);
 		CHmodel.setMapY(600);
 		
-		// make not visible start and goal point
+		
 		/**
 		 * The position of start point on the map.
 		 * */
@@ -124,8 +124,7 @@ public class MainPresenter {
 		 * */
 		CHmodel.setGoalX(75);
 		CHmodel.setGoalY(55);
-		// make not visible number of obstacle
-		//CHmodel.setNumerObstacle(0);
+		
 		
 		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		

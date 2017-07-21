@@ -16,7 +16,8 @@ public class Point extends Circle{
 		
 		this.setRadius(4);		
 	}
-	
+	/**
+	 * set the property of start point*/
 	public void setStart(){
 		
 		
@@ -27,7 +28,8 @@ public class Point extends Circle{
 		
 		
 	}
-	
+	/**
+	 * set the property of end point*/
 	public void setEnd(){
 		
 		
@@ -36,12 +38,12 @@ public class Point extends Circle{
 		this.setCenterY(CHmodel.getGoalY());
 		this.setFill(Color.RED);
 	}
+	/**
+	 * set the property of via node start point*/
 	public void setStartViaNode(){
-		
-		
 		this.setRadius(6);
-		this.setCenterX(5);
-		this.setCenterY(5);
+		this.setCenterX(25);
+		this.setCenterY(15);
 		this.setFill(Color.MAGENTA);
 	}
 	

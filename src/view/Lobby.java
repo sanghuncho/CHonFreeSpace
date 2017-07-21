@@ -68,7 +68,6 @@ public class Lobby extends BorderPane{
 	public Text text;
 	public int sizeOfEdges;
 	public int diverseEdges;
-	//public ArrayList<LinkedList<Node>> listOfPath = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> listOfPathHead = new ArrayList<LinkedList<Node>>();
 	public ArrayList<LinkedList<Node>> listOfPathTail = new ArrayList<LinkedList<Node>>();
 	public int[] costOfHomotopy = new int[50];
@@ -86,7 +85,6 @@ public class Lobby extends BorderPane{
 	private Scene scene;
 	private int numberObs;
 	private ArrayList<Point> viaNodes = new ArrayList<Point>();
-	//private ArrayList<Point> contractedPoints = new ArrayList<Point>();	
 	private ArrayList<Edge> variousEdges = new ArrayList<Edge>(); 
 	private ArrayList<Edge> shortcuts = new ArrayList<Edge>(); 
 	private ArrayList<Lane> laneList = new ArrayList<Lane>();	
@@ -166,7 +164,7 @@ public class Lobby extends BorderPane{
 		    	}*/
 			
 			
-			/*if(i == 0){
+			if(i == 0){
 		    		obs.xProperty().set(150);
 		    		obs.yProperty().set(150);
 		    	}
@@ -203,15 +201,15 @@ public class Lobby extends BorderPane{
 		    	else if(i == 8){
 		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(450);
-		    	}*/
+		    	}
 				
-				 if(i == 0){
+				 /*if(i == 0){
 			    		obs.xProperty().set(300);
 			    		obs.yProperty().set(300);}
 			     else if(i == 1){
 				    		obs.xProperty().set(450);
 				    		obs.yProperty().set(150);
-				 }
+				 }*/
 				
 		    	
 		    	
@@ -234,8 +232,6 @@ public class Lobby extends BorderPane{
 			ObstacleFactory factoryFair = new ObstacleFactory(obstacles);
 			
 			factoryFair.produce2X8Obstacle();
-			/*factoryFair.produce40X1Obstacle();
-			factoryFair.produce1X28Obstacle();*/
 			factoryFair.produce2X2Obstacle();
 			factoryFair.produce3X3Obstacle();
 			factoryFair.produce2X7Obstacle();
@@ -251,13 +247,7 @@ public class Lobby extends BorderPane{
 			
 			obstacles = factoryFair.getFactoryObstacleArray();
 			numberObs = obstacles.size();
-			
-			/*Iterator itr = obstacles.iterator();
-			
-			while(itr.hasNext()){
-				Obstacle obs = (Obstacle)itr.next();
-				center.getChildren().add(obs);
-			}*/
+		
 			
 		}
 		
@@ -317,13 +307,6 @@ public class Lobby extends BorderPane{
 		startViaNode = new Point();
 		startViaNode.setStartViaNode();
 		
-		/*startPoint.setCenterX(CHmodel.getStartX());
-		startPoint.setCenterY(CHmodel.getStartY());
-		startPoint.setFill(Color.GREENYELLOW);*/
-		
-		/*endPoint.setCenterX(CHmodel.getGoalX());
-		endPoint.setCenterY(CHmodel.getGoalY());
-		endPoint.setFill(Color.RED);*/
 		
 		contractButton.setId("contractButtonLabel");
 		
@@ -374,8 +357,8 @@ public class Lobby extends BorderPane{
 		
 		HBox hBox = new HBox();
 		hBox.setSpacing(10);
-		//hBox.getChildren().addAll(leftSpacer,cbShort,cbTop3,cbAll,numberOfViaNode,viaNodeButton,contractButton,searchButton);
-		hBox.getChildren().addAll(leftSpacer,radioCH,radioTop3,radioAll,numberOfViaNode,viaNodeButton,contractButton,searchButton);
+		hBox.getChildren().addAll(leftSpacer,radioCH,radioTop3,radioAll,
+									numberOfViaNode,viaNodeButton,contractButton,searchButton);
 		
 		final Pane leftSpacer_text = new Pane();
 		leftSpacer_text.setMinWidth(40);

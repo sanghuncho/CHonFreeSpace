@@ -81,11 +81,8 @@ public class LobbyPresenter {
 		this.lobbyView = lobbyView;
 		this.obs=lobbyView.getObstacle();
 		this.size = CHmodel.getSizeVector2D();
-		/*this.startPointNode = CHmodel.getStartVector2D();
-		this.goalPointNode = CHmodel.getGoalVector2D();*/
 		this.nodeMap = CHmodel.getNodeMap();
 		this.constantMap = new ConstantMap();
-		
 		this.startPoint = lobbyView.getStartPoint();
 		this.endPoint = lobbyView.getEndPoint();
 		this.startViaNode = lobbyView.getStartViaNode();
@@ -108,24 +105,30 @@ public class LobbyPresenter {
 			numberObs = CHmodel.getNumberObstacle();
 			
 		}else if(CHmodel.getMode().equals("fair")){		
+			
 			numberObs = 0;
 		}else if(CHmodel.getMode().equals("floor")){
+			
 			numberObs = 0;
 		}
 		
-		
+		/**
+		 * get the list of obstacles.*/
 		obstacles = lobbyView.getObstacleList();
-			
+		
+		/**
+		 * the obstacle can be moved by dragging.*/	
 		for(int i = 0; i < numberObs; i++){
 							
 			obstacles.get(i).setOnMousePressed(obstacleOnMousePressedEventHandler);
 			obstacles.get(i).setOnMouseDragged(obstacleOnMouseDraggedEventHandler);
-				//obstacles.get(i).setOnMouseReleased(obstacleOnMouseRelesedEventHandler);			
+							
 		}
 		
 		
 		
-		
+		/**
+		 * the start, goal, vianode-stat points can be moved by dragging.*/	
 		startPoint.setOnMousePressed(startOnMousePressedEventHandler);
 		startPoint.setOnMouseDragged(startOnMouseDraggedEventHandler);
 		startPoint.setOnMouseReleased(startOnMouseRelesedEventHandler);
@@ -178,9 +181,6 @@ public class LobbyPresenter {
 				
 			}
 			
-			
-			System.out.println("loop via node : " + loop_viaNode);
-			
             costmap = new CostMap(size, CHmodel.getStartVector2D(),
             		nodeMap, obstacles , constantMap.getMap());
 			
@@ -191,9 +191,6 @@ public class LobbyPresenter {
 			
 			dijkstra_tail = new DijkstraAlgorithm(graph,obstacles,
 					nodeMap.get(goalPointNode.getX(),goalPointNode.getY()),lobbyView); 
-			
-			System.out.println("node size : " + nodeMap.getNodes().size());
-            System.out.println("edge size : " + costmap.getEdges().size()/2);
 			
 
 		});
@@ -358,19 +355,20 @@ public class LobbyPresenter {
 
 		});
 		
-		
+		//*******************  SEARCH BUTTON  *******************************************************
 		/**
 		 * It starts the searching,if search button is clicked.
 		 */
+		
 		lobbyView.searchButton.setOnMouseClicked(event -> {
 			
 			lobbyView.setNumberShortcutEdges(costmap.getEdges());
 			this.permitChange = true;
 			
-			long  startTime_searching = System.currentTimeMillis();
+			/*long  startTime_searching = System.currentTimeMillis();
 			SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
 			Date resultdate = new Date(startTime_searching);
-			System.out.println("start search time : " + sdf.format(resultdate));
+			System.out.println("start search time : " + sdf.format(resultdate));*/
 			
 			dijkstraForward();
 			
@@ -394,7 +392,7 @@ public class LobbyPresenter {
 		 /**
 		  * The representative paths of homotopy class as top3 paths or all paths of homotopy classesare displayed.'
 		  * */
-		 //if(!isCheckAll){ 
+		 
 		 if(!isRadioAll){ 
 			 
 			int firstViaNodeX = lobbyView.getViaNode2D(0).getX();
@@ -418,18 +416,15 @@ public class LobbyPresenter {
 			
 			lobbyView.getListOfPathHead().add(0,dijkstra_head.getPath());
 			
-			//here should implement the whole distance of path and the turn value of path of the head
-			long  firstHomotopy = System.currentTimeMillis();
+			/*long  firstHomotopy = System.currentTimeMillis();
 			SimpleDateFormat sdf_1 = new SimpleDateFormat("MMM dd,yyyy HH:mm:ss.SSS");    
 			Date resultdate_1 = new Date(firstHomotopy);
-			System.out.println("first homotopy time : " + sdf_1.format(resultdate_1));
+			System.out.println("first homotopy time : " + sdf_1.format(resultdate_1));*/
 			
 			dijkstra_tail.setPath(nodeMap.get(firstViaNodeX,firstViaNodeY));
 			
 			lobbyView.getListOfPathTail().add(0,dijkstra_tail.getPath());
 			lobbyView.getPathCategory().add("start");
-			
-			//here should implement the whole distance of path and the turn value of path of the tail
 			
 			
 			loop=1;
@@ -440,11 +435,6 @@ public class LobbyPresenter {
 				int nextViaNodeX = lobbyView.getViaNode2D(loop).getX();
 				int nextViaNodeY = lobbyView.getViaNode2D(loop).getY();
 				
-				//System.out.println("via node x : " + nextViaNodeX + ", via node y : " + nextViaNodeY);
-				
-				//int distance_next = dijkstra_head.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));		
-				//System.out.println("distance_ " +numberViaNode + " : "+ distance_next);
-				
 				int distance_next_x = dijkstra_head.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				int distance_next_y = dijkstra_tail.getShortestDistance(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				int distance_next = (distance_next_x + distance_next_y);  
@@ -453,8 +443,6 @@ public class LobbyPresenter {
 				Node prod_node_tail_n = dijkstra_tail.getPredecessors(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				double turningValue_ViaNode_n = getTurningValue_ViaNode(prod_node_head_n,
 													nodeMap.get(nextViaNodeX,nextViaNodeY), prod_node_tail_n); 
-				
-				
 				
 				double turningValueFromHead_n = dijkstra_head.getTurningValue(nodeMap.get(nextViaNodeX,nextViaNodeY));
 				double turningValueFromTail_n = dijkstra_tail.getTurningValue(nodeMap.get(nextViaNodeX,nextViaNodeY));
@@ -536,27 +524,22 @@ public class LobbyPresenter {
 			 *the evaluation_3st is implemented.
 			 *this shows the duration of from the running of two dijkstra's algorithm to the homotopy test. 
 			 */
-			long endTime_searching = System.currentTimeMillis();
+			/*long endTime_searching = System.currentTimeMillis();
 			long duration_searching = (endTime_searching - startTime_searching);
 			long duration_classifying = (endTime_searching - firstHomotopy);
 			System.out.println("the duration of the searching and the homotopy test : " + duration_searching + " miliseconds");
 			System.out.println("the duration of homotopy test : " + duration_classifying + " miliseconds");
-			
+			*/
 		    createHomotopy(lobbyView, costmap);
 		    lobbyView.printCostOfHomotopyClass();
 		    lobbyView.printValueOfTurning();
-		    
-		   //autoEvaluation(3);
-		    
-		    //System.out.println("autoEvaluation end");
-		   
 		    
 		 }
 		 
 		 /**
 		  * All the paths are displayed.
 		  * */
-		 //if((!isCheckShort) && (isCheckAll)){
+		
 		 if((!isRadioCH) && (isRadioAll)){ 
 			 
 				loop=0;
@@ -810,18 +793,16 @@ public class LobbyPresenter {
 		int distance_viaNode = (int) Math.ceil( (actual_default_node / lobbyView.getnumberOfViaNode()));
 		
 		loop_viaNode=0;
-		/*int act_row = 1;
-		int act_column = 0;*/
+		
 		int act_row = (CHmodel.getStartViaNodeY()-5)/10;
-		//(startViaNodeX-1)*10+5
 		int act_column = (CHmodel.getStartViaNodeX()-5)/10;
 		int hop = distance_viaNode;
 		
 		while((loop_viaNode < lobbyView.getnumberOfViaNode()) && (act_row < row) ){ 
-			 /**
+			
+			/**
 			  * insideObstacle method check whether the point is located in the obstacle or in start-, goal point.
-			  * */
-			  		 
+			  * */  		 
 			if(!lobbyView.insideObstacle(act_column, act_row, constantMap.getMap()) 
 					&& !lobbyView.isContractedNode(act_column, act_row, constantMap.getMap())
 						&& hop == (distance_viaNode) ){
