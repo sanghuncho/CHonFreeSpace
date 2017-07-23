@@ -2,6 +2,8 @@ package presenter;
 
 import java.io.IOException;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import main.Play;
 import model.CHmodel;
 import model.dijkstra.CostMap;
@@ -34,19 +36,40 @@ public class MainPresenter {
 		
 		/*after click create map button*/
 		mainView.createMap.setOnMousePressed(event -> {
-			try {
+			
+			if(mainView.getMode() == null){
 				
-				/*save the value of map size,position of start 
-				 * & end point & number of obstacle*/
-				readyForLobby();
+				    Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setHeaderText("Warning!");
+					String s ="please select the one of mode";
+					alert.setContentText(s);
+					alert.show();
+			}
+			else if(mainView.getRadioButtonMan().isSelected() && (mainView.getViaNodeDistance().getText() == "")){
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setHeaderText("Warning!");
+				String s ="please input the manual distance";
+				alert.setContentText(s);
+				alert.show();
+				
+				
+			}
+			else{
+			
+				try {
 	
-				//Play.navigator.setGameModel(gameModel);
-				Play.navigator.switchTo(AvailableScenes.LOBBY);
-				
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			} 
+					/*save the value of map size,position of start 
+					 * & end point & number of obstacle*/
+					readyForLobby();
+		
+					//Play.navigator.setGameModel(gameModel);
+					Play.navigator.switchTo(AvailableScenes.LOBBY);
+					
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+			}
 			System.out.println("pushed \n");
 		});
 	}
