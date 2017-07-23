@@ -42,8 +42,8 @@ public class Point extends Circle{
 	 * set the property of via node start point*/
 	public void setStartViaNode(){
 		this.setRadius(6);
-		this.setCenterX(25);
-		this.setCenterY(15);
+		this.setCenterX(5);
+		this.setCenterY(5);
 		this.setFill(Color.MAGENTA);
 	}
 	

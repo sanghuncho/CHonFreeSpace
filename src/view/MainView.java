@@ -28,13 +28,18 @@ import model.CHmodel;
 public class MainView extends GridPane{
 	
 	private Scene scene;
+	
 	private RadioButton enumerate;
 	private RadioButton random;
-	//final ToggleGroup radioGroup;
-	private ToggleGroup radioGroup;
 	
+	private RadioButton autDis;
+	private RadioButton manDis;
+	
+	private ToggleGroup radioGroup;
+	private ToggleGroup distanceGroup;
 	
 	public Button createMap; 
+	
 	public TextField mapXField;
 	public TextField mapYField;
 	public TextField startPointX;
@@ -43,7 +48,8 @@ public class MainView extends GridPane{
 	public TextField endPointY;
 	public TextField numberOfObstacle;
 	public TextField percentOfContract;
-	//public String percentage;
+	public TextField viaNodeDistance;
+	
 	public String mode;
 	public String percentageCustom;
 	
@@ -103,6 +109,12 @@ public class MainView extends GridPane{
 		
 		Label viaNodeLabel = new Label();
 		viaNodeLabel.setText("via node order:");
+		
+		Label viaNodeDistanceLabel = new Label();
+		viaNodeDistanceLabel.setText("via node distance:");
+		
+		Label manualDistanceLabel = new Label();
+		manualDistanceLabel.setText("manual distance:");
 		
 		/**
 		 * all textfield are created.
@@ -208,6 +220,13 @@ public class MainView extends GridPane{
 		contractingPercentBox.setLayoutY(200);
 		
 		
+		viaNodeDistance = new TextField("");
+		viaNodeDistance.setMinHeight(50);
+		viaNodeDistance.setPrefWidth(50);
+		viaNodeDistance.setId("");
+		viaNodeDistance.setFocusTraversable(false);
+	
+		
 		
 		ObservableList<String> options = 
 			    FXCollections.observableArrayList(
@@ -239,6 +258,16 @@ public class MainView extends GridPane{
 		random.setToggleGroup(radioGroup);
 		
 		
+		autDis = new RadioButton("auto distance");
+		CHmodel.setAutRadio(autDis);
+		manDis = new RadioButton("manual distance");
+		CHmodel.setManRadio(manDis);
+		distanceGroup =  new ToggleGroup();
+		
+		autDis.setToggleGroup(distanceGroup);
+		autDis.setSelected(true);
+		manDis.setToggleGroup(distanceGroup);
+		
 		gridPane.add(mapLabel,0,0);
 		gridPane.add(mapXField,1,0);
 		gridPane.add(mapYField,2,0);
@@ -265,7 +294,12 @@ public class MainView extends GridPane{
 		gridPane.add(enumerate, 1, 6);
 		gridPane.add(random, 2, 6);
 		
-		gridPane.add(createMap,0,7);
+		gridPane.add(viaNodeDistanceLabel, 0, 7);
+		gridPane.add(autDis, 1, 7);
+		gridPane.add(manDis, 2, 7);
+		gridPane.add(viaNodeDistance, 3, 7);
+		
+		gridPane.add(createMap,0,8);
 		gridPane.setAlignment(Pos.CENTER);
 		
 		scene = new Scene(gridPane);
@@ -309,11 +343,22 @@ public class MainView extends GridPane{
 		return numberOfObstacle;
 	}
 	
+	public TextField getViaNodeDistance(){
+		
+		return viaNodeDistance;
+	}
+	
 	public RadioButton getRadioButtonEnum(){
 		return enumerate;
 	}
 	public RadioButton getRadioButtonRandom(){
 		return random;
+	}
+	public RadioButton getRadioButtonMan(){
+		return manDis;
+	}
+	public RadioButton getRadioButtonAut(){
+		return autDis;
 	}
 
 }

@@ -99,6 +99,8 @@ public class MainPresenter {
 		
 		CHmodel.setContractingPercent(Integer.parseInt(mainView.getPercentageCustom().getText()));
 		
+		CHmodel.setViaNodeDistanceManaul(Integer.parseInt(mainView.getViaNodeDistance().getText()));
+		
 		System.out.println("the percent of CH : " + Integer.parseInt(mainView.getPercentageCustom().getText()) + "%\n");
 		
 		new NodeMapHandler(size);
@@ -130,6 +132,8 @@ public class MainPresenter {
 		
 		CHmodel.setContractingPercent(Integer.parseInt(mainView.getPercentageCustom().getText()));
 		
+		CHmodel.setViaNodeDistanceManaul(Integer.parseInt(mainView.getViaNodeDistance().getText()));
+		
 		System.out.println("the percent of CH : " + Integer.parseInt(mainView.getPercentageCustom().getText()) + "%\n");
 		
 		new NodeMapHandler(size);
@@ -159,6 +163,8 @@ public class MainPresenter {
 		CHmodel.setSizeVector2D(size = new Vector2D( CHmodel.getMapX(),CHmodel.getMapY(),10 ) );
 		
 		CHmodel.setContractingPercent(Integer.parseInt(mainView.getPercentageCustom().getText()));
+		
+		CHmodel.setViaNodeDistanceManaul(Integer.parseInt(mainView.getViaNodeDistance().getText()));
 		
 		System.out.println("the percent of CH : " + Integer.parseInt(mainView.getPercentageCustom().getText()) + "%\n");
 		

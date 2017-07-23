@@ -39,16 +39,36 @@ public class CHmodel {
 	public static String mode;
 	public static int nodeNumberObstacle;
 	public static int numberOfViaNode;
-	public static RadioButton randomRadion;
+	public static RadioButton randomRadio;
 	public static RadioButton enumerateRadio;
+	public static RadioButton autRadio;
+	public static RadioButton manRadio;
 	
+	public static int viaNodeDistanceManual;
+	
+	public static RadioButton getRadioButtonAut(){
+		
+		return autRadio;
+	}
+	public static void setAutRadio(RadioButton autoRadio){
+		
+		CHmodel.autRadio = autoRadio;
+	}
+	public static RadioButton getRadioButtonMan(){
+		
+		return manRadio;
+	}
+	public static void setManRadio(RadioButton manual){
+		
+		CHmodel.manRadio = manual;
+	}
 	public static RadioButton getRadioButtonRandom(){
 		
-		return randomRadion;
+		return randomRadio;
 	}
 	public static void setRandomRadio(RadioButton random){
 		
-		CHmodel.randomRadion = random;
+		CHmodel.randomRadio = random;
 	}
 	public static RadioButton getRadioButtonEnum(){
 		
@@ -171,6 +191,13 @@ public class CHmodel {
 
 	public static void setNumberObstacle(int obstacleNumber) {
 		CHmodel.obstacleNumber = obstacleNumber;
+	}
+	
+	public static int getViaNodeDistanceManual(){
+		return viaNodeDistanceManual;
+	}
+	public static void setViaNodeDistanceManaul(int distanceManual){
+		CHmodel.viaNodeDistanceManual = distanceManual;
 	}
 	
 	public static void setContractingPercent(int percentageCustom) {
