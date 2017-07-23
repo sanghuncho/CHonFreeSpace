@@ -792,21 +792,26 @@ public class LobbyPresenter {
 		int actual_default_node = (int) (row*column - constantMap.getSizeOfObstacleNode()  
 										- ((row-1)*(column-1)-constantMap.getSizeOfObstacleNode()-2)*0.9);
 		
-		int distance_viaNode = (int) Math.ceil( (actual_default_node / lobbyView.getnumberOfViaNode()));
+		//int distance_viaNode = (int) Math.ceil( (actual_default_node / lobbyView.getnumberOfViaNode()));
+		//int distance_viaNode = (int) Math.ceil( (actual_default_node / lobbyView.getnumberOfViaNode()));
 		
-		loop_viaNode=0;
+		
 		
 		int act_row = (CHmodel.getStartViaNodeY()-5)/10;
 		int act_column = (CHmodel.getStartViaNodeX()-5)/10;
 		//int hop = distance_viaNode;
-		int hop = 0;
 		
+		int distance_viaNode = 0;
+		int hop = 0;
 		if(CHmodel.getRadioButtonAut().isSelected()){
+			
+			distance_viaNode = (int) Math.ceil( (actual_default_node / lobbyView.getnumberOfViaNode()));
 			hop = distance_viaNode;
 		}else if(CHmodel.getRadioButtonMan().isSelected()){
-			hop = CHmodel.getViaNodeDistanceManual();
+			distance_viaNode = CHmodel.getViaNodeDistanceManual();
+			hop = distance_viaNode;
 		}
-		
+		loop_viaNode=0;
 		while((loop_viaNode < lobbyView.getnumberOfViaNode()) && (act_row < row) ){ 
 			
 			/**
