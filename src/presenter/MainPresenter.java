@@ -45,7 +45,7 @@ public class MainPresenter {
 					alert.setContentText(s);
 					alert.show();
 			}
-			else if(mainView.getRadioButtonMan().isSelected() && (mainView.getViaNodeDistance().getText() == "")){
+			else if(mainView.getRadioButtonMan().isSelected() && (mainView.getViaNodeDistance().getText().equals(""))){
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setHeaderText("Warning!");
 				String s ="please input the manual distance";
