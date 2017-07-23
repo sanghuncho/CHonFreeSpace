@@ -149,14 +149,18 @@ public class MainPresenter {
 		/**
 		 * The position of start point on the map.
 		 * */
-		CHmodel.setStartX(Integer.parseInt(mainView.getStartPointX().getText()));
-		CHmodel.setStartY(Integer.parseInt(mainView.getStartPointY().getText()));
-		
+		/*CHmodel.setStartX(Integer.parseInt(mainView.getStartPointX().getText()));
+		CHmodel.setStartY(Integer.parseInt(mainView.getStartPointY().getText()));*/
+		CHmodel.setStartX(2);
+		CHmodel.setStartY(2);
 		/**
 		 * The position of start point on the map.
 		 * */
-		CHmodel.setGoalX(Integer.parseInt(mainView.getEndPointX().getText()));
-		CHmodel.setGoalY(Integer.parseInt(mainView.getEndPointY().getText()));
+		/*CHmodel.setGoalX(Integer.parseInt(mainView.getEndPointX().getText()));
+		CHmodel.setGoalY(Integer.parseInt(mainView.getEndPointY().getText()));*/
+		
+		CHmodel.setGoalX(59);
+		CHmodel.setGoalY(59);
 		
 		CHmodel.setNumberObstacle(Integer.parseInt(mainView.getNumberObstacle().getText()));
 		

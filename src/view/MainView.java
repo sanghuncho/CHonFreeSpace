@@ -272,34 +272,34 @@ public class MainView extends GridPane{
 		gridPane.add(mapXField,1,0);
 		gridPane.add(mapYField,2,0);
 		
-		gridPane.add(startLabel,0,1);
+		/*gridPane.add(startLabel,0,1);
 		gridPane.add(startPointX,1,1);
 		gridPane.add(startPointY,2,1);
 		
 		gridPane.add(endLabel,0,2);
 		gridPane.add(endPointX,1,2);
-		gridPane.add(endPointY,2,2);
+		gridPane.add(endPointY,2,2);*/
 		
-		gridPane.add(obstacleLabel,0,3);
-		gridPane.add(numberOfObstacle,1,3);
+		gridPane.add(obstacleLabel,0,1);
+		gridPane.add(numberOfObstacle,1,1);
 		
-		gridPane.add(contractingLabel,0,4);
-		gridPane.add(percentOfContract,1,4);
-		gridPane.add(percentageLabel,2,4);
+		gridPane.add(contractingLabel,0,2);
+		gridPane.add(percentOfContract,1,2);
+		gridPane.add(percentageLabel,2,2);
 		
-		gridPane.add(indoorSpaceLabel, 0, 5);
-		gridPane.add(comboBox, 1, 5);
+		gridPane.add(indoorSpaceLabel, 0, 3);
+		gridPane.add(comboBox, 1, 3);
 		
-		gridPane.add(viaNodeLabel, 0, 6);
-		gridPane.add(enumerate, 1, 6);
-		gridPane.add(random, 2, 6);
+		gridPane.add(viaNodeLabel, 0, 4);
+		gridPane.add(enumerate, 1, 4);
+		gridPane.add(random, 2, 4);
 		
-		gridPane.add(viaNodeDistanceLabel, 0, 7);
-		gridPane.add(autDis, 1, 7);
-		gridPane.add(manDis, 2, 7);
-		gridPane.add(viaNodeDistance, 3, 7);
+		gridPane.add(viaNodeDistanceLabel, 0, 5);
+		gridPane.add(autDis, 1, 5);
+		gridPane.add(manDis, 2, 5);
+		gridPane.add(viaNodeDistance, 3, 5);
 		
-		gridPane.add(createMap,0,8);
+		gridPane.add(createMap,0,6);
 		gridPane.setAlignment(Pos.CENTER);
 		
 		scene = new Scene(gridPane);
