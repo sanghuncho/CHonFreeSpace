@@ -45,10 +45,10 @@ public class MainPresenter {
 					alert.setContentText(s);
 					alert.show();
 			}
-			else if(mainView.getRadioButtonMan().isSelected() && (mainView.getViaNodeDistance().getText().equals(""))){
+			else if(mainView.getRadioButtonEnum().isSelected() && (mainView.getViaNodeDistance().getText().equals(""))){
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setHeaderText("Warning!");
-				String s ="please input the manual distance";
+				String s ="please input the via node distance";
 				alert.setContentText(s);
 				alert.show();
 				
@@ -190,7 +190,7 @@ public class MainPresenter {
 		
 		CHmodel.setContractingPercent(Integer.parseInt(mainView.getPercentageCustom().getText()));
 		
-		if(CHmodel.getRadioButtonMan().isSelected()){
+		if(CHmodel.getRadioButtonEnum().isSelected()){
 			CHmodel.setViaNodeDistanceManaul(Integer.parseInt(mainView.getViaNodeDistance().getText()));
 		}
 		System.out.println("the percent of CH : " + Integer.parseInt(mainView.getPercentageCustom().getText()) + "%\n");

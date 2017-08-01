@@ -660,7 +660,7 @@ public class LobbyPresenter {
 		
 		int distance_viaNode = 0;
 		int hop = 0;
-		if(CHmodel.getRadioButtonAut().isSelected()){
+		/*if(CHmodel.getRadioButtonAut().isSelected()){
 			
 			distance_viaNode = (int) Math.ceil( (actual_default_node / lobbyView.getnumberOfViaNode()));
 			hop = distance_viaNode;
@@ -668,7 +668,9 @@ public class LobbyPresenter {
 		}else if(CHmodel.getRadioButtonMan().isSelected()){
 			distance_viaNode = CHmodel.getViaNodeDistanceManual();
 			hop = distance_viaNode;
-		}
+		}*/
+		distance_viaNode = CHmodel.getViaNodeDistanceManual();
+		hop = distance_viaNode;
 		
 		loop_viaNode=0;
 		while((loop_viaNode < lobbyView.getnumberOfViaNode()) && (act_row < row) ){ 

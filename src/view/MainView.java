@@ -111,10 +111,13 @@ public class MainView extends GridPane{
 		viaNodeLabel.setText("via node order:");
 		
 		Label viaNodeDistanceLabel = new Label();
-		viaNodeDistanceLabel.setText("via node distance:");
+		//viaNodeDistanceLabel.setText("via node distance:");
+		viaNodeDistanceLabel.setText("via node order:");
 		
 		Label manualDistanceLabel = new Label();
-		manualDistanceLabel.setText("manual distance:");
+		manualDistanceLabel.setText(" via node distance:");
+	
+		
 		
 		/**
 		 * all textfield are created.
@@ -258,15 +261,15 @@ public class MainView extends GridPane{
 		random.setToggleGroup(radioGroup);
 		
 		
-		autDis = new RadioButton("auto distance");
+		/*autDis = new RadioButton("auto distance");
 		CHmodel.setAutRadio(autDis);
 		manDis = new RadioButton("manual distance");
 		CHmodel.setManRadio(manDis);
-		distanceGroup =  new ToggleGroup();
+		distanceGroup =  new ToggleGroup();*/
 		
-		autDis.setToggleGroup(distanceGroup);
+		/*autDis.setToggleGroup(distanceGroup);
 		autDis.setSelected(true);
-		manDis.setToggleGroup(distanceGroup);
+		manDis.setToggleGroup(distanceGroup);*/
 		
 		gridPane.add(mapLabel,0,0);
 		gridPane.add(mapXField,1,0);
@@ -284,12 +287,15 @@ public class MainView extends GridPane{
 		gridPane.add(comboBox, 1, 3);
 		
 		gridPane.add(viaNodeLabel, 0, 4);
-		gridPane.add(enumerate, 1, 4);
-		gridPane.add(random, 2, 4);
+		gridPane.add(random, 1, 4);
+		/*gridPane.add(enumerate, 1, 4);
+		gridPane.add(random, 2, 4);*/
 		
 		gridPane.add(viaNodeDistanceLabel, 0, 5);
-		gridPane.add(autDis, 1, 5);
-		gridPane.add(manDis, 2, 5);
+		//gridPane.add(autDis, 1, 5); 
+		gridPane.add(manualDistanceLabel, 2, 5);
+		//gridPane.add(manDis, 2, 5);
+		gridPane.add(enumerate, 1, 5);
 		gridPane.add(viaNodeDistance, 3, 5);
 		
 		gridPane.add(createMap,0,6);
