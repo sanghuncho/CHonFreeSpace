@@ -164,7 +164,7 @@ public class Lobby extends BorderPane{
 		    	}*/
 			
 			
-			if(i == 0){
+			/*if(i == 0){
 		    		obs.xProperty().set(150);
 		    		obs.yProperty().set(150);
 		    	}
@@ -201,15 +201,9 @@ public class Lobby extends BorderPane{
 		    	else if(i == 8){
 		    		obs.xProperty().set(450);
 		    		obs.yProperty().set(450);
-		    	}
+		    	}*/
 				
-				 /*if(i == 0){
-			    		obs.xProperty().set(300);
-			    		obs.yProperty().set(300);}
-			     else if(i == 1){
-				    		obs.xProperty().set(450);
-				    		obs.yProperty().set(150);
-				 }*/
+			
 				
 		    	
 		    	
@@ -458,13 +452,12 @@ public class Lobby extends BorderPane{
 			ArrayList<Vector> vertexOfObstacle = getVertexOfObstalce(id);
 			
 			int coveredPoint = 0;
-			/*check whether the polygon include the four verteces of obstacle*/
+			
 			for(int k = 0; k < fourVertex; k++){
 				
 				int xPosVertex = vertexOfObstacle.get(k).getX();
 				int yPosVertex = vertexOfObstacle.get(k).getY();
-				/*System.out.println("obstacle X" + xPosVertex);
-				System.out.println("obstacle Y" + yPosVertex);*/
+			
 				if(polygon.contains(xPosVertex,yPosVertex)){
 					coveredPoint++;
 				}
@@ -512,37 +505,6 @@ public class Lobby extends BorderPane{
 		return obstacles;
 	}
 	
-	
-	
-	
-	/*this methode is made for removing the lane*/
-	/*public void createLane(LinkedList<Node> path){
-		
-		int k = path.size();
-		
-		for(int i = 0 ; i < k-1 ; i ++){
-			
-			Vector start = path.get(i).getPosition();
-			Vector goal = path.get(i+1).getPosition();
-			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
-					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
-			center.getChildren().add(lane);
-			laneList.add(lane);
-			
-		}
-		
-	}
-	
-	public void removeLane(){
-		
-		int sizeLane = laneList.size();
-			
-			for(int j=0; j< sizeLane; j++){
-				
-					center.getChildren().remove(laneList.get(j));
-			}
-		
-	}*/
 	
 	
 	
@@ -684,16 +646,7 @@ public class Lobby extends BorderPane{
 		randomNumX = randX.nextInt( size.getX());
 		randY = new Random();
 		randomNumY = randY.nextInt( size.getY());
-		/*
-		System.out.println("size x " + size.getX() + "\n");
-		System.out.println("size y " + size.getY() + "\n");
-		*/
-		/*System.out.println("random x " + randomNumX + "\n");
-		System.out.println("random y " + randomNumY + "\n");*/
 		
-		
-		/*while(insideObstacle(randomNumX,randomNumY,map) || isEdgeOfMap(randomNumX,randomNumY,map) ||
-				isContractedNode(randomNumX,randomNumY,map) || isViaNode(randomNumX,randomNumY,map)){*/
 		
 		while(insideObstacle(randomNumX,randomNumY,map) 
 				|| isEdgeOfMap(randomNumX,randomNumY,map) 
@@ -703,15 +656,9 @@ public class Lobby extends BorderPane{
 				randomNumX = randX.nextInt( size.getX());
 				randY = new Random();
 				randomNumY = randY.nextInt( size.getY());
-				
-				/*System.out.println("new random x " + randomNumX + "\n");
-				System.out.println("new random y " + randomNumY + "\n");
-				System.out.println("\n");*/
 			
 		}
 		
-		/*if( !insideObstacle(randomNumX,randomNumY,map) || !isContractedNode(randomNumX,randomNumY,map) 
-				|| !isViaNode(randomNumX,randomNumY,map)){*/
 		if( !insideObstacle(randomNumX,randomNumY,map) 
 				&& !isContractedNode(randomNumX,randomNumY,map)){
 			
@@ -721,11 +668,9 @@ public class Lobby extends BorderPane{
 			contractedNode.setCenterY(randomNumY*10+5);
 			contractedNode.setFill(Color.WHITE);
 			center.getChildren().add(contractedNode);
-			//contractedPoints.add(contractedNode);
-			map[randomNumX][randomNumY] = CHmodel.VALUE_MAP_CONTRACTING;
-			//System.out.println("contracted ");
-			//k++;
 			
+			map[randomNumX][randomNumY] = CHmodel.VALUE_MAP_CONTRACTING;
+						
 		}
 		
 	}
@@ -736,7 +681,6 @@ public class Lobby extends BorderPane{
 			contractedNode.setCenterY(row*10+5);
 			contractedNode.setFill(Color.WHITE);
 			center.getChildren().add(contractedNode);
-			//contractedPoints.add(contractedNode);
 			map[column][row] = CHmodel.VALUE_MAP_CONTRACTING;
 		
 	}
@@ -767,11 +711,6 @@ public class Lobby extends BorderPane{
 		randY = new Random();
 		randomNumY = randY.nextInt( size.getY());
 
-		System.out.println("map with : " + map.length);
-		System.out.println("map Height : " + map[0].length);
-		
-		
-		//while( insideObstacle(randomNumX,randomNumY,map) || isContractedNode(randomNumX,randomNumY,map) ){
 		while( insideObstacle(randomNumX,randomNumY,map) || isViaNode(randomNumX,randomNumY,map) ){
 			randX = new Random();
 			randomNumX = randX.nextInt(size.getX());
@@ -780,7 +719,6 @@ public class Lobby extends BorderPane{
 		
 		}
 		
-		//if( !insideObstacle(randomNumX,randomNumY,map) && !isContractedNode(randomNumX,randomNumY,map)){
 		if( !insideObstacle(randomNumX,randomNumY,map) && !isViaNode(randomNumX,randomNumY,map)){
 			viaNode = new Point();
 			viaNode.setCenterX(randomNumX*10+5);
@@ -823,8 +761,6 @@ public class Lobby extends BorderPane{
 		randY = new Random();
 		randomNumY = randY.nextInt( size.getY());
 
-		
-		//while( insideObstacle(randomNumX,randomNumY,map) || isContractedNode(randomNumX,randomNumY,map) ){
 		while( insideObstacle(randomNumX,randomNumY,map) || isViaNode(randomNumX,randomNumY,map) ){
 			randX = new Random();
 			randomNumX = randX.nextInt(size.getX());
@@ -846,22 +782,6 @@ public class Lobby extends BorderPane{
 		
 	}
 	
-	/*private boolean insideObstacle(int randomX, int randomY, int[][] map){
-		
-		if( (map[randomX][randomY]) == -1 || (map[randomX][randomY]) == 0){
-			
-			if((map[randomX][randomY]) == 0){
-				
-				//System.out.println("map = 0 \n");
-			}
-			return true;
-			
-		}
-		else{
-			return false;
-		}
-		
-	}*/
 	public boolean insideObstacle(int randomX, int randomY, int[][] map){
 		
 		if( (map[randomX][randomY]) == CHmodel.VALUE_MAP_OBSTACLE 
@@ -927,14 +847,6 @@ public class Lobby extends BorderPane{
 		return startViaNode;
 	}
 
-	/*public Vector2D getViaNode2D(){
-		return new Vector2D(( viaNode.getCenterX()-5 )/10,( viaNode.getCenterY()-5 )/10);
-	}*/
-	
-	/*public Vector2D getViaNodeScreen(){
-		return new Vector2D( viaNode.getCenterX(),viaNode.getCenterY());
-	}*/
-	
 	
 	public Polygon generatePolygon(LinkedList<Node> head_first, LinkedList<Node> tail_first
 			,LinkedList<Node> head_second,LinkedList<Node> tail_second){
@@ -1009,81 +921,7 @@ public class Lobby extends BorderPane{
 	}
 
 	
-	/*for test*/
-	/*public Polygon generatePolygon(LinkedList<Node> head_first, LinkedList<Node> tail_first
-			,LinkedList<Node> head_second,LinkedList<Node> tail_second){
-	
-		polygon = new Polygon();
-		
-		int k = head_first.size();
-		int l = tail_first.size();
-		int m = head_second.size();
-		int n = tail_second.size();
-		
-		double finalX=head_first.get(k-1).getPosition().getX();
-		double finalY=head_first.get(k-1).getPosition().getY();
-		
-		for(int i = 0 ; i < k ; i ++){
-			
-			double pointX = head_first.get(i).getPosition().getX();
-			System.out.println("fisrst head  pointX: "+ pointX);
-			
-			double pointY = head_first.get(i).getPosition().getY();
-			System.out.println("first head  pointY: "+ pointY);
-			
-			polygon.getPoints().add(pointX*10 +5);
-			polygon.getPoints().add(pointY*10 +5);
-				
-		}
-		
-		
-		for(int i = 0 ; i < m ; i ++){
-			
-			double pointX = head_second.get(i).getPosition().getX();
-			System.out.println("secons head pointX: "+ pointX);
-			double pointY = head_second.get(i).getPosition().getY();
-			System.out.println("second head pointY: "+ pointY);
-			polygon.getPoints().add(pointX*10 +5);
-			polygon.getPoints().add(pointY*10 +5);
-				
-		}
-		polygon.getPoints().add(finalX*10 +5);
-		polygon.getPoints().add(finalY*10 +5);
-		
-		
-		
-		double finalX_tail=tail_first.get(l-1).getPosition().getX();
-		double finalY_tail=tail_first.get(l-1).getPosition().getY();
-		for(int i = 0 ; i < l ; i ++){
-				
-				double pointX = tail_first.get(i).getPosition().getX();
-				System.out.println("first tail pointX: "+ pointX);
-				double pointY = tail_first.get(i).getPosition().getY();
-				System.out.println("first tail pointY: "+ pointY);
-				polygon.getPoints().add(pointX*10 +5);
-				polygon.getPoints().add(pointY*10 +5);
-					
-			}
 
-		for(int i = 0 ; i < n ; i++){
-			
-			double pointX = tail_second.get(i).getPosition().getX();
-			System.out.println("second tail pointX: "+ pointX);
-			double pointY = tail_second.get(i).getPosition().getY();
-			System.out.println("second tail pointY: "+ pointY);
-			polygon.getPoints().add(pointX*10 +5);
-			polygon.getPoints().add(pointY*10 +5);
-				
-		}
-		
-		polygon.getPoints().add(finalX_tail*10 +5);
-		polygon.getPoints().add(finalY_tail*10 +5);
-		
-		
-		
-		return polygon;
-	}
-*/	
 	public Polygon getPolygon(){
 		return polygon;
 	}
@@ -1102,7 +940,7 @@ public class Lobby extends BorderPane{
 		/**
 		 * whole edges does not include the shortcut edges
 		 * */		
-		//int numberWholeEdge = (totalEdges/2) -  this.numberShortcutEdge;
+		
 	
 		/**
 		 * whole edges include the shortcut edges
@@ -1126,9 +964,7 @@ public class Lobby extends BorderPane{
 		return listOfPathTail;
 		
 	}
-	/*public ArrayList<LinkedList<Node>> getListPath(){
-		return listOfPath;
-	}*/
+	
 	
 	public ArrayList<String> getPathCategory(){
 		
@@ -1163,19 +999,9 @@ public class Lobby extends BorderPane{
 			 * */ 
 			if(stringIdPath.equals(pathId)){
 				
-				//here implement the method of compare with cost and turn value between two homotopy path
+				
 				homotopy = true;
-				
-				/*if(costOfHomotopy[i] >= distance_next){
-					
-					listOfPathHead.remove(i);
-					listOfPathHead.add(i,head_path);
-					listOfPathTail.remove(i);
-					listOfPathTail.add(i,tail_path);
-					costOfHomotopy[i] = distance_next;
-					
-				}*/
-				
+
 				if(costOfHomotopy[i] == distance_next){
 					
 					if(valueOfTurning[i] > turningOfValue_next){
@@ -1242,7 +1068,6 @@ public class Lobby extends BorderPane{
 			 * */ 
 			if(stringIdPath.equals(pathId)){
 				
-				//here implement the method of compare with cost and turn value between two homotopy path
 				homotopy = true;
 				
 				
@@ -1313,7 +1138,7 @@ public class Lobby extends BorderPane{
 			   wholeValue = wholeValue + costOfHomotopy[i];
 		}
 		
-		//Arrays.sort(costArrayHelp);
+		
 		for(int i = 0; i < arrayLength; i++ ){
 			
 			System.out.println("each cost of homotopy classes : " + costArrayHelp[i]);
@@ -1355,14 +1180,14 @@ public class Lobby extends BorderPane{
 			  
 		}
 		
-		//Arrays.sort(costArrayHelp);
+		
 		for(int i = 0; i < arrayLength; i++ ){
 			
 			System.out.println("each value of turning : " + costArrayHelp[i]);
 			
 			
 		}
-		//System.out.println("sum of cost : " + wholeValue);
+		
 	}
 	public void printValueOfTurning_T(double[] valueOfTurning_T){
 		
@@ -1400,7 +1225,7 @@ public class Lobby extends BorderPane{
 		 * if the top3-checkbox is selected on lobby, 
 		 * then only three shortest paths of homotopy classes are displayed.
 		 * */  
-		//if(cbTop3.isSelected()){
+		
 		if(radioTop3.isSelected()){	
 			createTop3HomotopyLane();
 			
@@ -1410,7 +1235,7 @@ public class Lobby extends BorderPane{
 		 * if the representative-checkbox is selected on lobby, 
 		 * then all shortest paths of homotopy classes are displayed.
 		 * */ 
-		//if(cbShort.isSelected()){
+		
 		if(radioCH.isSelected()){
 			createAllHomotopyLane();
 			
@@ -1432,8 +1257,6 @@ public class Lobby extends BorderPane{
 	private void createAllHomotopyLane(){
 		
 		int head_size = listOfPathHead.size();
-		
-		//System.out.println("head size : " + head_size);
 		
 		for(int i=0; i< head_size; i++){
 
@@ -1507,22 +1330,7 @@ public class Lobby extends BorderPane{
 			createLane(listOfPathTail.get(th_min_index));
 	
 	}
-	/*public void createLane(LinkedList<Node> path){
-		
-		int k = path.size();
-		
-		for(int i = 0 ; i < k-1 ; i ++){
-			
-			Vector start = path.get(i).getPosition();
-			Vector goal = path.get(i+1).getPosition();
-			Lane lane = new Lane(10*(double)start.getX()+5,10*(double)start.getY() +5,
-					10*(double)goal.getX()+5,10*(double)goal.getY()+5);
-			center.getChildren().add(lane);
-			
-		}
-		
-	}*/
-	
+
 	public void createLane(LinkedList<Node> path){
 	
 		int k = path.size();
@@ -1548,9 +1356,7 @@ public class Lobby extends BorderPane{
 			
 			
 		}
-		/*if either homotpy or top3 on lobby is checked,
-		 * then various color is applied*/
-		//if(cbShort.isSelected() || cbTop3.isSelected()){
+		
 		if(radioCH.isSelected() || radioTop3.isSelected()){
 			colorNumber++;
 		}
@@ -1694,9 +1500,7 @@ public class Lobby extends BorderPane{
 	
 	public void setProgessBar(double value){
 		
-		/*final ProgressBar bar = new ProgressBar();
-		bar.setProgress(value);
-		.getChildren().add(bar);*/
+		
 	}
 	public CheckBox getCheckBoxAll(){
 		

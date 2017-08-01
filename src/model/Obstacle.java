@@ -14,18 +14,14 @@ public class Obstacle extends Rectangle{
 	int yPos;
 	int width;
 	int height;
-	//int id;
-	
-	/*private DoubleProperty XPosProperty;
-    private DoubleProperty yPosProperty;
-*/
+
     public Obstacle(){
 		
     	
     	/**
     	 * create randomly obstacles on the map.
     	 */
-		//createObstacleRandom();
+		createObstacleRandom();
     	
     	/**
     	 * For evaluation the coordinates of four obstacles are set
@@ -50,7 +46,6 @@ public class Obstacle extends Rectangle{
 		this.setHeight(CHmodel.VALUE_OBSTACLE_HEIGHT);
 		this.setFill(Color.BLUE);
 
-		//this.id = id;
 	}
     
     private void createObstacleRandom(){
@@ -70,11 +65,6 @@ public class Obstacle extends Rectangle{
 				,CHmodel.getMapY()-CHmodel.VALUE_OBSTACLE_CREATE_DISTANCE);
 		return randomNumY;
 	}
-	
-	/*public int getID(){
-		
-		return id;
-	}*/
 	
 	public DoubleProperty getXPoperty(){
 		

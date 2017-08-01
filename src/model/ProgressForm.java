@@ -25,7 +25,6 @@ public class ProgressForm  {
         dialogStage.setResizable(false);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
 
-        // PROGRESS BAR
         final Label label = new Label();
         label.setText("alerto");
 

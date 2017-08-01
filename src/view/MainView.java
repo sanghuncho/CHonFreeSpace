@@ -119,21 +119,21 @@ public class MainView extends GridPane{
 		/**
 		 * all textfield are created.
 		 */
-		mapXField = new TextField("600");
+		mapXField = new TextField();
 		mapXField.setMinHeight(50);
 		mapXField.setPrefWidth(100);
 		mapXField.setId("mapXTextField");
 		mapXField.setFocusTraversable(false);
-		//mapXField.setPromptText("X");
-		mapXField.setPromptText("600");
+		mapXField.setPromptText("X");
+		//mapXField.setPromptText("600");
 		
-		mapYField = new TextField("600");
+		mapYField = new TextField();
 		mapYField.setMinHeight(50);
 		mapYField.setPrefWidth(100);
 		mapYField.setId("mapYTextField");
 		mapYField.setFocusTraversable(false);
-		//mapYField.setPromptText("Y");
-		mapYField.setPromptText("600");
+		mapYField.setPromptText("Y");
+		//mapYField.setPromptText("600");
 		
 		
 		HBox mapHbox = new HBox(5);
@@ -145,14 +145,14 @@ public class MainView extends GridPane{
 		 * the start point is initialized by input value.
 		 */
 		
-		startPointX = new TextField("2");
+		startPointX = new TextField();
 		startPointX.setMinHeight(50);
 		startPointX.setPrefWidth(100);
 		startPointX.setId("startXTextField");
 		startPointX.setFocusTraversable(false);
 		startPointX.setPromptText("X");
 		
-		startPointY = new TextField("2");
+		startPointY = new TextField();
 		startPointY.setMinHeight(50);
 		startPointY.setPrefWidth(100);
 		startPointY.setId("startYTextField");
@@ -169,14 +169,14 @@ public class MainView extends GridPane{
 		 * the goal point is initialized by input value.
 		 */
 		
-		endPointX = new TextField("59");
+		endPointX = new TextField();
 		endPointX.setMinHeight(50);
 		endPointX.setPrefWidth(100);
 		endPointX.setId("endXTextField");
 		endPointX.setFocusTraversable(false);
 		endPointX.setPromptText("X");
 		
-		endPointY = new TextField("59");
+		endPointY = new TextField();
 		endPointY.setMinHeight(50);
 		endPointY.setPrefWidth(100);
 		endPointY.setId("endYTextField");
@@ -192,12 +192,12 @@ public class MainView extends GridPane{
 		 * the number of the obstacle is initialized by input value.
 		 */
 		
-		numberOfObstacle = new TextField("9");
+		numberOfObstacle = new TextField();
 		numberOfObstacle.setMinHeight(50);
 		numberOfObstacle.setPrefWidth(100);
 		numberOfObstacle.setId("numeberTextField");
 		numberOfObstacle.setFocusTraversable(false);
-		numberOfObstacle.setPromptText("the numebr");
+		numberOfObstacle.setPromptText("numebr");
 		
 		HBox obstacleHbox = new HBox();
 		obstacleHbox.setMaxWidth(600);
@@ -208,7 +208,7 @@ public class MainView extends GridPane{
 		 * the percentage of contraction hierarhes is initialized by input value.
 		 */
 		
-		percentOfContract = new TextField("10");
+		percentOfContract = new TextField();
 		percentOfContract.setMinHeight(50);
 		percentOfContract.setPrefWidth(100);
 		percentOfContract.setId("");
@@ -225,7 +225,7 @@ public class MainView extends GridPane{
 		viaNodeDistance.setPrefWidth(50);
 		viaNodeDistance.setId("");
 		viaNodeDistance.setFocusTraversable(false);
-	
+		viaNodeDistance.setPromptText("2");
 		
 		
 		ObservableList<String> options = 
@@ -272,13 +272,6 @@ public class MainView extends GridPane{
 		gridPane.add(mapXField,1,0);
 		gridPane.add(mapYField,2,0);
 		
-		/*gridPane.add(startLabel,0,1);
-		gridPane.add(startPointX,1,1);
-		gridPane.add(startPointY,2,1);
-		
-		gridPane.add(endLabel,0,2);
-		gridPane.add(endPointX,1,2);
-		gridPane.add(endPointY,2,2);*/
 		
 		gridPane.add(obstacleLabel,0,1);
 		gridPane.add(numberOfObstacle,1,1);

@@ -58,11 +58,10 @@ public class MainPresenter {
 			
 				try {
 	
-					/*save the value of map size,position of start 
-					 * & end point & number of obstacle*/
+					
 					readyForLobby();
 		
-					//Play.navigator.setGameModel(gameModel);
+					
 					Play.navigator.switchTo(AvailableScenes.LOBBY);
 					
 	
@@ -70,7 +69,7 @@ public class MainPresenter {
 					e.printStackTrace();
 				} 
 			}
-			System.out.println("pushed \n");
+			
 		});
 	}
 	

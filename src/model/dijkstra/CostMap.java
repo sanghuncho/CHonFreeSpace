@@ -29,17 +29,6 @@ public class CostMap {
 	private long durationOfgeneratingAllShortcut;
 	private long durationOfOneShortcut;
 	
-    //private Vector startPoint; 
-	//private Vector goalPoint;	
-	//private int nodeSize;
-    //private final static int WEIGHT = 1;
-    //private  ArrayList<Obstacle> obstacles;
-	/*private ArrayList<Vector> visitedPoints = new ArrayList<Vector>(),
-							  pointParkingHelper = new ArrayList<Vector>(),
-							  onHoldList = new ArrayList<Vector>(),
-							  pointParking = new ArrayList<Vector>();*/
-	//private int lowestCost;
-	//private DijkstraAlgorithm dijkstra;
 	
 	
 	public CostMap(Vector size, Vector start, NodeMap nodeMap, 
@@ -52,10 +41,7 @@ public class CostMap {
 		this.durationOfgeneratingAllShortcut = 0;
 		
 		createSurroundingEdges(nodes);
-		
-		//this.startPoint = start;
-		//this.nodeSize = nodeMap.getNodes().size();
-		//this.obstacles = obstacles;
+
 	}
 
 	
@@ -275,57 +261,5 @@ public class CostMap {
 		
 		return nodes;
 	}
-	
-	/*public DijkstraAlgorithm getDijkstra(){
-		return dijkstra;
-	}
-*/	
-	/*private ArrayList<Vector> getPointParkingHelper() {
-		return pointParkingHelper;
-	}
-	
-	private void checkLowestCost(Vector point) {
-		if (getCost(point) != 0) {
-			if (getCost(point) < lowestCost) {
-				lowestCost = getCost(point);
-			}
-		}
-	}
-	private ArrayList<Vector> getPointParking() {
-		return pointParking;
-	}*/
-	
-	/*private void createSurroundingEdges(List<Node> nodes) {
-	
-	for (Node node : nodes){
 		
-		for (Node neighbor : node.getNeighborList()) {
-            
-			
-			isObstacle mathode check the map-value
-			if ( !isObstacle(node.getPosition()) && !isObstacle(neighbor.getPosition())){ 
-				
-				if (!(checkForNode(visitedNodes, node))) {
-					 
-					createEdge(node,neighbor);
-					
-				}
-				
-			}
-		}
-		visitedNodes.add(node);
-	}
-
-	}*/
-	
-
-	/*public void setCost(Vector position, int value) throws ArithmeticException {
-		
-		map[position.getX()][position.getY()] = value;
-
-		if (value < -1) {
-			throw new ArithmeticException("set cost < -1 : " + value);
-		}
-	}*/
-	
 }

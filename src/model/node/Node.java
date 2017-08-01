@@ -166,38 +166,36 @@ public class Node implements Comparable<Node>{
 		
 		
 		if(north != null && north.equals(neighbor)){
-			
-			//System.out.print("neighbor 1 \n");
 
 			neighborOfNeighbor = Directions.NORTH;
 		
 		}
 		else if(northEast!= null && northEast.equals(neighbor)){
-			//System.out.print("neighbor 2 \n");
+			
 			neighborOfNeighbor = Directions.NORTH_EAST;
 		}
 		else if(east != null && east.equals(neighbor)){
-			//System.out.print("neighbor 3 \n");
+			
 			neighborOfNeighbor = Directions.EAST;
 		}
 		else if(southEast != null && southEast.equals(neighbor)){
-			//System.out.print("neighbor 4 \n");
+			
 			neighborOfNeighbor = Directions.SOUTH_EAST;
 		}
 		else if(south != null && south.equals(neighbor)){
-			//System.out.print("neighbor 5 \n");
+			
 			neighborOfNeighbor = Directions.SOUTH;
 		}
 		else if(southWest != null && southWest.equals(neighbor)){
-			//System.out.print("neighbor 6 \n");
+			
 			neighborOfNeighbor = Directions.SOUTH_WEST;
 		}
 		else if(west!= null && west.equals(neighbor)){
-			//System.out.print("neighbor 7 \n");
+			
 			neighborOfNeighbor = Directions.WEST;
 		}
 		else if(northWest != null && northWest.equals(neighbor)){
-			//System.out.print("neighbor 8 \n");
+			
 			neighborOfNeighbor = Directions.NORTH_WEST;
 		}
 		else{}

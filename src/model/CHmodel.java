@@ -115,7 +115,6 @@ public class CHmodel {
 		CHmodel.nodeMap = nodeMap;
 	}
 
-	
 	public static int getMapX() {
 		return mapX;
 	}

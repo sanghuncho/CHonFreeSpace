@@ -16,9 +16,6 @@ public class NodeMapHandler {
 		nodeMap = new NodeMap(size);
 		CHmodel.setNodeMap(nodeMap);
 		defineNeighboringNodes();
-		
-		/* apply obstacle values to the node map */
-		/*nodeMap = new ObstacleGenerator(nodeMap)*/
 
 	}
 	
@@ -36,8 +33,6 @@ public class NodeMapHandler {
 			/**
 			 *  clear any previous defined neighbors */
 			node.getNeighborList().clear();
-
-			/* define the neighboring nodes */
 
 			/**
 			 *  the north node */
